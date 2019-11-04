@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <groupId>thedarkcolour</groupId>
+    <artifactId>kotlinforforge</artifactId>
+    <versioning>
+        <release>0.1.14</release>
+        <versions>
+            <version>0.1.14</version>
+        </versions>
+        <lastUpdated>20190624032818</lastUpdated>
+    </versioning>
+</metadata>
