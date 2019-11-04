@@ -102,7 +102,7 @@ dependencies {
 }
 
 shadowJar {
-    classifier = ""
+    classifier = "obf"
     dependencies {
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"))
