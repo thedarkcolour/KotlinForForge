@@ -1,6 +1,7 @@
 package thedarkcolour.kotlinforforge
 
 import net.minecraftforge.api.distmarker.Dist
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.Logging
 import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.common.Mod
@@ -11,7 +12,6 @@ import org.objectweb.asm.Type
 import thedarkcolour.kotlinforforge.KotlinForForge.logger
 import java.util.*
 import java.util.stream.Collectors
-import kotlin.reflect.full.companionObjectInstance
 
 /**
  * Handles [net.minecraftforge.fml.common.Mod.EventBusSubscriber]
@@ -39,9 +39,9 @@ object AutoKotlinEventBusSubscriber {
      * You must define the [net.minecraftforge.eventbus.api.SubscribeEvent] methods inside the companion object.
      * Example Usage:
      *
-     *   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
      *   public class ExampleSubscriberClass {
      *
+     *      @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
      *      companion object ExampleSubscriberCompanion {
      *         @SubscribeEvent
      *         public fun onItemRegistry(event: RegistryEvent.Register<Item>) {
@@ -65,23 +65,18 @@ object AutoKotlinEventBusSubscriber {
             val modid = annotationData.annotationData.getOrDefault("modid", mod.modId)
             val busTargetHolder: ModAnnotation.EnumHolder = annotationData.annotationData.getOrDefault("bus", ModAnnotation.EnumHolder(null, "FORGE")) as ModAnnotation.EnumHolder
             val busTarget = Mod.EventBusSubscriber.Bus.valueOf(busTargetHolder.value)
-            val clazz = Class.forName(annotationData.classType.className, true, classLoader)
-            val ktClass = clazz.kotlin
-            val ktObject = ktClass.objectInstance
+            val ktObject = Class.forName(annotationData.classType.className, true, classLoader).kotlin.objectInstance
             if (ktObject != null && mod.modId == modid && sides.contains(FMLEnvironment.dist)) {
                 try {
                     logger.debug(Logging.LOADING, "Auto-subscribing kotlin object {} to {}", annotationData.classType.className, busTarget)
-                    busTarget.bus().get().register(ktObject)
+                    if (busTarget == Mod.EventBusSubscriber.Bus.MOD) {
+                        // Gets the correct mod loading context
+                        KotlinModLoadingContext.get().getEventBus().register(ktObject)
+                    } else {
+                        MinecraftForge.EVENT_BUS.register(ktObject)
+                    }
                 } catch (e: Throwable) {
                     logger.fatal(Logging.LOADING, "Failed to load mod class {} for @EventBusSubscriber annotation", annotationData.classType, e)
-                    throw RuntimeException(e)
-                }
-            } else if (ktClass.companionObjectInstance != null)  {
-                try {
-                    logger.debug(Logging.LOADING, "Auto-subscribing kotlin companion object from {} to {}", ktClass.simpleName, busTarget)
-                    busTarget.bus().get().register(ktClass.companionObjectInstance)
-                } catch (e: Throwable) {
-                    logger.fatal(Logging.LOADING, "Failed to load kotlin companion object {} for @EventBusSubscriber annotation", annotationData.classType, e)
                     throw RuntimeException(e)
                 }
             }

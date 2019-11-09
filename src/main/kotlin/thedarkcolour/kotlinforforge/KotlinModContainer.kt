@@ -54,8 +54,11 @@ class KotlinModContainer(info: IModInfo, className: String, loader: ClassLoader,
 
     private fun fireEvent(lifecycleEvent: LifecycleEventProvider.LifecycleEvent) {
         val event = lifecycleEvent.getOrBuildEvent(this)
-        logger.debug(Logging.LOADING, "Firing event for modid {} : {}", this.getModId(), event)
+        logger.debug(Logging.LOADING, "Firing event for modid {} : {}", getModId(), event)
+        // Now actually fires the event
         try {
+            eventBus.post(event)
+            logger.debug(Logging.LOADING, "Fired event for modid {} : {}", getModId(), event)
 
         } catch (e: Throwable) {
             logger.error(Logging.LOADING,"An error occurred while dispatching event {} to {}", lifecycleEvent.fromStage(), modId)

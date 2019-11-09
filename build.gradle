@@ -21,7 +21,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'kotlin'
 
-version = '0.1.14'
+version = '1.0.0'
 group = 'thedarkcolour.kotlinforforge' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'kotlinforforge'
 
@@ -111,6 +111,20 @@ shadowJar {
         include(dependency("org.jetbrains:annotations:${annotations_version}"))
         include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
         include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "kotlinforforge",
+                "Specification-Vendor": "thedarkcolour",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"thedarkcolour",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }
 

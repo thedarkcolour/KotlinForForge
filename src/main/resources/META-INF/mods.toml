@@ -1,8 +1,7 @@
 modLoader="kotlinforforge" # IModLanguageProvider
-loaderVersion="[25,)" # IModLanguageProvider version
+loaderVersion="[1,)" # IModLanguageProvider version
 
 issueTrackerURL="https://github.com/thedarkcolour/Future-MC/issues" # Issues page
-
 
 #displayURL="https://minecraft.curseforge.com/projects/kotlinforforge" #optional
 
@@ -14,7 +13,7 @@ Kotlin for Forge. Allows mods to use the Kotlin programming language.
 [[dependencies.kotlinforforge]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[25,)" #mandatory
+    versionRange="[28,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
 
