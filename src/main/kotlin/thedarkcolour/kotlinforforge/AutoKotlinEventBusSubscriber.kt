@@ -17,7 +17,7 @@ import java.util.stream.Collectors
  * Handles [net.minecraftforge.fml.common.Mod.EventBusSubscriber]
  */
 @Suppress("unused")
-object AutoKotlinEventBusSubscriber {
+internal object AutoKotlinEventBusSubscriber {
     private val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
 
     /**
