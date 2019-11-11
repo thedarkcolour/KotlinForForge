@@ -10,11 +10,12 @@ import java.util.function.Supplier
 /**
  * An alternative to DeferredRegistry that enforces non-nullability.
  */
-open class KtRegistryObject<T : IForgeRegistryEntry<T>>(private val name: ResourceLocation, private val registry: IForgeRegistry<T>) : Supplier<T> {
+open class KtRegistryObject<T : IForgeRegistryEntry<T>>(val name: ResourceLocation, registry: IForgeRegistry<T>) : Supplier<T> {
     private lateinit var value: T
 
     constructor(name: String, registry: IForgeRegistry<T>) : this(ResourceLocation(name), registry)
 
+    @Suppress("UNCHECKED_CAST")
     constructor(name: String, registryType: Supplier<Class<out T>>) : this(ResourceLocation(name), RegistryManager.ACTIVE.getRegistry(registryType.get()) as IForgeRegistry<T>)
 
     init {
