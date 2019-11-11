@@ -30,7 +30,7 @@ class KotlinLanguageProvider : FMLJavaModLanguageProvider() {
         return "kotlinforforge"
     }
 
-    internal class KotlinModTarget internal constructor(private val className: String, val modId: String) : IModLanguageProvider.IModLanguageLoader {
+    class KotlinModTarget constructor(private val className: String, val modId: String) : IModLanguageProvider.IModLanguageLoader {
         @Suppress("UNCHECKED_CAST")
         override fun <T> loadMod(info: IModInfo, modClassLoader: ClassLoader, modFileScanResults: ModFileScanData): T {
             val ktContainer = Class.forName("thedarkcolour.kotlinforforge.KotlinModContainer", true, Thread.currentThread().contextClassLoader)
