@@ -1,3 +1,6 @@
+I am no longer working on this because Kottle exists.
+
+
 # KotlinForForge
 Makes Kotlin forge-friendly.
 
