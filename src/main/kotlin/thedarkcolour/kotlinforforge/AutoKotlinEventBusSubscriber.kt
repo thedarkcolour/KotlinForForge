@@ -17,11 +17,12 @@ import java.util.stream.Collectors
  * Handles [net.minecraftforge.fml.common.Mod.EventBusSubscriber]
  */
 @Suppress("unused")
-internal object AutoKotlinEventBusSubscriber {
-    private val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
+object AutoKotlinEventBusSubscriber {
+    @PublishedApi
+    internal val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
 
     /**
-     * Registers Kotlin objects that are annotated with [Mod.EventBusSubscriber]
+     * Registers Kotlin objects and companion objects that are annotated with [Mod.EventBusSubscriber]
      * This allows you to declare an object that subscribes to the event bus
      * without making all the [net.minecraftforge.eventbus.api.SubscribeEvent] annotated with [JvmStatic]
      *
@@ -31,22 +32,7 @@ internal object AutoKotlinEventBusSubscriber {
      *   public object ExampleSubscriber {
      *      @SubscribeEvent
      *      public fun onItemRegistry(event: RegistryEvent.Register<Item>) {
-     *         println("Look! We're in items :)")
-     *      }
-     *   }
-     *
-     * This also works with companion objects.
-     * You must define the [net.minecraftforge.eventbus.api.SubscribeEvent] methods inside the companion object.
-     * Example Usage:
-     *
-     *   public class ExampleSubscriberClass {
-     *
-     *      @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-     *      companion object ExampleSubscriberCompanion {
-     *         @SubscribeEvent
-     *         public fun onItemRegistry(event: RegistryEvent.Register<Item>) {
-     *            println("Look! We're in items :)")
-     *         }
+     *         println("Look! We're in items!")
      *      }
      *   }
      */
