@@ -9,7 +9,6 @@ class KotlinModLoadingContext internal constructor(private val container: Kotlin
     }
 
     companion object {
-        @JvmStatic
         fun get(): KotlinModLoadingContext {
             return ModLoadingContext.get().extension()
         }
