@@ -3,7 +3,7 @@ Makes Kotlin forge-friendly by doing the following:
 - Provides the Kotlin libraries.
 - Provides `KotlinLanguageProvider` to allow usage of object declarations as @Mod targets.
 - Provides `AutoKotlinEventBusSubscriber` to allow usage of object declarations as @Mod.EventBusSubscriber targets.
-- Provides `KtDeferredRegister` as an alternative to `DeferredRegister` that returns non-null values
+- Provides useful top-level utility functions and constants
 
 To implement in your project, add the following to your build.gradle: 
 ```groovy
@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    // Uses the latest version of KotlinForForge
     implementation 'thedarkcolour:kotlinforforge:1+'
 }
 ```
@@ -22,23 +23,9 @@ Then, add the following to your mods.toml file:
 ```toml
 modLoader="kotlinforforge"
 loaderVersion="[1,)"
-
-[[dependencies.YOUR_MODID]]
-    modId="kotlinforforge"
-    mandatory=true
-    versionRange="[1,)"
-    ordering="NONE"
-    side="BOTH"
 ```
 
-Currently, this mod supports object declarations with @Mod and @EventBusSubscriber annotations.
-
-It is recommended that you use   
-```net.minecraftforge.registries.DeferredRegister```  
-instead of           
-```net.minecraftforge.registries.ObjectHolder```
-
-You must use   
+Use
 ```thedarkcolour.kotlinforforge.KotlinModLoadingContext```              
 instead of   
 ```net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext```

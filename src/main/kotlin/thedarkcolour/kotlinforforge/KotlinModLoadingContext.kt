@@ -3,7 +3,10 @@ package thedarkcolour.kotlinforforge
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.fml.ModLoadingContext
 
-class KotlinModLoadingContext internal constructor(private val container: KotlinModContainer) {
+/**
+ * Functions as [net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext] for Kotlin
+ */
+class KotlinModLoadingContext constructor(private val container: KotlinModContainer) {
     fun getEventBus(): IEventBus {
         return container.eventBus
     }

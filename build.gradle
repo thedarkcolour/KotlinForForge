@@ -10,7 +10,7 @@ buildscript {
     }
 }
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.50"
+    id "org.jetbrains.kotlin.jvm" version "1.3.61"
     id "com.github.johnrengelman.shadow" version "4.0.4"
 }
 
@@ -31,7 +31,7 @@ tasks.build.dependsOn kotlinSourcesJar
 tasks.build.dependsOn shadowJar
 
 minecraft {
-    mappings channel: 'snapshot', version: '20191019-1.14.3'
+    mappings channel: 'snapshot', version: '20191213-1.14.3'
     
     runs {
         client {
@@ -91,7 +91,8 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.1.74'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.106'
+
 	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
@@ -99,6 +100,9 @@ dependencies {
     compile group: "org.jetbrains", name: "annotations", version: annotations_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
+
+    // Used to generate html files
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
 }
 
 shadowJar {
@@ -141,6 +145,7 @@ def reobfArtifact = artifacts.add('default', reobfFile) {
     type 'jar'
     builtBy 'reobfJar'
 }
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -151,5 +156,12 @@ publishing {
         maven {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xinline-classes"]
+        jvmTarget = '1.8'
     }
 }

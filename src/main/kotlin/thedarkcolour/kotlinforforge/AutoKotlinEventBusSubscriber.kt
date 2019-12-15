@@ -1,7 +1,6 @@
 package thedarkcolour.kotlinforforge
 
 import net.minecraftforge.api.distmarker.Dist
-import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.Logging
 import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.common.Mod
@@ -10,16 +9,16 @@ import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.objectweb.asm.Type
 import thedarkcolour.kotlinforforge.KotlinForForge.logger
+import thedarkcolour.kotlinforforge.forge.FORGE_BUS
+import thedarkcolour.kotlinforforge.forge.MOD_BUS
 import java.util.*
 import java.util.stream.Collectors
 
 /**
- * Handles [net.minecraftforge.fml.common.Mod.EventBusSubscriber]
+ * Handles [net.minecraftforge.fml.common.Mod.EventBusSubscriber] annotations for object declarations.
  */
-@Suppress("unused")
 object AutoKotlinEventBusSubscriber {
-    @PublishedApi
-    internal val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
+    private val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
 
     /**
      * Registers Kotlin objects and companion objects that are annotated with [Mod.EventBusSubscriber]
@@ -29,16 +28,15 @@ object AutoKotlinEventBusSubscriber {
      * Example Usage:
      *
      *   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-     *   public object ExampleSubscriber {
-     *      @SubscribeEvent
-     *      public fun onItemRegistry(event: RegistryEvent.Register<Item>) {
-     *         println("Look! We're in items!")
-     *      }
+     *   object ExampleSubscriber {
+     *       @SubscribeEvent
+     *       public fun onItemRegistry(event: RegistryEvent.Register<Item>) {
+     *           println("Look! We're in items!")
+     *       }
      *   }
      */
-    @Suppress("UNCHECKED_CAST", "unused")
     fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
-        logger.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for {}", mod.modId)
+        logger.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
         val data: ArrayList<ModFileScanData.AnnotationData> = scanData.annotations.stream()
                 .filter { annotationData ->
                     EVENT_BUS_SUBSCRIBER == annotationData.annotationType
@@ -54,15 +52,15 @@ object AutoKotlinEventBusSubscriber {
             val ktObject = Class.forName(annotationData.classType.className, true, classLoader).kotlin.objectInstance
             if (ktObject != null && mod.modId == modid && sides.contains(FMLEnvironment.dist)) {
                 try {
-                    logger.debug(Logging.LOADING, "Auto-subscribing kotlin object {} to {}", annotationData.classType.className, busTarget)
+                    logger.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.classType.className} to $busTarget")
                     if (busTarget == Mod.EventBusSubscriber.Bus.MOD) {
                         // Gets the correct mod loading context
-                        KotlinModLoadingContext.get().getEventBus().register(ktObject)
+                        MOD_BUS.register(ktObject)
                     } else {
-                        MinecraftForge.EVENT_BUS.register(ktObject)
+                        FORGE_BUS.register(ktObject)
                     }
                 } catch (e: Throwable) {
-                    logger.fatal(Logging.LOADING, "Failed to load mod class {} for @EventBusSubscriber annotation", annotationData.classType, e)
+                    logger.fatal(Logging.LOADING, "Failed to load mod class ${annotationData.classType} for @EventBusSubscriber annotation", e)
                     throw RuntimeException(e)
                 }
             }
