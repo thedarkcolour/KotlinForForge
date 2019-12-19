@@ -22,7 +22,7 @@ Kotlin for Forge. Allows mods to use the Kotlin programming language.
 [[dependencies.kotlinforforge]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14.4]"
+    versionRange="[1.14,1.16)"
     ordering="NONE"
     side="BOTH"
 

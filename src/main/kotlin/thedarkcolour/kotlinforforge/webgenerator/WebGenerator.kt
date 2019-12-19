@@ -39,14 +39,6 @@ fun run() {
                 val innerWeb = File("${file.absolutePath}\\web.html")
                 innerWeb.createNewFile()
             }
-            //webHtml.allElements.find {
-            //    it.tagName() == "body"
-            //}!!.allElements.find {
-            //    it.tagName() == "pre"
-            //}!!.allElements.find {
-            //    print(it.attr("href"))
-            //    it.className() == ""
-            //}//.appendChild((Element(Tag.valueOf("a"), "hi")))
         }
     }
 
