@@ -10,7 +10,7 @@ To implement in your project, add the following to your build.gradle:
 buildscript {
     // ...
     dependencies {
-        // Check the mod file for the Kotlin version
+        // Make sure to use the correct version
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61"
     }
 }
