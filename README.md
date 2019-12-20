@@ -3,12 +3,11 @@ Makes Kotlin forge-friendly by doing the following:
 - Provides the Kotlin libraries.
 - Provides `KotlinLanguageProvider` to allow usage of object declarations as @Mod targets.
 - Provides `AutoKotlinEventBusSubscriber` to allow usage of object declarations as @Mod.EventBusSubscriber targets.
-- Provides useful top-level utility functions and constants
+- Provides useful utility functions and constants
 
-To implement in your project, add the following to your build.gradle: 
+To implement in your project, paste the following into your build.gradle:
 ```groovy
 buildscript {
-    // ...
     dependencies {
         // Make sure to use the correct version
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61"
@@ -30,18 +29,24 @@ dependencies {
 }
 
 compileKotlin {
+    // Needed if you use Forge.kt
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    
+    // Required to run in dev environment
+    copy {
+        from "$buildDir/classes/kotlin/main" into "$buildDir/classes/java/main"
     }
 }
 ```
 Then, add the following to your mods.toml file:
 ```toml
 modLoader="kotlinforforge"
+# Change this if you require a certain version of KotlinForForge
 loaderVersion="[1,)"
 ```
 
 Use
-```thedarkcolour.kotlinforforge.KotlinModLoadingContext```              
-instead of   
-```net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext```
+```thedarkcolour.kotlinforforge.forge.MOD_CONTEXT```              
+instead of ```net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext```
