@@ -15,7 +15,7 @@ class KotlinLanguageProvider : FMLJavaModLanguageProvider() {
         return Consumer { scanResult ->
             val target = scanResult.annotations.stream()
                     .filter { data -> data.annotationType == MODANNOTATION }
-                    .peek { data -> KotlinForForge.logger.debug(Logging.SCAN, "Found @Mod class ${data.classType.className} with id ${data.annotationData["value"]}") }
+                    .peek { data -> logger.debug(Logging.SCAN, "Found @Mod class ${data.classType.className} with id ${data.annotationData["value"]}") }
                     .map { data -> KotlinModTarget(data.classType.className, data.annotationData["value"] as String) }
                     .collect(Collectors.toMap({ target: KotlinModTarget -> target.modId }, { it }, { a, _ -> a }))
             scanResult.addLanguageLoader(target)
@@ -29,8 +29,8 @@ class KotlinLanguageProvider : FMLJavaModLanguageProvider() {
     class KotlinModTarget constructor(private val className: String, val modId: String) : IModLanguageProvider.IModLanguageLoader {
         override fun <T> loadMod(info: IModInfo, modClassLoader: ClassLoader, modFileScanResults: ModFileScanData): T {
             val ktContainer = Class.forName("thedarkcolour.kotlinforforge.KotlinModContainer", true, Thread.currentThread().contextClassLoader)
-            KotlinForForge.logger.debug(Logging.LOADING, "Loading KotlinModContainer from classloader ${Thread.currentThread().contextClassLoader} - got ${ktContainer.classLoader}}")
-            val constructor = ktContainer.getConstructor(IModInfo::class.java, String::class.java, ClassLoader::class.java, ModFileScanData::class.java)!!
+            logger.debug(Logging.LOADING, "Loading KotlinModContainer from classloader ${Thread.currentThread().contextClassLoader} - got ${ktContainer.classLoader}}")
+            val constructor = ktContainer.declaredConstructors[0]//(IModInfo::class.java, String::class.java, ClassLoader::class.java, ModFileScanData::class.java)!!
             return constructor.newInstance(info, className, modClassLoader, modFileScanResults) as T
         }
     }

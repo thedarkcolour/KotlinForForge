@@ -17,7 +17,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 
-version = '1.0.0'
+version = '1.0.1'
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -112,5 +112,9 @@ compileKotlin {
     kotlinOptions {
         freeCompilerArgs = ["-Xinline-classes"]
         jvmTarget = '1.8'
+    }
+    // Required to run in dev environment
+    copy {
+        from "$buildDir/classes/kotlin/main" into "$buildDir/classes/java/main"
     }
 }

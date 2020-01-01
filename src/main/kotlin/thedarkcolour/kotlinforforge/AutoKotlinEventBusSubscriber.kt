@@ -8,7 +8,6 @@ import net.minecraftforge.fml.loading.FMLEnvironment
 import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.objectweb.asm.Type
-import thedarkcolour.kotlinforforge.KotlinForForge.logger
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 import java.util.*
