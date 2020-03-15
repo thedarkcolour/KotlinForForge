@@ -10,7 +10,7 @@ import java.util.function.Consumer
 import java.util.function.Supplier
 import java.util.stream.Collectors
 
-class KotlinLanguageProvider : FMLJavaModLanguageProvider() {
+public class KotlinLanguageProvider : FMLJavaModLanguageProvider() {
     override fun getFileVisitor(): Consumer<ModFileScanData> {
         return Consumer { scanResult ->
             val target = scanResult.annotations.stream()
@@ -26,7 +26,7 @@ class KotlinLanguageProvider : FMLJavaModLanguageProvider() {
 
     override fun name(): String = "kotlinforforge"
 
-    class KotlinModTarget constructor(private val className: String, val modId: String) : IModLanguageProvider.IModLanguageLoader {
+    public class KotlinModTarget constructor(private val className: String, val modId: String) : IModLanguageProvider.IModLanguageLoader {
         override fun <T> loadMod(info: IModInfo, modClassLoader: ClassLoader, modFileScanResults: ModFileScanData): T {
             val ktContainer = Class.forName("thedarkcolour.kotlinforforge.KotlinModContainer", true, Thread.currentThread().contextClassLoader)
             logger.debug(Logging.LOADING, "Loading KotlinModContainer from classloader ${Thread.currentThread().contextClassLoader} - got ${ktContainer.classLoader}}")

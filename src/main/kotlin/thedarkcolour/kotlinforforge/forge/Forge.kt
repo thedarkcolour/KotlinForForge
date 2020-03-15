@@ -18,7 +18,7 @@ import thedarkcolour.kotlinforforge.KotlinModLoadingContext
  *   @see net.minecraftforge.event.entity.living.LivingEvent
  *   @see net.minecraftforge.event.world.BlockEvent
  */
-val FORGE_BUS: IEventBus
+public val FORGE_BUS: IEventBus
     inline get() = MinecraftForge.EVENT_BUS
 
 /** @since 1.0.0
@@ -30,7 +30,7 @@ val FORGE_BUS: IEventBus
  *   @see net.minecraftforge.event.AttachCapabilitiesEvent
  *   @see net.minecraftforge.event.RegistryEvent
  */
-val MOD_BUS: IEventBus
+public val MOD_BUS: IEventBus
     inline get() = KotlinModLoadingContext.get().getEventBus()
 
 /** @since 1.0.0
@@ -38,22 +38,22 @@ val MOD_BUS: IEventBus
  *
  * Used in place of [net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext]
  */
-val MOD_CONTEXT: KotlinModLoadingContext
+public val MOD_CONTEXT: KotlinModLoadingContext
     inline get() = KotlinModLoadingContext.get()
 
-val LOADING_CONTEXT: ModLoadingContext
+public val LOADING_CONTEXT: ModLoadingContext
     inline get() = ModLoadingContext.get()
 
 /** @since 1.0.0
  * The current [Dist] of this environment.
  */
-val DIST: Dist = FMLEnvironment.dist
+public val DIST: Dist = FMLEnvironment.dist
 
 /** @since 1.0.0
  * An alternative to [net.minecraftforge.fml.DistExecutor.callWhenOn]
  * that inlines the callable.
  */
-inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
+public inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
     return if (DIST == dist) {
         try {
             toRun()
@@ -69,7 +69,7 @@ inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
  * An alternative to [net.minecraftforge.fml.DistExecutor.runWhenOn]
  * that uses Kotlin functions instead of Java functional interfaces.
  */
-inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
+public inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
     if (DIST == dist) {
         toRun()
     }
@@ -79,7 +79,7 @@ inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
  * An alternative to [net.minecraftforge.fml.DistExecutor.runForDist]
  * that inlines the method call.
  */
-inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
+public inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
     return when (DIST) {
         Dist.CLIENT -> clientTarget()
         Dist.DEDICATED_SERVER -> serverTarget()
@@ -89,7 +89,7 @@ inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
 /** @since 1.0.0
  * Registers a config.
  */
-fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String? = null) {
+public fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String? = null) {
     if (fileName == null) {
         LOADING_CONTEXT.registerConfig(type, spec)
     } else {

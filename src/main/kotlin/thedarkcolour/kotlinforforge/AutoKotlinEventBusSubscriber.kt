@@ -16,7 +16,7 @@ import java.util.stream.Collectors
 /**
  * Handles [net.minecraftforge.fml.common.Mod.EventBusSubscriber] annotations for object declarations.
  */
-object AutoKotlinEventBusSubscriber {
+public object AutoKotlinEventBusSubscriber {
     private val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
 
     /**
@@ -34,7 +34,7 @@ object AutoKotlinEventBusSubscriber {
      *       }
      *   }
      */
-    fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
+    public fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
         logger.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
         val data: ArrayList<ModFileScanData.AnnotationData> = scanData.annotations.stream()
                 .filter { annotationData ->

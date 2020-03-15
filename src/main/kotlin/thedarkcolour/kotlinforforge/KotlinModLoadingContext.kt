@@ -6,13 +6,13 @@ import net.minecraftforge.fml.ModLoadingContext
 /**
  * Functions as [net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext] for Kotlin
  */
-class KotlinModLoadingContext constructor(private val container: KotlinModContainer) {
-    fun getEventBus(): IEventBus {
+public class KotlinModLoadingContext constructor(private val container: KotlinModContainer) {
+    public fun getEventBus(): IEventBus {
         return container.eventBus
     }
 
-    companion object {
-        fun get(): KotlinModLoadingContext {
+    public companion object {
+        public fun get(): KotlinModLoadingContext {
             return ModLoadingContext.get().extension()
         }
     }
