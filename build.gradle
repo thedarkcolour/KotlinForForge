@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 
-version = '1.2.0'
+version = '1.2.1'
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 

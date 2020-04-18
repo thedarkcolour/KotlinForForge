@@ -40,7 +40,7 @@ val FORGE_BUS = KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
  *   @see net.minecraftforge.event.RegistryEvent
  */
 val MOD_BUS: KotlinEventBus
-    inline get() = KotlinModLoadingContext.get().getEventBus()
+    inline get() = KotlinModLoadingContext.get().getKEventBus()
 
 /** @since 1.0.0
  * Mod context for Kotlin mods.
