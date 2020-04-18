@@ -13,7 +13,7 @@ buildscript {
     }
     dependencies {
         // Make sure to use the correct version
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.70"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4-M1"
     }
 }
 
@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     // Uses the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:1+'
+    implementation 'thedarkcolour:kotlinforforge:1.2.1'
 }
 
 compileKotlin {
