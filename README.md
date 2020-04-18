@@ -9,6 +9,7 @@ To implement in your project, paste the following into your build.gradle:
 ```groovy
 buildscript {
     repositories {
+        // For early access Kotlin versions
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
@@ -20,6 +21,10 @@ buildscript {
 apply plugin: 'kotlin'
 
 repositories {
+    maven {
+        name = "Kotlin Early Access"
+        url = "https://dl.bintray.com/kotlin/kotlin-eap"
+    }
     maven {
         name = 'kotlinforforge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
