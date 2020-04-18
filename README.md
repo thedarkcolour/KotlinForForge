@@ -40,6 +40,8 @@ compileKotlin {
     // Needed if you use Forge.kt
     kotlinOptions {
         jvmTarget = '1.8'
+        languageVersion = '1.4'
+        apiVersion = '1.4'
     }
     
     // Required to run in dev environment
