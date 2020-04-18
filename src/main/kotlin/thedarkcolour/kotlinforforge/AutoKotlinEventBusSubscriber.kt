@@ -35,7 +35,7 @@ public object AutoKotlinEventBusSubscriber {
      *   }
      */
     public fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
-        logger.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
+        LOGGER.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
         val data: ArrayList<ModFileScanData.AnnotationData> = scanData.annotations.stream()
                 .filter { annotationData ->
                     EVENT_BUS_SUBSCRIBER == annotationData.annotationType
@@ -51,7 +51,7 @@ public object AutoKotlinEventBusSubscriber {
             val ktObject = Class.forName(annotationData.classType.className, true, classLoader).kotlin.objectInstance
             if (ktObject != null && mod.modId == modid && sides.contains(FMLEnvironment.dist)) {
                 try {
-                    logger.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.classType.className} to $busTarget")
+                    LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.classType.className} to $busTarget")
                     if (busTarget == Mod.EventBusSubscriber.Bus.MOD) {
                         // Gets the correct mod loading context
                         MOD_BUS.register(ktObject)
@@ -59,7 +59,7 @@ public object AutoKotlinEventBusSubscriber {
                         FORGE_BUS.register(ktObject)
                     }
                 } catch (e: Throwable) {
-                    logger.fatal(Logging.LOADING, "Failed to load mod class ${annotationData.classType} for @EventBusSubscriber annotation", e)
+                    LOGGER.fatal(Logging.LOADING, "Failed to load mod class ${annotationData.classType} for @EventBusSubscriber annotation", e)
                     throw RuntimeException(e)
                 }
             }

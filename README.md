@@ -8,9 +8,12 @@ Makes Kotlin forge-friendly by doing the following:
 To implement in your project, paste the following into your build.gradle:
 ```groovy
 buildscript {
+    repositories {
+        maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
+    }
     dependencies {
         // Make sure to use the correct version
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.70"
     }
 }
 
@@ -40,7 +43,7 @@ compileKotlin {
     }
 }
 ```
-Then, add the following to your mods.toml file:
+Then, change the following to your mods.toml file:
 ```toml
 modLoader="kotlinforforge"
 # Change this if you require a certain version of KotlinForForge

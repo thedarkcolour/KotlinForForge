@@ -8,4 +8,4 @@ import org.apache.logging.log4j.LogManager
  * Kept here instead of [KotlinForForge] because logger is used
  * before [KotlinModContainer] should initialize.
  */
-internal val logger = LogManager.getLogger()
+internal val LOGGER = LogManager.getLogger()
