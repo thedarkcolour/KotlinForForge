@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    // Uses the latest version of KotlinForForge
+    // Use the latest version of KotlinForForge
     implementation 'thedarkcolour:kotlinforforge:1.2.1'
 }
 
