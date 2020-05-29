@@ -33,7 +33,7 @@ repositories {
 
 dependencies {
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:1.2.1'
+    implementation 'thedarkcolour:kotlinforforge:1.2.2'
 }
 
 compileKotlin {
