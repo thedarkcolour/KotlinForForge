@@ -8,7 +8,8 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:0.10.1'
     }
 }
 plugins {
@@ -17,8 +18,9 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
+apply plugin: 'org.jetbrains.dokka'
 
-version = '1.2.1'
+version = "1.2.2"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -40,7 +42,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/server')
 
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
@@ -62,17 +64,21 @@ minecraft {
 repositories {
     mavenCentral()
     maven {
-        name = "Yarn Mappings"
-        url = "https://maven.tterrag.com/"
+        name = 'Yarn Mappings'
+        url = 'https://maven.tterrag.com/'
     }
     maven {
-        name = "Kotlin Early Access"
-        url = "https://dl.bintray.com/kotlin/kotlin-eap"
+        name = 'Kotlin Early Access'
+        url = 'https://dl.bintray.com/kotlin/kotlin-eap'
+    }
+    maven {
+        name = 'Dokka'
+        url = 'https://dl.bintray.com/kotlin/dokka'
     }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.1.14'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.5'
 
 	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
@@ -81,30 +87,24 @@ dependencies {
     compile group: "org.jetbrains", name: "annotations", version: annotations_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
-
-    // Used to generate html files
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
 }
 
 shadowJar {
     classifier = "obf"
     dependencies {
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
-        include(dependency("org.jetbrains:annotations:${annotations_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}")
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}")
+        include dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
+        include dependency("org.jetbrains:annotations:${annotations_version}")
+        include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
+        include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
     }
 }
 
 jar {
     manifest {
-        attributes([
-                "FMLModType": "LANGPROVIDER"
-                ])
-
+        attributes(["FMLModType": "LANGPROVIDER"])
         attributes([
                 "Specification-Title": "Mod Language Provider",
                 "Specification-Vendor": "Forge",
@@ -119,11 +119,25 @@ jar {
 
 compileKotlin {
     kotlinOptions {
-        freeCompilerArgs = ["-Xinline-classes"]
         jvmTarget = '1.8'
     }
     // Required to run in dev environment
     copy {
         from "$buildDir/classes/kotlin/main" into "$buildDir/classes/java/main"
+    }
+}
+
+kotlinSourcesJar {
+    from(sourceSets.main.kotlin.srcDirs)
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
+
+    configuration {
+        reportUndocumented = true
+
+        samples = ["$rootDir/src/test/kotlin/thedarkcolour/kotlinforforge/ExampleMod.kt".toString()]
     }
 }

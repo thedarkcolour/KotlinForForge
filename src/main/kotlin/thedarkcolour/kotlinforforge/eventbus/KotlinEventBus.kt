@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Consumer
 
 /** @since 1.2.0
- * Fixes [IEventBus.addListener] for Kotlin SAM interfaces.
+ * Fixes [addListener] and [addGenericListener] for Kotlin KCallable.
  */
 open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEventBus, IEventExceptionHandler {
     @Suppress("LeakingThis")
@@ -45,7 +45,7 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
         }
     }
 
-    protected fun registerClass(clazz: Class<*>) {
+    private fun registerClass(clazz: Class<*>) {
         for (method in clazz.methods) {
             if (Modifier.isStatic(method.modifiers) && method.isAnnotationPresent(SubscribeEvent::class.java)) {
                 registerListener(clazz, method, method)
@@ -53,7 +53,7 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
         }
     }
 
-    protected fun registerObject(target: Any) {
+    private fun registerObject(target: Any) {
         val classes = HashSet<Class<*>>()
         typesFor(target.javaClass, classes)
         Arrays.stream(target.javaClass.methods).filter { m ->
@@ -194,6 +194,8 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
 
     /**
      * Add a consumer listener for a [GenericEvent] subclass with generic type [F].
+     * Despite being a new addition in Kotlin for Forge 1.2.x,
+     * this function is backwards compatible with Kotlin for Forge 1.1.x and 1.0.x.
      *
      * @param consumer Callback to invoke when a matching event is received
      * @param T The [GenericEvent] subclass to listen for
@@ -247,6 +249,7 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
         addListener(priority, passGenericCancelled(genericClassFilter, receiveCancelled), consumer)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T : Event> addListener(priority: EventPriority, filter: (T) -> Boolean, consumer: Consumer<T>) {
         val eventType = reflectKotlinSAM(consumer) as Class<T>?
 
@@ -272,22 +275,26 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
     private fun reflectKotlinSAM(consumer: Consumer<*>): Class<*>? {
         val clazz = consumer.javaClass
 
-        if (clazz.simpleName.contains("$\$Lambda$")) {
-            return TypeResolver.resolveRawArgument(Consumer::class.java, consumer.javaClass)
-        } else if (clazz.simpleName.contains("\$sam$")) {
-            try {
-                val functionField = clazz.getDeclaredField("function")
-                functionField.isAccessible = true
-                val function = functionField[consumer]
-
-                // Function should have two type parameters (parameter type and return type)
-                return TypeResolver.resolveRawArguments(kotlin.jvm.functions.Function1::class.java, function.javaClass)[0]
-            } catch (e: NoSuchFieldException) {
-                // Kotlin SAM interfaces compile to classes with a "function" field
-                LOGGER.log(Level.FATAL, "Tried to register invalid Kotlin SAM interface: Missing 'function' field")
-                throw e
+        when {
+            clazz.simpleName.contains("$\$Lambda$") -> {
+                return TypeResolver.resolveRawArgument(Consumer::class.java, consumer.javaClass)
             }
-        } else return null
+            clazz.simpleName.contains("\$sam$") -> {
+                try {
+                    val functionField = clazz.getDeclaredField("function")
+                    functionField.isAccessible = true
+                    val function = functionField[consumer]
+
+                    // Function should have two type parameters (parameter type and return type)
+                    return TypeResolver.resolveRawArguments(kotlin.jvm.functions.Function1::class.java, function.javaClass)[0]
+                } catch (e: NoSuchFieldException) {
+                    // Kotlin SAM interfaces compile to classes with a "function" field
+                    LOGGER.log(Level.FATAL, "Tried to register invalid Kotlin SAM interface: Missing 'function' field")
+                    throw e
+                }
+            }
+            else -> return null
+        }
     }
 
     private fun <T : GenericEvent<out F>, F> passGenericCancelled(genericClassFilter: Class<F>, receiveCancelled: Boolean): (T) -> Boolean = { event ->
@@ -314,6 +321,9 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
         addListener(priority, passGenericCancelled(genericClassFilter, receiveCancelled), eventType, consumer)
     }
 
+    /**
+     * Removes the specified
+     */
     override fun unregister(any: Any?) {
         val list = listeners.remove(any) ?: return
 

@@ -1,0 +1,26 @@
+Kotlin for Forge 1.2.2
+- Added a sided delegate class that returns a "client value" on the client side and a "server value" on the server side.
+- Added a new utility file called "Kotlin.kt" that provides a few utility functions not related to Minecraft Forge.
+- Added an example mod. I will make a template GitHub repository for Kotlin for Forge soon.
+- Adjusted mod construction to accurately report exceptions in @Mod object initializers
+- Restructured Kotlin for Forge code to use Kotlin APIs whenever possible
+- Added styling to the maven repo
+
+Kotlin for Forge 1.2.1
+- Added backwards compatibility to mods that used versions of Kotlin for Forge before 1.2.0
+
+Kotlin for Forge 1.2.0
+- Added a Kotlin implementation of the Forge EventBus that has working addListener and addGenericListener functions
+- Added an overload of addGenericListener that uses a reified type parameter instead of a class parameter.
+- Updated to Kotlin 1.4M1
+
+Kotlin for Forge 1.1.0
+- Events now properly fire through KotlinModContainer
+- Updated to Kotlin 1.3.70 Updated to coroutines 1.3.4 Updated to Jetbrains annotation 19.0.0
+
+Kotlin for Forge 1.0.1
+- Fixed an issue with language extensions
+- Fixed an internal crash
+
+Kotlin for Forge 1.0.0
+- Initial release for 1.14 and 1.15

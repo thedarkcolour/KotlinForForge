@@ -4,56 +4,60 @@ import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.fml.Logging
 import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.fml.loading.FMLEnvironment
 import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.objectweb.asm.Type
+import thedarkcolour.kotlinforforge.forge.DIST
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
-import java.util.*
-import java.util.stream.Collectors
+import thedarkcolour.kotlinforforge.kotlin.enumSet
 
 /**
- * Handles [net.minecraftforge.fml.common.Mod.EventBusSubscriber] annotations for object declarations.
+ * Automatically registers `object` classes to
+ * Kotlin for Forge's event buses.
+ *
+ * @see MOD_BUS
+ * @see FORGE_BUS
  */
-public object AutoKotlinEventBusSubscriber {
+object AutoKotlinEventBusSubscriber {
     private val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
+    private val DIST_ENUM_HOLDERS = listOf(
+            ModAnnotation.EnumHolder(null, "CLIENT"),
+            ModAnnotation.EnumHolder(null, "DEDICATED_SERVER")
+    )
 
     /**
-     * Registers Kotlin objects and companion objects that are annotated with [Mod.EventBusSubscriber]
-     * This allows you to declare an object that subscribes to the event bus
-     * without making all the [net.minecraftforge.eventbus.api.SubscribeEvent] annotated with [JvmStatic]
+     * Allows the Mod.EventBusSubscriber annotation
+     * to target member functions of an `object` class.
      *
-     * Example Usage:
+     * You **must** be using an `object` class, or the
+     * EventBusSubscriber annotation will ignore it.
      *
-     *   @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-     *   object ExampleSubscriber {
-     *       @SubscribeEvent
-     *       public fun onItemRegistry(event: RegistryEvent.Register<Item>) {
-     *           println("Look! We're in items!")
-     *       }
-     *   }
+     * Personally, I am against using [Mod.EventBusSubscriber]
+     * because it makes
+     *
+     * @sample thedarkcolour.kotlinforforge.ExampleMod
      */
-    public fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
+    fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
         LOGGER.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
-        val data: ArrayList<ModFileScanData.AnnotationData> = scanData.annotations.stream()
-                .filter { annotationData ->
-                    EVENT_BUS_SUBSCRIBER == annotationData.annotationType
-                }
-                .collect(Collectors.toList()) as ArrayList<ModFileScanData.AnnotationData>
+
+        val data = scanData.annotations.filter { annotationData ->
+            EVENT_BUS_SUBSCRIBER == annotationData.annotationType
+        }
+
         data.forEach { annotationData ->
-            val sidesValue: List<ModAnnotation.EnumHolder> = annotationData.annotationData.getOrDefault("value", listOf(ModAnnotation.EnumHolder(null, "CLIENT"), ModAnnotation.EnumHolder(null, "DEDICATED_SERVER"))) as List<ModAnnotation.EnumHolder>
-            val sides: EnumSet<Dist> = sidesValue.stream().map { eh -> Dist.valueOf(eh.value) }
-                    .collect(Collectors.toCollection { EnumSet.noneOf(Dist::class.java) })
+            val sidesValue = annotationData.annotationData.getOrDefault("value", DIST_ENUM_HOLDERS) as List<ModAnnotation.EnumHolder>
+            val sides = enumSet<Dist>().plus(sidesValue.map { eh -> Dist.valueOf(eh.value) })
             val modid = annotationData.annotationData.getOrDefault("modid", mod.modId)
-            val busTargetHolder: ModAnnotation.EnumHolder = annotationData.annotationData.getOrDefault("bus", ModAnnotation.EnumHolder(null, "FORGE")) as ModAnnotation.EnumHolder
+            val busTargetHolder = annotationData.annotationData.getOrDefault("bus", ModAnnotation.EnumHolder(null, "FORGE")) as ModAnnotation.EnumHolder
             val busTarget = Mod.EventBusSubscriber.Bus.valueOf(busTargetHolder.value)
             val ktObject = Class.forName(annotationData.classType.className, true, classLoader).kotlin.objectInstance
-            if (ktObject != null && mod.modId == modid && sides.contains(FMLEnvironment.dist)) {
+
+            if (ktObject != null && mod.modId == modid && DIST in sides) {
                 try {
                     LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.classType.className} to $busTarget")
+
                     if (busTarget == Mod.EventBusSubscriber.Bus.MOD) {
-                        // Gets the correct mod loading context
                         MOD_BUS.register(ktObject)
                     } else {
                         FORGE_BUS.register(ktObject)
