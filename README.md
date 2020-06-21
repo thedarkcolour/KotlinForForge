@@ -8,12 +8,13 @@ Makes Kotlin forge-friendly by doing the following:
 - Provides sided property delegates and object holder property delegates
 
 An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton).
+
 If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repository.
 ```git
 git clone https://github.com/thedarkcolour/KotlinModdingSkeleton.git
 ```
 
-To implement in your project, paste the following into your build.gradle:
+To implement in an existing project, paste the following into your build.gradle:
 ```groovy
 buildscript {
     repositories {
