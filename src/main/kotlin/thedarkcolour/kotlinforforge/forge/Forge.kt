@@ -15,8 +15,10 @@ import thedarkcolour.kotlinforforge.KotlinModLoadingContext
 import thedarkcolour.kotlinforforge.LOGGER
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBusWrapper
+import java.util.*
 import java.util.function.Consumer
 import java.util.function.Predicate
+import kotlin.collections.HashMap
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -34,11 +36,11 @@ import kotlin.reflect.KProperty
  *   @see net.minecraftforge.event.entity.living.LivingEvent
  *   @see net.minecraftforge.event.world.BlockEvent
  */
-val FORGE_BUS = KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
+public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
 
 /** @since 1.0.0
  * The mod-specific [EventBus].
- * Setup events are typically fired on this bus.
+ * Mod lifecycle events are fired on this bus.
  *
  *  @since 1.2.0
  * This event bus supports [EventBus.addListener]
@@ -50,7 +52,7 @@ val FORGE_BUS = KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
  *   @see net.minecraftforge.event.AttachCapabilitiesEvent
  *   @see net.minecraftforge.event.RegistryEvent
  */
-val MOD_BUS: KotlinEventBus
+public val MOD_BUS: KotlinEventBus
     inline get() = KotlinModLoadingContext.get().getKEventBus()
 
 /** @since 1.0.0
@@ -58,22 +60,22 @@ val MOD_BUS: KotlinEventBus
  *
  * Used in place of [net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext]
  */
-val MOD_CONTEXT: KotlinModLoadingContext
+public val MOD_CONTEXT: KotlinModLoadingContext
     inline get() = KotlinModLoadingContext.get()
 
-val LOADING_CONTEXT: ModLoadingContext
+public val LOADING_CONTEXT: ModLoadingContext
     inline get() = ModLoadingContext.get()
 
 /** @since 1.0.0
  * The current [Dist] of this environment.
  */
-val DIST: Dist = FMLEnvironment.dist
+public val DIST: Dist = FMLEnvironment.dist
 
 /** @since 1.2.2
  * The instance of Minecraft.
  * Make sure to only call this on the client side.
  */
-val MINECRAFT: Minecraft
+public val MINECRAFT: Minecraft
     @OnlyIn(Dist.CLIENT)
     inline get() = Minecraft.getInstance()
 
@@ -81,7 +83,7 @@ val MINECRAFT: Minecraft
  * An alternative to [net.minecraftforge.fml.DistExecutor.callWhenOn]
  * that inlines the callable.
  */
-inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
+public inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
     return if (DIST == dist) {
         try {
             toRun()
@@ -97,7 +99,7 @@ inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
  * An alternative to [net.minecraftforge.fml.DistExecutor.runWhenOn]
  * that inlines the runnable.
  */
-inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
+public inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
     if (DIST == dist) {
         toRun()
     }
@@ -107,7 +109,7 @@ inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
  * An alternative to [net.minecraftforge.fml.DistExecutor.runForDist]
  * that inlines the function call.
  */
-inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
+public inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
     return when (DIST) {
         Dist.CLIENT -> clientTarget()
         Dist.DEDICATED_SERVER -> serverTarget()
@@ -117,7 +119,7 @@ inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
 /** @since 1.0.0
  * Registers a config.
  */
-fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String? = null) {
+public fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String? = null) {
     if (fileName == null) {
         LOADING_CONTEXT.registerConfig(type, spec)
     } else {
@@ -136,7 +138,7 @@ fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String
  *
  * @see sidedDelegate if you'd like a sided value that is computed each time it is accessed
  */
-fun <T> lazySidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOnlyProperty<Any?, T> {
+public fun <T> lazySidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOnlyProperty<Any?, T> {
     return LazySidedDelegate(clientValue, serverValue)
 }
 
@@ -149,7 +151,7 @@ fun <T> lazySidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOnlyP
  * @param serverValue the value of this property on the server side.
  * @param T the common type of both values. It is recommended to not use [Any] when possible.
  */
-fun <T> sidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOnlyProperty<Any?, T> {
+public fun <T> sidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOnlyProperty<Any?, T> {
     return SidedDelegate(clientValue, serverValue)
 }
 
@@ -159,8 +161,8 @@ fun <T> sidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOnlyPrope
  * This delegate serves as an alternative to using the
  * `@ObjectHolder` annotation, making it easier to use in Kotlin.
  */
-inline fun <reified T : IForgeRegistryEntry<T>> objectHolder(registryName: ResourceLocation): ReadOnlyProperty<Any?, T> {
-    return ObjectHolderDelegate(registryName, RegistryManager.ACTIVE.getRegistry(T::class.java) as ForgeRegistry<T>)
+public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(registryName: ResourceLocation): ReadOnlyProperty<Any?, T> {
+    return ObjectHolderDelegate(registryName, ObjectHolderDelegate.getRegistry(T::class.java))
 }
 
 /** @since 1.2.2
@@ -170,10 +172,10 @@ inline fun <reified T : IForgeRegistryEntry<T>> objectHolder(registryName: Resou
  * This delegate serves as an alternative to using the
  * `@ObjectHolder` annotation, making it easier to use in Kotlin.
  */
-inline fun <reified T : IForgeRegistryEntry<T>> objectHolder(registryName: String): ReadOnlyProperty<Any?, T> {
+public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(registryName: String): ReadOnlyProperty<Any?, T> {
     return ObjectHolderDelegate(
             registryName = GameData.checkPrefix(registryName, true),
-            registry = RegistryManager.ACTIVE.getRegistry(T::class.java) as ForgeRegistry<T>
+            registry = ObjectHolderDelegate.getRegistry(T::class.java)
     )
 }
 
@@ -210,8 +212,12 @@ private class SidedDelegate<T>(private val clientValue: () -> T, private val ser
 /** @since 1.2.2
  * An alternative to the `@ObjectHolder` annotation.
  *
- * This property delegate is for people who would like to avoid
+ * This property delegate is for those who would like to avoid
  * using annotations all over their non-static Kotlin code.
+ *
+ * [ObjectHolderDelegate] delegates to a non-null
+ * `IForgeRegistryEntry` value with registry name [registryName]
+ * in an `IForgeRegistry` [registry] of type [T].
  *
  * This class has proper implementations of
  * [copy], [hashCode], [equals], and [toString].
@@ -221,9 +227,9 @@ private class SidedDelegate<T>(private val clientValue: () -> T, private val ser
  * @property registry the registry the object of this delegate is in
  * @property value the current value of this object holder.
  */
-data class ObjectHolderDelegate<T : IForgeRegistryEntry<T>>(
+public data class ObjectHolderDelegate<T : IForgeRegistryEntry<in T>>(
         private val registryName: ResourceLocation,
-        private val registry: ForgeRegistry<T>,
+        private val registry: IForgeRegistry<*>,
 ) : ReadOnlyProperty<Any?, T>, Consumer<Predicate<ResourceLocation>> {
     /**
      * Should be initialized by [accept]. If you don't register
@@ -257,10 +263,45 @@ data class ObjectHolderDelegate<T : IForgeRegistryEntry<T>>(
             val tempValue = registry.getValue(registryName)
 
             if (tempValue != null) {
-                value = tempValue
+                value = tempValue as T
             } else {
                 LOGGER.debug("Unable to lookup value for $this, likely just mod options.")
             }
+        }
+    }
+
+    public companion object {
+        private val TYPE_2_REGISTRY = HashMap<Class<*>, IForgeRegistry<*>>()
+
+        public fun getRegistry(clazz: Class<*>): IForgeRegistry<*> {
+            return TYPE_2_REGISTRY.computeIfAbsent(clazz, ::findRegistry)
+        }
+
+        private fun findRegistry(clazz: Class<*>): IForgeRegistry<*> {
+            val typeQueue = LinkedList<Class<*>>()
+            var registry: IForgeRegistry<*>? = null
+
+            typeQueue.add(clazz)
+
+            while (typeQueue.isNotEmpty() && registry == null) {
+                val type = typeQueue.remove()
+                typeQueue.addAll(type.interfaces)
+
+                if (IForgeRegistryEntry::class.java.isAssignableFrom(type)) {
+                    registry = RegistryManager.ACTIVE.getRegistry(type)
+
+                    val parent = type.superclass
+
+                    if (parent != null) {
+                        typeQueue.add(parent)
+                    }
+                }
+            }
+
+            return registry ?: throw IllegalArgumentException(
+                    "ObjectHolderDelegate must represent " +
+                    "a type that implements IForgeRegistryEntry"
+            )
         }
     }
 }

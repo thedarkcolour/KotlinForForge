@@ -4,6 +4,14 @@ Makes Kotlin forge-friendly by doing the following:
 - Provides `KotlinLanguageProvider` to allow usage of object declarations as @Mod targets.
 - Provides `AutoKotlinEventBusSubscriber` to allow usage of object declarations as @Mod.EventBusSubscriber targets.
 - Provides useful utility functions and constants
+- Provides its own implementation of the Forge eventbus to work with KCallables and reified type parameters
+- Provides sided property delegates and object holder property delegates
+
+An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton).
+If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repository.
+```git
+git clone https://github.com/thedarkcolour/KotlinModdingSkeleton.git
+```
 
 To implement in your project, paste the following into your build.gradle:
 ```groovy
@@ -14,7 +22,7 @@ buildscript {
     }
     dependencies {
         // Make sure to use the correct version
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4-M1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4-M2"
     }
 }
 
@@ -33,7 +41,7 @@ repositories {
 
 dependencies {
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:1.2.2'
+    implementation 'thedarkcolour:kotlinforforge:1.2.3'
 }
 
 compileKotlin {
@@ -43,11 +51,6 @@ compileKotlin {
         jvmTarget = '1.8'
         languageVersion = '1.4'
         apiVersion = '1.4'
-    }
-    
-    // Required to run in dev environment
-    copy {
-        from "$buildDir/classes/kotlin/main" into "$buildDir/classes/java/main"
     }
 }
 ```

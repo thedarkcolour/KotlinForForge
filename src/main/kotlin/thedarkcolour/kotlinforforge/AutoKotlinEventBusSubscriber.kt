@@ -19,26 +19,28 @@ import thedarkcolour.kotlinforforge.kotlin.enumSet
  * @see MOD_BUS
  * @see FORGE_BUS
  */
-object AutoKotlinEventBusSubscriber {
+public object AutoKotlinEventBusSubscriber {
+    /** The [Mod.EventBusSubscriber] java type. */
     private val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
+    /** The default (client & server) list of [Dist] enum holders. */
     private val DIST_ENUM_HOLDERS = listOf(
             ModAnnotation.EnumHolder(null, "CLIENT"),
             ModAnnotation.EnumHolder(null, "DEDICATED_SERVER")
     )
 
     /**
-     * Allows the Mod.EventBusSubscriber annotation
+     * Allows the [Mod.EventBusSubscriber] annotation
      * to target member functions of an `object` class.
      *
      * You **must** be using an `object` class, or the
-     * EventBusSubscriber annotation will ignore it.
+     * `Mod.EventBusSubscriber` annotation will ignore it.
      *
-     * Personally, I am against using [Mod.EventBusSubscriber]
-     * because it makes
-     *
-     * @sample thedarkcolour.kotlinforforge.ExampleMod
+     * I am against using `Mod.EventBusSubscriber`
+     * because it makes it difficult to follow where event
+     * listeners are registered. Instead, prefer to directly
+     * register event listeners to the [FORGE_BUS] or [MOD_BUS].
      */
-    fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
+    public fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
         LOGGER.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
 
         val data = scanData.annotations.filter { annotationData ->

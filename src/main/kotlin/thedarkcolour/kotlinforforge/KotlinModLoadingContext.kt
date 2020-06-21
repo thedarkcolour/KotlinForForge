@@ -7,11 +7,11 @@ import thedarkcolour.kotlinforforge.forge.LOADING_CONTEXT
 /**
  * Mod loading context for mods made with Kotlin for Forge.
  */
-class KotlinModLoadingContext constructor(private val container: KotlinModContainer) {
+public class KotlinModLoadingContext constructor(private val container: KotlinModContainer) {
     /** @since 1.2.1
      * @see thedarkcolour.kotlinforforge.forge.MOD_BUS
      */
-    fun getKEventBus(): KotlinEventBus {
+    public fun getKEventBus(): KotlinEventBus {
         return container.eventBus
     }
 
@@ -25,15 +25,15 @@ class KotlinModLoadingContext constructor(private val container: KotlinModContai
             replaceWith = ReplaceWith("getKEventBus()"),
             level = DeprecationLevel.WARNING,
     )
-    fun getEventBus(): IEventBus {
+    public fun getEventBus(): IEventBus {
         return container.eventBus
     }
 
-    companion object {
+    public companion object {
         /**
          * Returns the [KotlinModLoadingContext] for the current mod
          */
-        fun get(): KotlinModLoadingContext {
+        public fun get(): KotlinModLoadingContext {
             return LOADING_CONTEXT.extension()
         }
     }

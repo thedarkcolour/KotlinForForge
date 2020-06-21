@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
-version = "1.2.2"
+version = "1.3.0"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -120,15 +120,19 @@ jar {
 compileKotlin {
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    // Required to run in dev environment
-    copy {
-        from "$buildDir/classes/kotlin/main" into "$buildDir/classes/java/main"
+        freeCompilerArgs = ["-Xexplicit-api=warning"]
     }
 }
 
+sourceSets.test {
+    kotlin.srcDirs 'src/example/kotlin'
+    resources.srcDirs 'src/example/resources'
+}
+
 kotlinSourcesJar {
-    from(sourceSets.main.kotlin.srcDirs)
+    from(sourceSets.main.kotlin.srcDirs).eachFile { file ->
+        println(file.name)
+    }
 }
 
 dokka {
@@ -138,6 +142,6 @@ dokka {
     configuration {
         reportUndocumented = true
 
-        samples = ["$rootDir/src/test/kotlin/thedarkcolour/kotlinforforge/ExampleMod.kt".toString()]
+        samples = ["$rootDir/src/test/kotlin/thedarkcolour/example/ExampleMod.kt".toString()]
     }
 }

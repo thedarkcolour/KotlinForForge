@@ -19,14 +19,14 @@ import java.util.function.Consumer
 /** @since 1.2.0
  * Fixes [addListener] and [addGenericListener] for Kotlin KCallable.
  */
-open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEventBus, IEventExceptionHandler {
+public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEventBus, IEventExceptionHandler {
     @Suppress("LeakingThis")
     private val exceptionHandler = builder.exceptionHandler ?: this
     private val trackPhases = builder.trackPhases
     @Volatile
     private var shutdown = builder.isStartingShutdown
-    protected open val busID = MAX_ID.getAndIncrement()
-    protected open val listeners = ConcurrentHashMap<Any, MutableList<IEventListener>>()
+    protected open val busID: Int = MAX_ID.getAndIncrement()
+    protected open val listeners: ConcurrentHashMap<Any, MutableList<IEventListener>> = ConcurrentHashMap()
 
     init {
         // see companion object
@@ -201,8 +201,39 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
      * @param T The [GenericEvent] subclass to listen for
      * @param F The [Class] to filter the [GenericEvent] for
      */
-    inline fun <T : GenericEvent<out F>, reified F> addGenericListener(consumer: Consumer<T>) {
+    public inline fun <T : GenericEvent<out F>, reified F> addGenericListener(consumer: Consumer<T>) {
         addGenericListener(F::class.java, consumer)
+    }
+
+    /**
+     * Add a consumer listener with the specified [EventPriority] and not receiving cancelled events,
+     * for a [GenericEvent] subclass, filtered to only be called for the specified
+     * filter [Class].
+     *
+     * @param genericClassFilter A [Class] which the [GenericEvent] should be filtered for
+     * @param priority [EventPriority] for this listener
+     * @param consumer Callback to invoke when a matching event is received
+     * @param T The [GenericEvent] subclass to listen for
+     * @param F The [Class] to filter the [GenericEvent] for
+     */
+    public inline fun <T : GenericEvent<out F>, reified F> addGenericListener(priority: EventPriority, consumer: Consumer<T>) {
+        addGenericListener(F::class.java, priority, false, consumer)
+    }
+
+    /**
+     * Add a consumer listener with the specified [EventPriority] and potentially cancelled events,
+     * for a [GenericEvent] subclass, filtered to only be called for the specified
+     * filter [Class].
+     *
+     * @param genericClassFilter A [Class] which the [GenericEvent] should be filtered for
+     * @param priority [EventPriority] for this listener
+     * @param receiveCancelled Indicate if this listener should receive events that have been [Cancelable] cancelled
+     * @param consumer Callback to invoke when a matching event is received
+     * @param T The [GenericEvent] subclass to listen for
+     * @param F The [Class] to filter the [GenericEvent] for
+     */
+    public inline fun <T : GenericEvent<out F>, reified F> addGenericListener(priority: EventPriority, receiveCancelled: Boolean, consumer: Consumer<T>) {
+        addGenericListener(F::class.java, priority, receiveCancelled, consumer)
     }
 
     /**
@@ -365,7 +396,7 @@ open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEv
         shutdown = false
     }
 
-    companion object {
+    private companion object {
         private val LOGGER = LogManager.getLogger()
         private val EVENT_BUS = MarkerManager.getMarker("EVENTBUS")
         private val MAX_ID: AtomicInteger
