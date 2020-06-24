@@ -1,7 +1,7 @@
 modLoader="kotlinforforge" # IModLanguageProvider
 loaderVersion="[1.3,)" # IModLanguageProvider version
 
-issueTrackerURL="https://github.com/thedarkcolour/Future-MC/issues" # Issues page
+issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues" # Issues page
 
 description='''
 Kotlin for Forge. Allows mods to use the Kotlin programming language.
@@ -20,7 +20,7 @@ Kotlin for Forge. Allows mods to use the Kotlin programming language.
 [[dependencies.kotlinforforge]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14,1.16)"
+    versionRange="[1.14,1.17)"
     ordering="NONE"
     side="BOTH"
 
@@ -31,6 +31,6 @@ Kotlin for Forge. Allows mods to use the Kotlin programming language.
 [[mods]] #mandatory
 displayName="Kotlin for Forge" # Name of mod
 modId="kotlinforforge" # Modid
-version="1.3.0" # Version of kotlinforforge
+version="1.3.1" # Version of kotlinforforge
 authors="TheDarkColour" # Author
 credits="Herobrine knows all." # Credits
