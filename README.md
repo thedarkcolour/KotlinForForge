@@ -23,17 +23,13 @@ buildscript {
     }
     dependencies {
         // Make sure to use the correct version
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4-M2"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0-rc"
     }
 }
 
 apply plugin: 'kotlin'
 
 repositories {
-    maven {
-        name = "Kotlin Early Access"
-        url = "https://dl.bintray.com/kotlin/kotlin-eap"
-    }
     maven {
         name = 'kotlinforforge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
