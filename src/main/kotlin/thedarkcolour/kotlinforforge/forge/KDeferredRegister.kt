@@ -22,7 +22,7 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
     /**
      * A map of all registry objects and their value suppliers.
      */
-    private val entries = HashMap<ObjectHolderDelegate<out V>, () -> V>()
+    private val entries = LinkedHashMap<ObjectHolderDelegate<out V>, () -> V>()
 
     /**
      * Alternative constructor that uses a class instead of a registry.

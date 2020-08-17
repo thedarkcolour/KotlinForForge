@@ -1,3 +1,6 @@
+##Kotlin for Forge 1.4.1
+- Fixed `KDeferredRegistry` registering things out of order
+
 ##Kotlin for Forge 1.4.0
 - Kotlin Gradle Plugin now requires Gradle 5.3. Update by changing the version of the gradle wrapper in `gradle/wrapper/gradle-wrapper.properties`.
 - Added a `KDeferredRegistry` similar to Forge's `DeferredRegistry` but works with `ObjectHolderDelegate`s instead of `RegistryObject`s.
