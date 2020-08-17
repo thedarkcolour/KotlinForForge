@@ -22,7 +22,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
-version = "1.3.1"
+version = "1.4.0"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -68,10 +68,6 @@ repositories {
     maven {
         name = 'Yarn Mappings'
         url = 'https://maven.tterrag.com/'
-    }
-    maven {
-        name = 'Kotlin Early Access'
-        url = 'https://dl.bintray.com/kotlin/kotlin-eap'
     }
     maven {
         name = 'Dokka'
@@ -140,7 +136,5 @@ dokka {
 
     configuration {
         reportUndocumented = true
-
-        samples = ["$rootDir/src/test/kotlin/thedarkcolour/example/ExampleMod.kt".toString()]
     }
 }

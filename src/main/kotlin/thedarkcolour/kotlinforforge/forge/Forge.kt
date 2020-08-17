@@ -18,6 +18,7 @@ import thedarkcolour.kotlinforforge.eventbus.KotlinEventBusWrapper
 import java.util.*
 import java.util.function.Consumer
 import java.util.function.Predicate
+import java.util.function.Supplier
 import kotlin.collections.HashMap
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -49,7 +50,7 @@ public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftFor
  *
  * Examples:
  *   @see net.minecraftforge.fml.event.lifecycle.InterModProcessEvent
- *   @see net.minecraftforge.event.AttachCapabilitiesEvent
+ *   @see net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
  *   @see net.minecraftforge.event.RegistryEvent
  */
 public val MOD_BUS: KotlinEventBus
@@ -158,19 +159,26 @@ public fun <T> sidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOn
 /** @since 1.2.2
  * Creates a new [ObjectHolderDelegate] with the specified [registryName].
  *
- * This delegate serves as an alternative to using the
- * `@ObjectHolder` annotation, making it easier to use in Kotlin.
+ * Provides ObjectHolders as property delegates instead of magic annotations.
  */
 public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(registryName: ResourceLocation): ReadOnlyProperty<Any?, T> {
     return ObjectHolderDelegate(registryName, ObjectHolderDelegate.getRegistry(T::class.java))
 }
 
 /** @since 1.2.2
+ * Creates a new with the specified [namespace] and [registryName].
+ *
+ * Provides ObjectHolders as property delegates instead of magic annotations.
+ */
+public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(namespace: String, registryName: String): ReadOnlyProperty<Any?, T> {
+    return ObjectHolderDelegate(ResourceLocation(namespace, registryName), ObjectHolderDelegate.getRegistry(T::class.java))
+}
+
+/** @since 1.2.2
  * Creates a new [ObjectHolderDelegate].
  * This overload uses a string instead of a ResourceLocation.
  *
- * This delegate serves as an alternative to using the
- * `@ObjectHolder` annotation, making it easier to use in Kotlin.
+ * Provides ObjectHolders as property delegates instead of magic annotations.
  */
 public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(registryName: String): ReadOnlyProperty<Any?, T> {
     return ObjectHolderDelegate(
@@ -222,6 +230,9 @@ private class SidedDelegate<T>(private val clientValue: () -> T, private val ser
  * This class has proper implementations of
  * [copy], [hashCode], [equals], and [toString].
  *
+ *  @since 1.4.0
+ * [ObjectHolderDelegate] can now be used with the [KDeferredRegister].
+ *
  * @param T the type of object this delegates to
  * @property registryName the registry name of the object this delegate references
  * @property registry the registry the object of this delegate is in
@@ -230,7 +241,7 @@ private class SidedDelegate<T>(private val clientValue: () -> T, private val ser
 public data class ObjectHolderDelegate<T : IForgeRegistryEntry<in T>>(
         private val registryName: ResourceLocation,
         private val registry: IForgeRegistry<*>,
-) : ReadOnlyProperty<Any?, T>, Consumer<Predicate<ResourceLocation>> {
+) : ReadOnlyProperty<Any?, T>, Consumer<Predicate<ResourceLocation>>, Supplier<T> {
     /**
      * Should be initialized by [accept]. If you don't register
      * a value for [registryName] during the appropriate registry event
@@ -240,6 +251,10 @@ public data class ObjectHolderDelegate<T : IForgeRegistryEntry<in T>>(
 
     init {
         ObjectHolderRegistry.addHandler(this)
+    }
+
+    override fun get(): T {
+        return value
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {

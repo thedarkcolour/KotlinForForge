@@ -1,3 +1,9 @@
+##Kotlin for Forge 1.4.0
+- Kotlin Gradle Plugin now requires Gradle 5.3. Update by changing the version of the gradle wrapper in `gradle/wrapper/gradle-wrapper.properties`.
+- Added a `KDeferredRegistry` similar to Forge's `DeferredRegistry` but works with `ObjectHolderDelegate`s instead of `RegistryObject`s.
+- Fixed a typo in the KDoc for `MOD_BUS` that falsely stated `AttachCapabilitiesEvent` was fired on the mod-specific event bus. 
+- Updated to Kotlin 1.4.0-rc
+
 ##Kotlin for Forge 1.3.1
 - Bumped version range to work with 1.16 Forge when it comes out.
 
