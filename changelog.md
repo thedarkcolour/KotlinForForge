@@ -1,3 +1,6 @@
+##Kotlin for Forge 1.5.0
+- Updated to Kotlin 1.4.0
+
 ##Kotlin for Forge 1.4.1
 - Fixed `KDeferredRegistry` registering things out of order
 
