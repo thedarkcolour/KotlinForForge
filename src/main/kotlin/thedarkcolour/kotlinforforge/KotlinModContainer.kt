@@ -15,6 +15,7 @@ import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.ModFileScanData
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
 import thedarkcolour.kotlinforforge.kotlin.supply
+import java.lang.reflect.Field
 import java.util.function.Consumer
 
 public typealias LifecycleEventListener = (LifecycleEvent) -> Unit
@@ -40,17 +41,39 @@ public class KotlinModContainer(
      */
     public val eventBus: KotlinEventBus
 
+    private val _triggerMap: MutableMap<ModLoadingStage, Consumer<LifecycleEvent>>?
+    private val _activityMap: MutableMap<ModLoadingStage, Runnable>?
+
     init {
+        @Suppress("UNCHECKED_CAST")
+        _activityMap = try {
+            ACTIVITY_MAP_FIELD?.get(this) as MutableMap<ModLoadingStage, Runnable>
+        } catch (e: Exception) {
+            null
+        }
+        @Suppress("UNCHECKED_CAST")
+        _triggerMap = try {
+            TRIGGER_MAP_FIELD?.get(this) as MutableMap<ModLoadingStage, Consumer<LifecycleEvent>>
+        } catch (e: Exception) {
+            null
+        }
+
         LOGGER.debug(Logging.LOADING, "Creating KotlinModContainer instance for {} with classLoader {} & {}", className, classLoader, javaClass.classLoader)
-        triggerMap[ModLoadingStage.CONSTRUCT] = createTrigger(::constructMod, ::afterEvent)
-        triggerMap[ModLoadingStage.CREATE_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
-        triggerMap[ModLoadingStage.LOAD_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
-        triggerMap[ModLoadingStage.COMMON_SETUP] = createTrigger(::fireEvent, ::afterEvent)
-        triggerMap[ModLoadingStage.SIDED_SETUP] = createTrigger(::fireEvent, ::afterEvent)
-        triggerMap[ModLoadingStage.ENQUEUE_IMC] = createTrigger(::fireEvent, ::afterEvent)
-        triggerMap[ModLoadingStage.PROCESS_IMC] = createTrigger(::fireEvent, ::afterEvent)
-        triggerMap[ModLoadingStage.COMPLETE] = createTrigger(::fireEvent, ::afterEvent)
-        triggerMap[ModLoadingStage.GATHERDATA] = createTrigger(::fireEvent, ::afterEvent)
+
+        if (_activityMap != null) {
+            _activityMap[ModLoadingStage.CONSTRUCT] = Runnable(::constructMod)
+        } else if (_triggerMap != null) {
+            _triggerMap[ModLoadingStage.CONSTRUCT] = createTrigger( { constructMod() }, ::afterEvent)
+            _triggerMap[ModLoadingStage.CREATE_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
+            _triggerMap[ModLoadingStage.LOAD_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
+            _triggerMap[ModLoadingStage.COMMON_SETUP] = createTrigger(::fireEvent, ::afterEvent)
+            _triggerMap[ModLoadingStage.SIDED_SETUP] = createTrigger(::fireEvent, ::afterEvent)
+            _triggerMap[ModLoadingStage.ENQUEUE_IMC] = createTrigger(::fireEvent, ::afterEvent)
+            _triggerMap[ModLoadingStage.PROCESS_IMC] = createTrigger(::fireEvent, ::afterEvent)
+            _triggerMap[ModLoadingStage.COMPLETE] = createTrigger(::fireEvent, ::afterEvent)
+            _triggerMap[ModLoadingStage.GATHERDATA] = createTrigger(::fireEvent, ::afterEvent)
+        }
+
         eventBus = KotlinEventBus(BusBuilder.builder().setExceptionHandler(::onEventFailed).setTrackPhases(false))
         contextExtension = supply(KotlinModLoadingContext(this))
     }
@@ -73,7 +96,13 @@ public class KotlinModContainer(
      * The `IEventExceptionHandler` that logs
      * errors in events as errors.
      */
-    private fun onEventFailed(iEventBus: IEventBus, event: Event, iEventListeners: Array<IEventListener>, i: Int, throwable: Throwable) {
+    private fun onEventFailed(
+            iEventBus: IEventBus,
+            event: Event,
+            iEventListeners: Array<IEventListener>,
+            i: Int,
+            throwable: Throwable
+    ) {
         LOGGER.error(EventBusErrorMessage(event, i, iEventListeners, throwable))
     }
 
@@ -89,7 +118,7 @@ public class KotlinModContainer(
             eventBus.post(event)
             LOGGER.debug(Logging.LOADING, "Fired event for modid $modId : $event")
         } catch (throwable: Throwable) {
-            LOGGER.error(Logging.LOADING,"An error occurred while dispatching event ${lifecycleEvent.fromStage()} to $modId")
+            LOGGER.error(Logging.LOADING, "An error occurred while dispatching event ${lifecycleEvent.fromStage()} to $modId")
             throw ModLoadingException(modInfo, lifecycleEvent.fromStage(), "fml.modloading.errorduringevent", throwable)
         }
     }
@@ -107,7 +136,7 @@ public class KotlinModContainer(
     /**
      * Initializes [modInstance] and calls the mod constructor
      */
-    private fun constructMod(lifecycleEvent: LifecycleEvent) {
+    private fun constructMod() {
         val modClass: Class<*>
 
         try {
@@ -124,7 +153,7 @@ public class KotlinModContainer(
             LOGGER.debug(Logging.LOADING, "Loaded mod instance ${getModId()} of type ${modClass.name}")
         } catch (throwable: Throwable) {
             LOGGER.error(Logging.LOADING, "Failed to create mod instance. ModID: ${getModId()}, class ${modClass.name}", throwable)
-            throw ModLoadingException(modInfo, lifecycleEvent.fromStage(), "fml.modloading.failedtoloadmod", throwable, modClass)
+            throw ModLoadingException(modInfo, ModLoadingStage.CONSTRUCT, "fml.modloading.failedtoloadmod", throwable, modClass)
         }
 
         try {
@@ -134,7 +163,7 @@ public class KotlinModContainer(
             LOGGER.debug(Logging.LOADING, "Completed Automatic Kotlin event subscribers for ${getModId()}")
         } catch (throwable: Throwable) {
             LOGGER.error(Logging.LOADING, "Failed to register Automatic Kotlin subscribers. ModID: ${getModId()}, class ${modClass.name}", throwable)
-            throw ModLoadingException(modInfo, lifecycleEvent.fromStage(), "fml.modloading.failedtoloadmod", throwable, modClass)
+            throw ModLoadingException(modInfo, ModLoadingStage.CONSTRUCT, "fml.modloading.failedtoloadmod", throwable, modClass)
         }
     }
 
@@ -149,6 +178,30 @@ public class KotlinModContainer(
     override fun getMod(): Any = modInstance
 
     override fun acceptEvent(e: Event) {
-        eventBus.post(e)
+        try {
+            LOGGER.debug("Firing event for modid $modId : $e")
+            eventBus.post(e)
+            LOGGER.debug("Fired event for modid $modId : $e")
+        } catch (t: Throwable) {
+            LOGGER.error("Caught exception during event $e dispatch for modid $modId", t)
+            throw ModLoadingException(modInfo, modLoadingStage, "fml.modloading.errorduringevent", t)
+        }
+    }
+
+    private companion object {
+        private val TRIGGER_MAP_FIELD: Field? = try {
+            ModContainer::class.java.getDeclaredField("triggerMap").also { field ->
+                field.isAccessible = true
+            }
+        } catch (e: NoSuchFieldException) {
+            null
+        }
+        private val ACTIVITY_MAP_FIELD: Field? = try {
+            ModContainer::class.java.getDeclaredField("activityMap").also { field ->
+                field.isAccessible = true
+            }
+        } catch (e: NoSuchFieldException) {
+            null
+        }
     }
 }

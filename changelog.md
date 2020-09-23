@@ -1,3 +1,7 @@
+##Kotlin for Forge 1.6.0
+- Updated to support changes in the Forge API in 1.16.2 and 1.16.3 (KFF should no longer cause crashes)
+- Updated to Kotlin 1.4.10
+
 ##Kotlin for Forge 1.5.0
 - Updated to Kotlin 1.4.0
 

@@ -76,6 +76,10 @@ public val DIST: Dist = FMLEnvironment.dist
  * The instance of Minecraft.
  * Make sure to only call this on the client side.
  */
+@Deprecated(
+    message = "Will be removed in 1.7.0 to improve compatibility between Minecraft versions",
+    replaceWith = ReplaceWith("Minecraft.getInstance()", "net.minecraft.client.Minecraft")
+)
 public val MINECRAFT: Minecraft
     @OnlyIn(Dist.CLIENT)
     inline get() = Minecraft.getInstance()

@@ -1,5 +1,6 @@
 modLoader="kotlinforforge" # IModLanguageProvider
 loaderVersion="[1.4,)" # IModLanguageProvider version
+license="GPL v3.0"
 
 issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues" # Issues page
 
