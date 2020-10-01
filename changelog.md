@@ -1,3 +1,8 @@
+##Kotlin for Forge 1.6.1
+- Removed inline modifier for functions `runForDist`, `runWhenOn`, and `callWhenOn` in Forge.kt.
+- Changed the `AutoKotlinEventBusSubscriber` to not crash when loading client only subscribers with client only members.
+- Deprecated `MINECRAFT` and set deprecation level to error. This is because the property only works on the version KFF was compiled with.
+
 ##Kotlin for Forge 1.6.0
 - Updated to support changes in the Forge API in 1.16.2 and 1.16.3 (KFF should no longer cause crashes)
 - Updated to Kotlin 1.4.10
