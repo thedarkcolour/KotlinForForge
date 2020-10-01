@@ -78,7 +78,8 @@ public val DIST: Dist = FMLEnvironment.dist
  */
 @Deprecated(
     message = "Will be removed in 1.7.0 to improve compatibility between Minecraft versions",
-    replaceWith = ReplaceWith("Minecraft.getInstance()", "net.minecraft.client.Minecraft")
+    replaceWith = ReplaceWith("Minecraft.getInstance()", "net.minecraft.client.Minecraft"),
+    level = DeprecationLevel.ERROR,
 )
 public val MINECRAFT: Minecraft
     @OnlyIn(Dist.CLIENT)
@@ -87,8 +88,11 @@ public val MINECRAFT: Minecraft
 /** @since 1.0.0
  * An alternative to [net.minecraftforge.fml.DistExecutor.callWhenOn]
  * that inlines the callable.
+ *
+ *  @since 1.6.1
+ * No longer an inline function to maintain side safety
  */
-public inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
+public fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
     return if (DIST == dist) {
         try {
             toRun()
@@ -103,8 +107,11 @@ public inline fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
 /** @since 1.0.0
  * An alternative to [net.minecraftforge.fml.DistExecutor.runWhenOn]
  * that inlines the runnable.
+ *
+ *  @since 1.6.1
+ * No longer an inline function to maintain side safety
  */
-public inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
+public fun runWhenOn(dist: Dist, toRun: () -> Unit) {
     if (DIST == dist) {
         toRun()
     }
@@ -113,8 +120,11 @@ public inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
 /** @since 1.0.0
  * An alternative to [net.minecraftforge.fml.DistExecutor.runForDist]
  * that inlines the function call.
+ *
+ *  @since 1.6.1
+ * No longer an inline function to maintain side safety
  */
-public inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
+public fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
     return when (DIST) {
         Dist.CLIENT -> clientTarget()
         Dist.DEDICATED_SERVER -> serverTarget()
@@ -186,8 +196,8 @@ public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(namespace
  */
 public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(registryName: String): ReadOnlyProperty<Any?, T> {
     return ObjectHolderDelegate(
-            registryName = GameData.checkPrefix(registryName, true),
-            registry = ObjectHolderDelegate.getRegistry(T::class.java)
+        registryName = GameData.checkPrefix(registryName, true),
+        registry = ObjectHolderDelegate.getRegistry(T::class.java)
     )
 }
 

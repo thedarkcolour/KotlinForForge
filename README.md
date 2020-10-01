@@ -17,13 +17,8 @@ git clone https://github.com/thedarkcolour/KotlinModdingSkeleton.git
 To implement in an existing project, paste the following into your build.gradle:
 ```groovy
 buildscript {
-    repositories {
-        // For early access Kotlin versions
-        maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
-    }
     dependencies {
-        // Make sure to use the correct version
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0-rc"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
     }
 }
 
@@ -38,16 +33,12 @@ repositories {
 
 dependencies {
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:1.4.0'
+    implementation 'thedarkcolour:kotlinforforge:1.7.0'
 }
 
 compileKotlin {
-    // Needed if you use Forge.kt
-    // and Kotlin 1.4 language features
     kotlinOptions {
         jvmTarget = '1.8'
-        languageVersion = '1.4'
-        apiVersion = '1.4'
     }
 }
 ```

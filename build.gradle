@@ -22,7 +22,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
 
-version = "1.6.0"
+version = "1.6.1"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -89,6 +89,9 @@ dependencies {
     compile group: "org.jetbrains", name: "annotations", version: annotations_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
 	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
+
+    // Tests
+    testImplementation 'junit:junit:4.11'
 }
 
 shadowJar {

@@ -53,20 +53,23 @@ public object AutoKotlinEventBusSubscriber {
             val modid = annotationData.annotationData.getOrDefault("modid", mod.modId)
             val busTargetHolder = annotationData.annotationData.getOrDefault("bus", ModAnnotation.EnumHolder(null, "FORGE")) as ModAnnotation.EnumHolder
             val busTarget = Mod.EventBusSubscriber.Bus.valueOf(busTargetHolder.value)
-            val ktObject = Class.forName(annotationData.classType.className, true, classLoader).kotlin.objectInstance
 
-            if (ktObject != null && mod.modId == modid && DIST in sides) {
-                try {
-                    LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.classType.className} to $busTarget")
+            if (mod.modId == modid && DIST in sides) {
+                val ktObject = Class.forName(annotationData.classType.className, true, classLoader).kotlin.objectInstance
 
-                    if (busTarget == Mod.EventBusSubscriber.Bus.MOD) {
-                        MOD_BUS.register(ktObject)
-                    } else {
-                        FORGE_BUS.register(ktObject)
+                if (ktObject != null) {
+                    try {
+                        LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.classType.className} to $busTarget")
+
+                        if (busTarget == Mod.EventBusSubscriber.Bus.MOD) {
+                            MOD_BUS.register(ktObject)
+                        } else {
+                            FORGE_BUS.register(ktObject)
+                        }
+                    } catch (e: Throwable) {
+                        LOGGER.fatal(Logging.LOADING, "Failed to load mod class ${annotationData.classType} for @EventBusSubscriber annotation", e)
+                        throw RuntimeException(e)
                     }
-                } catch (e: Throwable) {
-                    LOGGER.fatal(Logging.LOADING, "Failed to load mod class ${annotationData.classType} for @EventBusSubscriber annotation", e)
-                    throw RuntimeException(e)
                 }
             }
         }
