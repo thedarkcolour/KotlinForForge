@@ -1,12 +1,6 @@
 modLoader="kotlinforforge" # IModLanguageProvider
-loaderVersion="[1.4,)" # IModLanguageProvider version
+loaderVersion="[1.6,)" # IModLanguageProvider version
 license="GPL v3.0"
-
-issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues" # Issues page
-
-description='''
-Kotlin for Forge. Allows mods to use the Kotlin programming language.
-'''
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.kotlinforforge]] #optional
@@ -29,9 +23,17 @@ Kotlin for Forge. Allows mods to use the Kotlin programming language.
 # --------------------------------------------------------- #
 # --------------------------------------------------------- #
 
+# UNCOMMENT THIS TO RUN TEST MOD
+# [[mods]]
+# modId="test_mod"
+
 [[mods]] #mandatory
 displayName="Kotlin for Forge" # Name of mod
 modId="kotlinforforge" # Modid
-version="1.4.0" # Version of kotlinforforge
+version="1.6.2" # Version of kotlinforforge
 authors="TheDarkColour" # Author
 credits="Herobrine knows all." # Credits
+description='''
+Kotlin for Forge. Allows mods to use the Kotlin programming language.
+'''
+issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues" # Issues page

@@ -18,6 +18,9 @@ import java.util.function.Consumer
 
 /** @since 1.2.0
  * Fixes [addListener] and [addGenericListener] for Kotlin KCallable.
+ *
+ * @param builder The BusBuilder used to configure this event bus
+ * @param synthetic Whether this event bus is just a wrapper for another bus
  */
 public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEventBus, IEventExceptionHandler {
     @Suppress("LeakingThis")
@@ -305,26 +308,24 @@ public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false
      */
     private fun reflectKotlinSAM(consumer: Consumer<*>): Class<*>? {
         val clazz = consumer.javaClass
+        val forgeType = TypeResolver.resolveRawArgument(Consumer::class.java, consumer.javaClass)
 
-        when {
-            clazz.simpleName.contains("$\$Lambda$") -> {
-                return TypeResolver.resolveRawArgument(Consumer::class.java, consumer.javaClass)
-            }
-            clazz.simpleName.contains("\$sam$") -> {
-                try {
-                    val functionField = clazz.getDeclaredField("function")
-                    functionField.isAccessible = true
-                    val function = functionField[consumer]
+        if (clazz.simpleName.contains("\$sam$")) {
+            try {
+                val functionField = clazz.getDeclaredField("function")
+                functionField.isAccessible = true
+                val function = functionField[consumer]
 
-                    // Function should have two type parameters (parameter type and return type)
-                    return TypeResolver.resolveRawArguments(kotlin.jvm.functions.Function1::class.java, function.javaClass)[0]
-                } catch (e: NoSuchFieldException) {
-                    // Kotlin SAM interfaces compile to classes with a "function" field
-                    LOGGER.log(Level.FATAL, "Tried to register invalid Kotlin SAM interface: Missing 'function' field")
-                    throw e
-                }
+                // Function should have two type parameters (parameter type and return type)
+                return TypeResolver.resolveRawArguments(kotlin.jvm.functions.Function1::class.java, function.javaClass)[0]
+            } catch (e: NoSuchFieldException) {
+                // Kotlin SAM interfaces compile to classes with a "function" field
+                LOGGER.log(Level.FATAL, "Tried to register invalid Kotlin SAM interface: Missing 'function' field")
+                throw e
             }
-            else -> return null
+        } else {
+            // Kotlin 1.4 seems to have fixed some of its lambda problems
+            return forgeType
         }
     }
 
