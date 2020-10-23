@@ -6,13 +6,6 @@
     <groupId>thedarkcolour</groupId>
     <artifactId>kotlinforforge</artifactId>
     <version>1.6.2</version>
-    <repositories>
-        <repository>
-            <id>kt-eap</id>
-            <name>Kotlin Early Access</name>
-            <url>https://dl.bintray.com/kotlin/kotlin-eap</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

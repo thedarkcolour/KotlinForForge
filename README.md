@@ -9,6 +9,13 @@ Makes Kotlin forge-friendly by doing the following:
 
 An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton).
 
+As of Kotlin for Forge 1.4.0, you must use Gradle 5.3 or newer. To update,
+go to the file at `./gradle/wrapper/gradle-wrapper.properties` and change this line:
+```properties
+# Gradle 5.3 or newer. Works fine with ForgeGradle.
+distributionUrl=https\://services.gradle.org/distributions/gradle-5.3-all.zip
+```
+
 If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repository.
 ```git
 git clone https://github.com/thedarkcolour/KotlinModdingSkeleton.git
