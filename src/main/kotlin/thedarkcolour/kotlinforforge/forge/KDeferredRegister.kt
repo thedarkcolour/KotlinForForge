@@ -47,6 +47,7 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
         }
     }
 
+
     /**
      * Adds a registry object to this deferred registry.
      *
@@ -56,13 +57,24 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
      *
      * @return A new [ObjectHolderDelegate] with the given registry name and value
      */
-    public fun <T : V> register(name: String, supplier: () -> T): ReadOnlyProperty<Any?, T> {
+    public fun <T : V> registerObject(name: String, supplier: () -> T): ObjectHolderDelegate<T> {
         val key = ResourceLocation(modid, name)
         val a = ObjectHolderDelegate<T>(key, registry)
 
         entries[a] = { supplier().setRegistryName(key) }
 
         return a
+    }
+
+    /**
+     * Older function that only returns a property delegate.
+     */
+    @Deprecated(
+        message = "Use `registerObject` for ObjectHolderDelegate return type",
+        replaceWith = ReplaceWith("registerObject(name, supplier)")
+    )
+    public fun <T : V> register(name: String, supplier: () -> T): ReadOnlyProperty<Any?, T> {
+        return registerObject(name, supplier)
     }
 
     public fun getEntries(): Set<ObjectHolderDelegate<out V>> {

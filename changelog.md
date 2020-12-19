@@ -1,3 +1,13 @@
+##Kotlin for Forge 1.7.0
+- Added `registerObject` function to KDeferredRegister for getting ObjectHolderDelegate instances
+  without needing a cast to ObjectHolderDelegate.
+- Deprecated `register` in KDeferredRegister
+- Fixed KReflect sometimes not showing up on the Maven.
+- Updated to Kotlin 1.4.21, Updated to coroutines 1.4.2, Updated to JetBrains annotations 20.1.0 
+
+##Kotlin for Forge 1.6.2
+- Fixed errors in KotlinEventBus with certain Lambda syntax
+
 ##Kotlin for Forge 1.6.1
 - Removed inline modifier for functions `runForDist`, `runWhenOn`, and `callWhenOn` in Forge.kt.
 - Changed the `AutoKotlinEventBusSubscriber` to not crash when loading client only subscribers with client only members.
