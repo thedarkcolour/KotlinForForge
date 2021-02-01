@@ -1,3 +1,7 @@
+##Kotlin for Forge 1.8.0
+- Fixed a few things to match the new EventBus version.
+- Now includes the Kotlin JSON Serialization library.
+
 ##Kotlin for Forge 1.7.0
 - Added `registerObject` function to KDeferredRegister for getting ObjectHolderDelegate instances
   without needing a cast to ObjectHolderDelegate.

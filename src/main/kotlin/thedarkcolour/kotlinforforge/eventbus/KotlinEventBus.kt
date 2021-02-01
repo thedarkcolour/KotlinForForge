@@ -22,7 +22,7 @@ import java.util.function.Consumer
  * @param builder The BusBuilder used to configure this event bus
  * @param synthetic Whether this event bus is just a wrapper for another bus
  */
-public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IEventBus, IEventExceptionHandler {
+public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false) : IKotlinEventBus, IEventExceptionHandler {
     @Suppress("LeakingThis")
     private val exceptionHandler = builder.exceptionHandler ?: this
     private val trackPhases = builder.trackPhases
@@ -30,6 +30,7 @@ public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false
     private var shutdown = builder.isStartingShutdown
     protected open val busID: Int = MAX_ID.getAndIncrement()
     protected open val listeners: ConcurrentHashMap<Any, MutableList<IEventListener>> = ConcurrentHashMap()
+
 
     init {
         // see companion object
@@ -365,6 +366,10 @@ public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false
     }
 
     override fun post(event: Event): Boolean {
+        return post(IEventListener::invoke, event)
+    }
+
+    override fun post(wrapper: (IEventListener, Event) -> Unit, event: Event): Boolean {
         if (shutdown) return false
 
         val listeners = event.listenerList.getListeners(busID)
@@ -374,7 +379,7 @@ public open class KotlinEventBus(builder: BusBuilder, synthetic: Boolean = false
                 if (!trackPhases && listeners[index]::class.java == EventPriority::class.java) {
                     continue
                 } else {
-                    listeners[index].invoke(event)
+                    wrapper.invoke(listeners[index], event)
                 }
             } catch (throwable: Throwable) {
                 exceptionHandler.handleException(this, event, listeners, index, throwable)

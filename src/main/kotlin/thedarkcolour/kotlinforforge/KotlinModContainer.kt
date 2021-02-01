@@ -5,20 +5,19 @@ import net.minecraftforge.eventbus.api.BusBuilder
 import net.minecraftforge.eventbus.api.Event
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.eventbus.api.IEventListener
-import net.minecraftforge.fml.LifecycleEventProvider.LifecycleEvent
 import net.minecraftforge.fml.Logging
 import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.ModLoadingException
 import net.minecraftforge.fml.ModLoadingStage
 import net.minecraftforge.fml.config.ModConfig
+import net.minecraftforge.fml.event.lifecycle.IModBusEvent
 import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.ModFileScanData
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
 import thedarkcolour.kotlinforforge.kotlin.supply
+import java.lang.IllegalArgumentException
 import java.lang.reflect.Field
 import java.util.function.Consumer
-
-public typealias LifecycleEventListener = (LifecycleEvent) -> Unit
 
 /**
  * The Kotlin for Forge `ModContainer`.
@@ -41,7 +40,7 @@ public class KotlinModContainer(
      */
     public val eventBus: KotlinEventBus
 
-    private val _triggerMap: MutableMap<ModLoadingStage, Consumer<LifecycleEvent>>?
+    private val _triggerMap: MutableMap<ModLoadingStage, Any>?
     private val _activityMap: MutableMap<ModLoadingStage, Runnable>?
 
     init {
@@ -53,7 +52,7 @@ public class KotlinModContainer(
         }
         @Suppress("UNCHECKED_CAST")
         _triggerMap = try {
-            TRIGGER_MAP_FIELD?.get(this) as MutableMap<ModLoadingStage, Consumer<LifecycleEvent>>
+            TRIGGER_MAP_FIELD?.get(this) as MutableMap<ModLoadingStage, Any>
         } catch (e: Exception) {
             null
         }
@@ -63,15 +62,7 @@ public class KotlinModContainer(
         if (_activityMap != null) {
             _activityMap[ModLoadingStage.CONSTRUCT] = Runnable(::constructMod)
         } else if (_triggerMap != null) {
-            _triggerMap[ModLoadingStage.CONSTRUCT] = createTrigger( { constructMod() }, ::afterEvent)
-            _triggerMap[ModLoadingStage.CREATE_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
-            _triggerMap[ModLoadingStage.LOAD_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
-            _triggerMap[ModLoadingStage.COMMON_SETUP] = createTrigger(::fireEvent, ::afterEvent)
-            _triggerMap[ModLoadingStage.SIDED_SETUP] = createTrigger(::fireEvent, ::afterEvent)
-            _triggerMap[ModLoadingStage.ENQUEUE_IMC] = createTrigger(::fireEvent, ::afterEvent)
-            _triggerMap[ModLoadingStage.PROCESS_IMC] = createTrigger(::fireEvent, ::afterEvent)
-            _triggerMap[ModLoadingStage.COMPLETE] = createTrigger(::fireEvent, ::afterEvent)
-            _triggerMap[ModLoadingStage.GATHERDATA] = createTrigger(::fireEvent, ::afterEvent)
+            setupTriggerMap(_triggerMap)
         }
 
         eventBus = KotlinEventBus(BusBuilder.builder().setExceptionHandler(::onEventFailed).setTrackPhases(false))
@@ -79,58 +70,17 @@ public class KotlinModContainer(
     }
 
     /**
-     * Creates a single `Consumer` that calls
-     * both [consumerA] and [consumerB].
-     */
-    private fun createTrigger(
-            consumerA: LifecycleEventListener,
-            consumerB: LifecycleEventListener,
-    ): Consumer<LifecycleEvent> {
-        return Consumer { event ->
-            consumerA(event)
-            consumerB(event)
-        }
-    }
-
-    /**
      * The `IEventExceptionHandler` that logs
      * errors in events as errors.
      */
     private fun onEventFailed(
-            iEventBus: IEventBus,
-            event: Event,
-            iEventListeners: Array<IEventListener>,
-            i: Int,
-            throwable: Throwable
+        iEventBus: IEventBus,
+        event: Event,
+        iEventListeners: Array<IEventListener>,
+        i: Int,
+        throwable: Throwable,
     ) {
         LOGGER.error(EventBusErrorMessage(event, i, iEventListeners, throwable))
-    }
-
-    /**
-     * Fires a `LifecycleEvent` on the mod [eventBus].
-     */
-    private fun fireEvent(lifecycleEvent: LifecycleEvent) {
-        val event = lifecycleEvent.getOrBuildEvent(this)
-
-        LOGGER.debug(Logging.LOADING, "Firing event for modid $modId : $event")
-
-        try {
-            eventBus.post(event)
-            LOGGER.debug(Logging.LOADING, "Fired event for modid $modId : $event")
-        } catch (throwable: Throwable) {
-            LOGGER.error(Logging.LOADING, "An error occurred while dispatching event ${lifecycleEvent.fromStage()} to $modId")
-            throw ModLoadingException(modInfo, lifecycleEvent.fromStage(), "fml.modloading.errorduringevent", throwable)
-        }
-    }
-
-    /**
-     * If an error was thrown during the event,
-     * log it to the console as an error.
-     */
-    private fun afterEvent(lifecycleEvent: LifecycleEvent) {
-        if (currentState == ModLoadingStage.ERROR) {
-            LOGGER.error(Logging.LOADING, "An error occurred while dispatching event ${lifecycleEvent.fromStage()} to $modId")
-        }
     }
 
     /**
@@ -177,7 +127,7 @@ public class KotlinModContainer(
 
     override fun getMod(): Any = modInstance
 
-    override fun acceptEvent(e: Event) {
+    public override fun <T> acceptEvent(e: T) where T : Event, T : IModBusEvent {
         try {
             LOGGER.debug("Firing event for modid $modId : $e")
             eventBus.post(e)
@@ -185,6 +135,50 @@ public class KotlinModContainer(
         } catch (t: Throwable) {
             LOGGER.error("Caught exception during event $e dispatch for modid $modId", t)
             throw ModLoadingException(modInfo, modLoadingStage, "fml.modloading.errorduringevent", t)
+        }
+    }
+
+    public fun setupTriggerMap(map: MutableMap<ModLoadingStage, Any>) {
+        map[ModLoadingStage.CONSTRUCT] = createTrigger( { constructMod() }, ::afterEvent)
+        map[ModLoadingStage.CREATE_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
+        map[ModLoadingStage.LOAD_REGISTRIES] = createTrigger(::fireEvent, ::afterEvent)
+        map[ModLoadingStage.COMMON_SETUP] = createTrigger(::fireEvent, ::afterEvent)
+        map[ModLoadingStage.SIDED_SETUP] = createTrigger(::fireEvent, ::afterEvent)
+        map[ModLoadingStage.ENQUEUE_IMC] = createTrigger(::fireEvent, ::afterEvent)
+        map[ModLoadingStage.PROCESS_IMC] = createTrigger(::fireEvent, ::afterEvent)
+        map[ModLoadingStage.COMPLETE] = createTrigger(::fireEvent, ::afterEvent)
+        try {
+            map[ModLoadingStage.valueOf("GATHERDATA")] = createTrigger(::fireEvent, ::afterEvent)
+        } catch (e: IllegalArgumentException) {}
+    }
+
+    private fun afterEvent(lifecycleEvent: Any) {
+        if (currentState == ModLoadingStage.ERROR) {
+            LOGGER.error(Logging.LOADING, "An error occurred while dispatching event ${fromStageMethod!!.invoke(lifecycleEvent)} to ${getModId()}")
+        }
+    }
+
+    private fun fireEvent(lifecycleEvent: Any) {
+        val event = getOrBuildEventMethod!!.invoke(lifecycleEvent, this) as Event
+
+        LOGGER.debug(Logging.LOADING, "Firing event for modid ${getModId()} : $event")
+
+        try {
+            eventBus.post(event)
+            LOGGER.debug(Logging.LOADING, "Fired event for modid ${getModId()} : $event")
+        } catch (throwable: Throwable) {
+            LOGGER.error(Logging.LOADING, "An error occurred while dispatching event ${fromStageMethod!!.invoke(lifecycleEvent)} to ${getModId()}")
+            throw ModLoadingException(getModInfo(), fromStageMethod.invoke(lifecycleEvent) as ModLoadingStage, "fml.modloading.errorduringevent", throwable)
+        }
+    }
+
+    private fun createTrigger(
+        consumerA: (Any) -> Unit,
+        consumerB: (Any) -> Unit,
+    ): Consumer<Any> {
+        return Consumer { event ->
+            consumerA(event)
+            consumerB(event)
         }
     }
 
@@ -203,5 +197,12 @@ public class KotlinModContainer(
         } catch (e: NoSuchFieldException) {
             null
         }
+
+        private val getOrBuildEventMethod = try {
+            Class.forName("net.minecraftforge.fml.LifecycleEventProvider\$LifecycleEvent").getDeclaredMethod("getOrBuildEvent", ModContainer::class.java)
+        } catch (e: ClassNotFoundException) { null } catch (e: NoSuchMethodError) { null }
+        private val fromStageMethod = try {
+            Class.forName("net.minecraftforge.fml.LifecycleEventProvider\$LifecycleEvent").getDeclaredMethod("fromStage")
+        } catch (e: ClassNotFoundException) { null } catch (e: NoSuchMethodError) { null }
     }
 }

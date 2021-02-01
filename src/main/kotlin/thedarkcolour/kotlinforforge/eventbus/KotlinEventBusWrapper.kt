@@ -1,10 +1,7 @@
 package thedarkcolour.kotlinforforge.eventbus
 
 import net.minecraftforge.eventbus.EventBus
-import net.minecraftforge.eventbus.api.BusBuilder
-import net.minecraftforge.eventbus.api.IEventBus
-import net.minecraftforge.eventbus.api.IEventExceptionHandler
-import net.minecraftforge.eventbus.api.IEventListener
+import net.minecraftforge.eventbus.api.*
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import java.util.concurrent.ConcurrentHashMap
 
@@ -13,12 +10,16 @@ import java.util.concurrent.ConcurrentHashMap
  * when using [FORGE_BUS].
  */
 public class KotlinEventBusWrapper(private val parent: EventBus) : KotlinEventBus(BusBuilder()
-        .setExceptionHandler(getExceptionHandler(parent))
-        .setTrackPhases(getTrackPhases(parent))
-        .also { if (getShutdown(parent)) it.startShutdown() }
+    .setExceptionHandler(getExceptionHandler(parent))
+    .setTrackPhases(getTrackPhases(parent))
+    .also { if (getShutdown(parent)) it.startShutdown() }
 ) {
     override val busID: Int = getBusID(parent)
     override val listeners: ConcurrentHashMap<Any, MutableList<IEventListener>> = getListeners(parent)
+
+    override fun post(event: Event): Boolean {
+        return parent.post(event)
+    }
 
     // reflection stuff
     private companion object {
