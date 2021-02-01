@@ -1,5 +1,6 @@
 ##Kotlin for Forge 1.8.0
 - Fixed a few things to match the new EventBus version.
+- Fix #11 and #12. Event bus wrapper now posts events properly.
 - Now includes the Kotlin JSON Serialization library.
 
 ##Kotlin for Forge 1.7.0
