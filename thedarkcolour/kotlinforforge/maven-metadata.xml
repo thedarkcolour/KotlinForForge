@@ -3,7 +3,7 @@
     <groupId>thedarkcolour</groupId>
     <artifactId>kotlinforforge</artifactId>
     <versioning>
-        <release>1.9.0</release>
+        <release>1.10.0</release>
         <versions>
             <version>1.0.0</version>
             <version>1.0.1</version>
@@ -22,6 +22,7 @@
             <version>1.7.0</version>
             <version>1.8.0</version>
             <version>1.9.0</version>
+            <version>1.10.0</version>
         </versions>
     </versioning>
 </metadata>

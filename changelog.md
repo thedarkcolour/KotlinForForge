@@ -1,3 +1,6 @@
+##Kotlin for Forge 1.10.0
+- Updated to Kotlin 1.4.31, Updated to serialization 1.1.0
+
 ##Kotlin for Forge 1.9.0
 - Updated to Kotlin 1.4.30
 

@@ -1,5 +1,5 @@
 modLoader="kotlinforforge" # IModLanguageProvider
-loaderVersion="[1.9,)" # IModLanguageProvider version
+loaderVersion="[1.10,)" # IModLanguageProvider version
 license="GPL v3.0"
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
@@ -30,7 +30,7 @@ license="GPL v3.0"
 [[mods]] #mandatory
 displayName="Kotlin for Forge" # Name of mod
 modId="kotlinforforge" # Modid
-version="1.9.0" # Version of kotlinforforge
+version="1.10.0" # Version of kotlinforforge
 authors="TheDarkColour" # Author
 credits="Herobrine knows all." # Credits
 description='''
