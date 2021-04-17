@@ -1,3 +1,6 @@
+##Kotlin for Forge 1.11.1
+- Downgraded to coroutines 1.4.2 due to missing class errors
+
 ##Kotlin for Forge 1.11.0
 - Updated to Kotlin 1.4.32, Updated to coroutines 1.4.3
 
