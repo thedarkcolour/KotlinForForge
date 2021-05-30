@@ -1,7 +1,8 @@
 ##Kotlin for Forge 1.12.1
-- Updated to Kotlin 1.5.10, Updated to coroutines 1.5.0
+- Updated to Kotlin 1.5.10, Updated to coroutines 1.5.0, Updated to serialization 1.2.1
 - Added a missing serialization library that went missing in 1.12.0
 - Finally removed the `MINECRAFT` thing that was deprecated a while ago
+- Improved the buildscript and fixed some deprecation warnings, thanks Username404-59 on GitHub
 
 ##Kotlin for Forge 1.12.0
 - Updated to Kotlin 1.5.0, Updated to coroutines 1.5.0-RC, updated to serialization 1.2.0

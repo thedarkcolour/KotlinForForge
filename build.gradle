@@ -35,15 +35,15 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.4'
 
-	implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
-	implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
-	implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
-	implementation group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
-    implementation group: "org.jetbrains", name: "annotations", version: annotations_version
-	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
-	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
-	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
-    implementation group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
+	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
+	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
+	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
+	api group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
+    api group: "org.jetbrains", name: "annotations", version: annotations_version
+	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
+	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
+	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
+    api group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
 }
 
 minecraft {
