@@ -1,9 +1,7 @@
 package thedarkcolour.kotlinforforge.forge
 
-import net.minecraft.client.Minecraft
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
-import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.ForgeConfigSpec
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.eventbus.EventBus
@@ -19,7 +17,6 @@ import java.util.*
 import java.util.function.Consumer
 import java.util.function.Predicate
 import java.util.function.Supplier
-import kotlin.collections.HashMap
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -71,19 +68,6 @@ public val LOADING_CONTEXT: ModLoadingContext
  * The current [Dist] of this environment.
  */
 public val DIST: Dist = FMLEnvironment.dist
-
-/** @since 1.2.2
- * The instance of Minecraft.
- * Make sure to only call this on the client side.
- */
-@Deprecated(
-    message = "Will be removed in 1.7.0 to improve compatibility between Minecraft versions",
-    replaceWith = ReplaceWith("Minecraft.getInstance()", "net.minecraft.client.Minecraft"),
-    level = DeprecationLevel.ERROR,
-)
-public val MINECRAFT: Minecraft
-    @OnlyIn(Dist.CLIENT)
-    inline get() = Minecraft.getInstance()
 
 /** @since 1.0.0
  * An alternative to [net.minecraftforge.fml.DistExecutor.callWhenOn]

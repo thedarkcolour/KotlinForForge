@@ -1,30 +1,25 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = "https://maven.tterrag.com/" }
+        maven { url = 'https://maven.minecraftforge.net' }
         maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
-        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:0.10.1'
-        classpath group: 'com.wynprice.cursemaven', name: 'CurseMaven', version: '2.1.5'
     }
 }
 
 plugins {
-    id "com.github.johnrengelman.shadow" version "4.0.4"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'kotlin'
 apply plugin: 'kotlinx-serialization'
-apply plugin: 'org.jetbrains.dokka'
 
-version = "1.12.0"
+version = "1.12.1"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -35,35 +30,20 @@ tasks.build.dependsOn shadowJar
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'Yarn Mappings'
-        url = 'https://maven.tterrag.com/'
-    }
-    maven {
-        name = 'Dokka'
-        url = 'https://dl.bintray.com/kotlin/dokka'
-    }
-    maven {
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
-    }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.4'
 
-	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
-	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
-	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
-	compile group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
-    compile group: "org.jetbrains", name: "annotations", version: annotations_version
-	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
-	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
-	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
-    compile group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
-
-    // Tests
-    implementation 'junit:junit:4.11'
+	implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
+	implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
+	implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
+	implementation group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
+    implementation group: "org.jetbrains", name: "annotations", version: annotations_version
+	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
+	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
+	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
+    implementation group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
 }
 
 minecraft {
@@ -85,7 +65,8 @@ minecraft {
 }
 
 shadowJar {
-    classifier = "obf"
+    archiveClassifier = "obf"
+
     dependencies {
         include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
         include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}")
@@ -95,6 +76,7 @@ shadowJar {
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
+        //include dependency("org.jetbrains.kotlinx:kotlinx-serialization-core:${serialization_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-serialization-json:${serialization_version}")
     }
 }
@@ -107,7 +89,7 @@ jar {
                 "Specification-Vendor": "Forge",
                 "Specification-Version": "1",
                 "Implementation-Title": project.name,
-                "Implementation-Version": "${version}",
+                "Implementation-Version": "${archiveVersion}",
                 "Implementation-Vendor" :"thedarkcolour",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ], "thedarkcolour/kotlinforforge/")
@@ -129,13 +111,4 @@ compileTestKotlin {
 
 kotlinSourcesJar {
     from(sourceSets.main.kotlin.srcDirs)
-}
-
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/dokka"
-
-    configuration {
-        reportUndocumented = true
-    }
 }
