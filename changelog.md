@@ -1,3 +1,8 @@
+##Kotlin for Forge 1.12.1
+- Updated to Kotlin 1.5.10, Updated to coroutines 1.5.0
+- Added a missing serialization library that went missing in 1.12.0
+- Finally removed the `MINECRAFT` thing that was deprecated a while ago
+
 ##Kotlin for Forge 1.12.0
 - Updated to Kotlin 1.5.0, Updated to coroutines 1.5.0-RC, updated to serialization 1.2.0
 - Forge Gradle 4 and Kotlin Gradle plugin now require Gradle 6.8.1. Update by changing the version of the gradle wrapper in `gradle/wrapper/gradle-wrapper.properties`.
