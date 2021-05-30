@@ -99,7 +99,7 @@ public class KotlinModContainer(
 
         try {
             LOGGER.debug(Logging.LOADING, "Loading mod instance ${getModId()} of type ${modClass.name}")
-            modInstance = modClass.kotlin.objectInstance ?: modClass.newInstance()
+            modInstance = modClass.kotlin.objectInstance ?: modClass.getDeclaredConstructor().newInstance()
             LOGGER.debug(Logging.LOADING, "Loaded mod instance ${getModId()} of type ${modClass.name}")
         } catch (throwable: Throwable) {
             LOGGER.error(Logging.LOADING, "Failed to create mod instance. ModID: ${getModId()}, class ${modClass.name}", throwable)

@@ -16,7 +16,7 @@ buildscript {
 }
 
 plugins {
-    id "com.github.johnrengelman.shadow" version "4.0.4"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -24,7 +24,7 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'org.jetbrains.dokka'
 
-version = "1.12.0"
+version = "1.12.1"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -85,7 +85,7 @@ minecraft {
 }
 
 shadowJar {
-    classifier = "obf"
+    archiveClassifier.set("obf")
     dependencies {
         include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
         include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}")
@@ -95,7 +95,8 @@ shadowJar {
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
-        include dependency("org.jetbrains.kotlinx:kotlinx-serialization-json:${serialization_version}")
+        include dependency("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${serialization_version}")
+        include dependency("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:${serialization_version}")
     }
 }
 
@@ -107,7 +108,7 @@ jar {
                 "Specification-Vendor": "Forge",
                 "Specification-Version": "1",
                 "Implementation-Title": project.name,
-                "Implementation-Version": "${version}",
+                "Implementation-Version": "${project.version}",
                 "Implementation-Vendor" :"thedarkcolour",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ], "thedarkcolour/kotlinforforge/")
@@ -116,7 +117,7 @@ jar {
 
 static def options(kotlinOptions)  {
     kotlinOptions.jvmTarget = '1.8'
-    kotlinOptions.freeCompilerArgs = ['-Xexplicit-api=warning', '-Xjvm-default=enable']
+    kotlinOptions.freeCompilerArgs = ['-Xexplicit-api=warning', '-Xjvm-default=all']
 }
 
 compileKotlin {
