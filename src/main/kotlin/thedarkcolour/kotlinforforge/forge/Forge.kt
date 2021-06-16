@@ -234,14 +234,17 @@ private class SidedDelegate<T>(private val clientValue: () -> T, private val ser
  *  @since 1.7.0
  * [ObjectHolderDelegate] now implements () -> T.
  *
+ * @since 1.12.2
+ * [registryName] and [registry] are now public.
+ *
  * @param T the type of object this delegates to
  * @property registryName the registry name of the object this delegate references
  * @property registry the registry the object of this delegate is in
  * @property value the current value of this object holder.
  */
 public data class ObjectHolderDelegate<T : IForgeRegistryEntry<in T>>(
-        private val registryName: ResourceLocation,
-        private val registry: IForgeRegistry<*>,
+        public val registryName: ResourceLocation,
+        public val registry: IForgeRegistry<*>,
 ) : ReadOnlyProperty<Any?, T>, Consumer<Predicate<ResourceLocation>>, Supplier<T>, () -> T {
     /**
      * Should be initialized by [accept]. If you don't register

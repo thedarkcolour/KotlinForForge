@@ -28,7 +28,7 @@ displayName="Kotlin for Forge" # Name of mod
 modId="kotlinforforge" # Modid
 version="1.12.1" # Version of kotlinforforge
 authors="TheDarkColour" # Author
-credits="Herobrine knows all." # Credits
+credits="Herobrine knows all. Thanks to Username404-59 and TheOnlyTails on GitHub" # Credits
 description='''
 Kotlin for Forge. Allows mods to use the Kotlin programming language.
 '''
