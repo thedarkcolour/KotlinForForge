@@ -1,5 +1,9 @@
+##Kotlin for Forge 1.13.0
+- Updated to Kotlin 1.5.20
+
 ##Kotlin for Forge 1.12.2
 - Added support for using Mod.EventBusSubscriber as a file annotation. See AutoKotlinEventBusSubscriber.kt KDoc for example.
+- Made registryName and registry properties of ObjectHolderDelegate public.
 
 ##Kotlin for Forge 1.12.1
 - Updated to Kotlin 1.5.10, Updated to coroutines 1.5.0, Updated to serialization 1.2.1
