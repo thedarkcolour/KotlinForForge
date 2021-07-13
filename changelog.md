@@ -1,3 +1,7 @@
+##Kotlin for Forge 1.14.0
+- Updated to Kotlin 1.5.21, JetBrains annotations 21.0.1, coroutines 1.5.1, serialization 1.2.2
+- Fixed maven repo to contain the latest versions
+
 ##Kotlin for Forge 1.13.0
 - Updated to Kotlin 1.5.20
 
