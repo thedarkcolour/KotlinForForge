@@ -1,35 +1,27 @@
-modLoader="kotlinforforge" # IModLanguageProvider
-loaderVersion="[1.14,)" # IModLanguageProvider version
+modLoader="kotlinforforge"
+loaderVersion="[1.14,)"
 license="LGPL v2.1"
 
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.kotlinforforge]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[28,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-    ordering="NONE"
-
-    side="BOTH"
-# Dependency
-[[dependencies.kotlinforforge]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.14,1.17)"
-    ordering="NONE"
-    side="BOTH"
-
-# --------------------------------------------------------- #
-# --------------------------------------------------------- #
-# --------------------------------------------------------- #
-
-[[mods]] #mandatory
-displayName="Kotlin for Forge" # Name of mod
-modId="kotlinforforge" # Modid
-version="1.14.0" # Version of kotlinforforge
-authors="TheDarkColour" # Author
-credits="Herobrine knows all. Thanks to Username404-59 and TheOnlyTails on GitHub" # Credits
+[[mods]]
+displayName="Kotlin for Forge"
+modId="kotlinforforge"
+version="1.14.0"
+authors="TheDarkColour"
+credits="Herobrine knows all. Thanks to Username404-59 and TheOnlyTails on GitHub"
+issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues"
 description='''
 Kotlin for Forge. Allows mods to use the Kotlin programming language.
 '''
-issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues" # Issues page
+
+[[dependencies.kotlinforforge]]
+modId="forge"
+mandatory=true
+versionRange="[28,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.kotlinforforge]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.14,1.17)"
+ordering="NONE"
+side="BOTH"

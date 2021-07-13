@@ -47,7 +47,7 @@ dependencies {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'official', version: '1.16.5'
 
     runs {
         client {
@@ -97,7 +97,6 @@ jar {
 }
 
 static def options(kotlinOptions)  {
-    kotlinOptions.jvmTarget = '1.8'
     kotlinOptions.freeCompilerArgs = ['-Xexplicit-api=warning', '-Xjvm-default=all']
 }
 
