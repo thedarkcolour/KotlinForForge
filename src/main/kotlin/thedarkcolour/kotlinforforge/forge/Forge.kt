@@ -258,15 +258,19 @@ public data class ObjectHolderDelegate<T : IForgeRegistryEntry<in T>>(
     }
 
     override fun get(): T {
-        return value
+        return if (::value.isInitialized) {
+            value
+        } else {
+            throw UninitializedPropertyAccessException("ObjectHolderDelegate $registryName of type ${registry.registryName} has not been initialized")
+        }
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return value
+        return get()
     }
 
     override fun invoke(): T {
-        return value
+        return get()
     }
 
     /**
