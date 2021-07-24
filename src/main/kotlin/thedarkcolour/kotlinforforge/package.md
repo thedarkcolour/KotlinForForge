@@ -1,2 +1,2 @@
 # thedarkcolour.kotlinforforge
-This package contains general classes and objects used to register Kotlin for Forge mods
+This package contains the language loader classes for discovering and initializing Kotlin mods

@@ -1,2 +1,2 @@
 # thedarkcolour.kotlinforforge.eventbus
-This package contains classes related to the Kotlin for Forge EventBus.
+Contains IKotlinEventBus and its default implementations.

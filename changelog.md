@@ -1,3 +1,11 @@
+##Kotlin for Forge 2.0.0
+- WILL NOT WORK WITH 1.16 AND PRIOR, 1.x.x will be maintained for those versions
+- Updated to work with Forge 1.17.x
+- KDeferredRegister now (hopefully) supports modded registries
+- ObjectHolderDelegate has slightly more helpful error messages when a value is not present
+- Cleaned up legacy code from 1.14-1.16
+- Removed some deprecated functions
+
 ##Kotlin for Forge 1.14.0
 - Updated to Kotlin 1.5.21, JetBrains annotations 21.0.1, coroutines 1.5.1, serialization 1.2.2
 - Fixed maven repo to contain the latest versions

@@ -1,17 +1,20 @@
 package thedarkcolour.kotlinforforge.eventbus
 
 import net.minecraftforge.eventbus.EventBus
-import net.minecraftforge.eventbus.api.*
+import net.minecraftforge.eventbus.api.BusBuilder
+import net.minecraftforge.eventbus.api.Event
+import net.minecraftforge.eventbus.api.IEventExceptionHandler
+import net.minecraftforge.eventbus.api.IEventListener
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import java.util.concurrent.ConcurrentHashMap
 
-/** @since 1.2.0
- * Fixes [IEventBus.addListener] for Kotlin SAM interfaces
- * when using [FORGE_BUS].
+/** @since 2.0.0
+ * Fixes [addListener] for Kotlin SAM interfaces when using [FORGE_BUS]
  */
 public class KotlinEventBusWrapper(private val parent: EventBus) : KotlinEventBus(BusBuilder()
     .setExceptionHandler(getExceptionHandler(parent))
     .setTrackPhases(getTrackPhases(parent))
+    .markerType(getBaseType(parent))
     .also { if (getShutdown(parent)) it.startShutdown() }
 ) {
     override val busID: Int = getBusID(parent)
@@ -28,6 +31,7 @@ public class KotlinEventBusWrapper(private val parent: EventBus) : KotlinEventBu
         private val GET_EXCEPTION_HANDLER = EventBus::class.java.getDeclaredField("exceptionHandler").also { it.isAccessible = true }
         private val GET_TRACK_PHASES = EventBus::class.java.getDeclaredField("trackPhases").also { it.isAccessible = true }
         private val GET_SHUTDOWN = EventBus::class.java.getDeclaredField("shutdown").also { it.isAccessible = true }
+        private val GET_BASE_TYPE = EventBus::class.java.getDeclaredField("baseType").also { it.isAccessible = true }
 
         private fun getBusID(eventBus: EventBus): Int {
             return GET_BUS_ID[eventBus] as Int
@@ -48,6 +52,10 @@ public class KotlinEventBusWrapper(private val parent: EventBus) : KotlinEventBu
 
         private fun getShutdown(eventBus: EventBus): Boolean {
             return GET_SHUTDOWN[eventBus] as Boolean
+        }
+
+        private fun getBaseType(eventBus: EventBus): Class<*> {
+            return GET_BASE_TYPE[eventBus] as Class<*>
         }
     }
 }
