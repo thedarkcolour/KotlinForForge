@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.14', changing: true
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
     }
@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.7'
+    minecraft "net.minecraftforge:forge:1.17.1-37.0.13"
 
 	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
 	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
@@ -82,7 +82,6 @@ shadowJar {
 }
 
 jar {
-    from('resources') { include 'META-INF/services/*.*' }
     manifest {
         attributes([
                 "FMLModType": "LANGPROVIDER",
