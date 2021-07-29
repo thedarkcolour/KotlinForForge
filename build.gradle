@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.14', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
     }
@@ -30,10 +30,11 @@ tasks.build.dependsOn shadowJar
 
 repositories {
     mavenCentral()
+    mavenLocal() // for using custom forge version
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.17.1-37.0.13"
+    minecraft "net.minecraftforge:forge:1.17.1-36.1.90-fix-1.17.x-library-loading"
 
 	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
 	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
@@ -54,6 +55,12 @@ minecraft {
             workingDirectory project.file('run')
 
             property 'forge.logging.console.level', 'debug'
+
+            mods {
+                kotlinforforge {
+                    source sourceSets.main
+                }
+            }
         }
 
         server {
@@ -85,7 +92,6 @@ jar {
     manifest {
         attributes([
                 "FMLModType": "LANGPROVIDER",
-                "Automatic": "LANGPROVIDER",
                 "Specification-Title": "Kotlin for Forge",
                 "Specification-Vendor": "Forge",
                 "Specification-Version": "1",
@@ -97,17 +103,10 @@ jar {
     }
 }
 
-static def options(kotlinOptions)  {
-    kotlinOptions.freeCompilerArgs = ['-Xexplicit-api=warning', '-Xjvm-default=all']
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions.jdkHome = javaToolchains.compilerFor(java.toolchain).get().metadata.installationPath.asFile.absolutePath
+    kotlinOptions.freeCompilerArgs = [ "-Xexplicit-api=warning", "-Xjvm-default=all" ]
     kotlinOptions.jvmTarget = "16"
-}
-
-compileKotlin {
-    options(kotlinOptions)
-}
-
-compileTestKotlin {
-    options(kotlinOptions)
 }
 
 kotlinSourcesJar {
