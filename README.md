@@ -10,7 +10,7 @@ Makes Kotlin forge-friendly by doing the following:
 An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton).
 
 As of Kotlin for Forge 1.12.0, you must use Gradle 6.8.1 or newer. To update,
-go to the file at `./gradle/wrapper/gradle-wrapper.properties` and change this line:
+go to the file located at `./gradle/wrapper/gradle-wrapper.properties` and change this line:
 ```properties
 # Gradle 6.8.1 or newer. Works fine with ForgeGradle 4.
 distributionUrl=https\://services.gradle.org/distributions/gradle-6.8.1-all.zip
@@ -25,7 +25,7 @@ To implement in an existing project, paste the following into your build.gradle:
 ```groovy
 buildscript {
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
     }
 }
 
@@ -40,7 +40,7 @@ repositories {
 
 dependencies {
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:1.14.0'
+    implementation 'thedarkcolour:kotlinforforge:1.15.0'
 }
 ```
 Then, change the following to your mods.toml file:
