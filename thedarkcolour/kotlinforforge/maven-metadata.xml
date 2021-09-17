@@ -4,7 +4,6 @@
     <artifactId>kotlinforforge</artifactId>
     <versioning>
         <release>1.15.1</release>
-        <latest>1.15.1</latest>
         <versions>
             <version>2.0.0</version>
 
