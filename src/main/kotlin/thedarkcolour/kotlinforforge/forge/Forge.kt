@@ -10,8 +10,6 @@ import net.minecraftforge.fml.config.ModConfig
 import net.minecraftforge.fml.loading.FMLEnvironment
 import net.minecraftforge.registries.GameData
 import net.minecraftforge.registries.IForgeRegistryEntry
-import thedarkcolour.kotlinforforge.KotlinModLoadingContext
-import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBusWrapper
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -28,6 +26,7 @@ import kotlin.reflect.KProperty
 public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
 
 /**
+ * TODO: Uncomment when Forge fixes language providers for 1.17
  * Mod-specific event bus.
  * Mod lifecycle events are fired on this bus.
  *
@@ -36,14 +35,15 @@ public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftFor
  *   @see net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
  *   @see net.minecraftforge.event.RegistryEvent
  */
-public val MOD_BUS: KotlinEventBus
-    inline get() = KotlinModLoadingContext.get().getKEventBus()
+//public val MOD_BUS: KotlinEventBus
+//    inline get() = KotlinModLoadingContext.get().getKEventBus()
 
 /**
+ * TODO: Uncomment when Forge fixes language providers for 1.17
  * Used in place of [net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext]
  */
-public val MOD_CONTEXT: KotlinModLoadingContext
-    inline get() = KotlinModLoadingContext.get()
+//public val MOD_CONTEXT: KotlinModLoadingContext
+//    inline get() = KotlinModLoadingContext.get()
 
 public val LOADING_CONTEXT: ModLoadingContext
     inline get() = ModLoadingContext.get()

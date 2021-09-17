@@ -38,11 +38,11 @@ public class ObjectHolderDelegate<T : IForgeRegistryEntry<in T>>(
     // Lazy so that modded registries can be fetched at the proper time
     public val registry: IForgeRegistry<*> by lazy(registry)
 
-    constructor(registryName: ResourceLocation, registry: IForgeRegistry<*>) : this(registryName, { registry }) {
+    public constructor(registryName: ResourceLocation, registry: IForgeRegistry<*>) : this(registryName, { registry }) {
         ObjectHolderRegistry.addHandler(this)
     }
 
-    constructor(registryName: ResourceLocation, clazz: Class<*>, modid: String) : this(registryName, getRegistryLazy(clazz, modid, Throwable("Calling site from mod: $modid")))
+    public constructor(registryName: ResourceLocation, clazz: Class<*>, modid: String) : this(registryName, getRegistryLazy(clazz, modid, Throwable("Calling site from mod: $modid")))
 
     override fun get(): T {
         return if (::value.isInitialized) {

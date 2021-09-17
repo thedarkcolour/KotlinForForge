@@ -2,8 +2,8 @@ package thedarkcolour.kotlinforforge
 
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
 import thedarkcolour.kotlinforforge.forge.LOADING_CONTEXT
-import thedarkcolour.kotlinforforge.forge.MOD_BUS
-import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
+//import thedarkcolour.kotlinforforge.forge.MOD_BUS
+//import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
 
 /**
  * Mod loading context for mods made with Kotlin for Forge.

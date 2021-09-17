@@ -30,16 +30,26 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    minecraft "net.minecraftforge:forge:1.17.1-37.0.53"
+configurations {
+    library
+    api.extendsFrom library
+}
+minecraft.runs.all {
+    lazyToken('minecraft_classpath') {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+    }
+}
 
-	api group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
-	api group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
-    api group: "org.jetbrains", name: "annotations", version: annotations_version
-	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
-	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
-	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
-    api group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
+dependencies {
+    minecraft "net.minecraftforge:forge:1.17.1-37.0.59"
+
+	library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
+	library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
+    library group: "org.jetbrains", name: "annotations", version: annotations_version
+	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
+	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
+	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
+    library group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
 }
 
 minecraft {
@@ -65,6 +75,8 @@ shadowJar {
 
     dependencies {
         include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}")
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}")
         include dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
         include dependency("org.jetbrains:annotations:${annotations_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
@@ -78,7 +90,7 @@ shadowJar {
 jar {
     manifest {
         attributes([
-                "FMLModType": "LANGPROVIDER",
+                //"FMLModType": "LANGPROVIDER",
                 "Specification-Title": "LanguageProvider",
                 "Specification-Vendor": "Forge",
                 "Specification-Version": "1",

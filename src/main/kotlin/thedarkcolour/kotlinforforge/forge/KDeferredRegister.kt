@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.registries.*
-import thedarkcolour.kotlinforforge.eventbus.IKotlinEventBus
 
 /**
  * Alternative version of [DeferredRegister] that creates
@@ -25,7 +24,8 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
         type = registry
     }
 
-    /**
+    /*/**
+     * TODO: Uncomment when Forge fixes language providers for 1.17
      * Registers this deferred register to the `KotlinEventBus`.
      */
     public fun register(bus: IKotlinEventBus) {
@@ -35,10 +35,7 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
         if (type == null && registryFactory != null) {
             bus.addListener(::createRegistry)
         }
-    }
-
-    @Deprecated(message = "Use the regular name", replaceWith = ReplaceWith("register(name, supplier)"))
-    public fun <T : V> registerObject(name: String, supplier: () -> T) = register(name, supplier)
+    }*/
 
     private fun createRegistry(event: RegistryEvent.NewRegistry) {
         type = registryFactory!!.invoke().create()
@@ -47,7 +44,7 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
     /**
      * Registers this deferred register to the `IEventBus`.
      */
-    @Deprecated("Use a KotlinEventBus. Forge's EventBus does not support function references for event listeners.")
+    //@Deprecated("Use a KotlinEventBus. Forge's EventBus does not support function references for event listeners.")
     public fun register(bus: IEventBus) {
         // function references are not supported by Forge's eventbus
         bus.addGenericListener(superType) { event: RegistryEvent.Register<V> ->
@@ -78,10 +75,8 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
 
         val delegate = if (type != null) {
             ObjectHolderDelegate<T>(key, type!!)
-        } else if (superType != null) {
-            ObjectHolderDelegate(key, superType, modid)
         } else {
-            throw IllegalStateException("Could not create ObjectHolderDelegate in KDeferredRegister")
+            ObjectHolderDelegate(key, superType, modid)
         }
 
         if (entries.putIfAbsent(delegate) { supplier().setRegistryName(key) } != null) {

@@ -4,12 +4,13 @@ import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.fml.Logging
 import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext
 import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.objectweb.asm.Type
 import thedarkcolour.kotlinforforge.forge.DIST
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
-import thedarkcolour.kotlinforforge.forge.MOD_BUS
+//import thedarkcolour.kotlinforforge.forge.MOD_BUS
 import thedarkcolour.kotlinforforge.kotlin.enumSet
 
 /**
@@ -103,7 +104,9 @@ public object AutoKotlinEventBusSubscriber {
 
     private fun registerTo(any: Any, target: Mod.EventBusSubscriber.Bus) {
         if (target == Mod.EventBusSubscriber.Bus.MOD) {
-            MOD_BUS.register(any)
+            // TODO: Uncomment when Forge fixes language providers for 1.17
+            //MOD_BUS.register(any)
+            FMLJavaModLoadingContext.get().modEventBus.register(any)
         } else {
             FORGE_BUS.register(any)
         }
