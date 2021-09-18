@@ -41,7 +41,7 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.17.1-37.0.59"
+    minecraft "net.minecraftforge:forge:1.17.1-37.0.67"
 
 	library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
 	library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
@@ -87,18 +87,29 @@ shadowJar {
     }
 }
 
-jar {
-    manifest {
-        attributes([
-                //"FMLModType": "LANGPROVIDER",
-                "Specification-Title": "LanguageProvider",
-                "Specification-Vendor": "Forge",
-                "Specification-Version": "1",
-                "Implementation-Title": project.name,
-                "Implementation-Version": "${project.version}",
-                "Implementation-Vendor" :"thedarkcolour",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+// Do what forge does for manifest in their own lang providers
+ext {
+    MANIFESTS = [
+        '': [
+            'FMLModType': 'LANGPROVIDER',
+        ] as LinkedHashMap,
+        'thedarkcolour/kotlinforforge/': [
+            'Specification-Title':      'Mod Language Provider',
+            'Specification-Vendor':     'Forge Development LLC',
+            "Specification-Version":    '1',
+            "Implementation-Title":     project.name,
+            "Implementation-Version":   project.version,
+            "Implementation-Vendor" :   'thedarkcolour'
+        ] as LinkedHashMap
+    ]
+}
+
+jar.doFirst {
+    MANIFESTS.each { pkg, values ->
+        if (pkg == '')
+            manifest.attributes(values)
+        else
+            manifest.attributes(values, pkg)
     }
 }
 
