@@ -22,12 +22,22 @@ group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+kotlin.jvmToolchain {}
 
 tasks.build.dependsOn kotlinSourcesJar
 tasks.build.dependsOn shadowJar
 
 repositories {
     mavenCentral()
+}
+
+// Workaround to remove build\java from MOD_CLASSES because SJH doesn't like nonexistent dirs
+for (def sourceSet : [sourceSets.main, sourceSets.test]) {
+    def mutClassesDirs = sourceSet.output.classesDirs as ConfigurableFileCollection
+    def javaClassDir = sourceSet.java.classesDirectory.get()
+    def mutClassesFrom = new HashSet<>(mutClassesDirs.getFrom())
+    mutClassesFrom.removeIf { return ((it as Provider)?.get() ?: it) == javaClassDir }
+    mutClassesDirs.setFrom(mutClassesFrom)
 }
 
 configurations {
@@ -41,7 +51,7 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.17.1-37.0.67"
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.76'
 
 	library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
 	library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
@@ -59,13 +69,33 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            property 'forge.logging.markers', 'scan,loading,core'
             property 'forge.logging.console.level', 'debug'
+
+            mods {
+                kotlinforforge {
+                    source sourceSets.main
+                }
+                kotlinforforgetest {
+                    source sourceSets.test
+                }
+            }
         }
 
         server {
             workingDirectory project.file('run/server')
 
             property 'forge.logging.console.level', 'debug'
+            property 'forge.logging.markers', 'scan,loading,core'
+
+            mods {
+                kotlinforforge {
+                    source sourceSets.main
+                }
+                kotlinforforgetest {
+                    source sourceSets.test
+                }
+            }
         }
     }
 }
@@ -91,7 +121,7 @@ jar {
     manifest {
         attributes([
                 "FMLModType": "LANGPROVIDER",
-                "Specification-Title": "LanguageProvider",
+                "Specification-Title": "Kotlin for Forge",
                 "Specification-Vendor": "Forge",
                 "Specification-Version": "1",
                 "Implementation-Title": project.name,
@@ -103,9 +133,7 @@ jar {
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions.jdkHome = javaToolchains.compilerFor(java.toolchain).get().metadata.installationPath.asFile.absolutePath
-    kotlinOptions.freeCompilerArgs = [ "-Xexplicit-api=warning", "-Xjvm-default=all" ]
-    kotlinOptions.jvmTarget = "16"
+    kotlinOptions.freeCompilerArgs = ['-Xexplicit-api=warning', '-Xjvm-default=all']
 }
 
 kotlinSourcesJar {

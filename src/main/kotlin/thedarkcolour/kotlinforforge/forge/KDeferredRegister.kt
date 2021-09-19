@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.registries.*
+import thedarkcolour.kotlinforforge.eventbus.IKotlinEventBus
 
 /**
  * Alternative version of [DeferredRegister] that creates
@@ -24,8 +25,7 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
         type = registry
     }
 
-    /*/**
-     * TODO: Uncomment when Forge fixes language providers for 1.17
+    /**
      * Registers this deferred register to the `KotlinEventBus`.
      */
     public fun register(bus: IKotlinEventBus) {
@@ -35,7 +35,7 @@ public class KDeferredRegister<V : IForgeRegistryEntry<V>>(
         if (type == null && registryFactory != null) {
             bus.addListener(::createRegistry)
         }
-    }*/
+    }
 
     private fun createRegistry(event: RegistryEvent.NewRegistry) {
         type = registryFactory!!.invoke().create()
