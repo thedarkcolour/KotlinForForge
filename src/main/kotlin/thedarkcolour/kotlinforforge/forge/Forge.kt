@@ -36,20 +36,20 @@ public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftFor
  *   @see net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
  *   @see net.minecraftforge.event.RegistryEvent
  */
-public val MOD_BUS: KotlinEventBus
-    inline get() = KotlinModLoadingContext.get().getKEventBus()
+public inline val MOD_BUS: KotlinEventBus
+    get() = KotlinModLoadingContext.get().getKEventBus()
 
 /**
  * Used in place of [net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext]
  */
-public val MOD_CONTEXT: KotlinModLoadingContext
-    inline get() = KotlinModLoadingContext.get()
+public inline val MOD_CONTEXT: KotlinModLoadingContext
+    get() = KotlinModLoadingContext.get()
 
-public val LOADING_CONTEXT: ModLoadingContext
-    inline get() = ModLoadingContext.get()
+public inline val LOADING_CONTEXT: ModLoadingContext
+    get() = ModLoadingContext.get()
 
 /** Current dist */
-public val DIST: Dist = FMLEnvironment.dist
+public inline val DIST: Dist get() = FMLEnvironment.dist
 
 /**
  * An alternative to using [net.minecraftforge.fml.DistExecutor]
