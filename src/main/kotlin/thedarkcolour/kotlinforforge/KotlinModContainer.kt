@@ -1,5 +1,6 @@
 package thedarkcolour.kotlinforforge
 
+import net.minecraftforge.eventbus.EventBus
 import net.minecraftforge.eventbus.EventBusErrorMessage
 import net.minecraftforge.eventbus.api.BusBuilder
 import net.minecraftforge.eventbus.api.Event
@@ -12,7 +13,6 @@ import net.minecraftforge.fml.event.IModBusEvent
 import net.minecraftforge.fml.loading.LogMarkers
 import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.ModFileScanData
-import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
 import thedarkcolour.kotlinforforge.kotlin.supply
 import java.util.*
 import java.util.function.Consumer
@@ -29,7 +29,7 @@ public class KotlinModContainer(
     // Mod instance
     private lateinit var modInstance: Any
     // Mod-specific event bus
-    public val eventBus: KotlinEventBus
+    public val eventBus: IEventBus
     // Main mod class (moved out of constructMod)
     private val modClass: Class<*>
 
@@ -37,7 +37,7 @@ public class KotlinModContainer(
         LOGGER.debug(LogMarkers.LOADING, "Creating KotlinModContainer instance for $className")
 
         activityMap[ModLoadingStage.CONSTRUCT] = Runnable(::constructMod)
-        eventBus = KotlinEventBus(BusBuilder.builder().setExceptionHandler(::onEventFailed).setTrackPhases(false).markerType(IModBusEvent::class.java))
+        eventBus = EventBus(BusBuilder.builder().setExceptionHandler(::onEventFailed).setTrackPhases(false).markerType(IModBusEvent::class.java))
         
         configHandler = Optional.of(Consumer { event ->
             eventBus.post(event.self())
