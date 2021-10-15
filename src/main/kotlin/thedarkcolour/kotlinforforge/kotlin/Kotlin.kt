@@ -36,8 +36,8 @@ public inline fun <reified E : Enum<E>> enumSet(): EnumSet<E> {
  * Creates an enum set initially containing the specified element.
  *
  * Overloads of this method exist to initialize an enum set with
- * one through five elements.  A sixth overloading is provided that
- * uses the varargs feature.  This overloading may be used to create
+ * one through five elements. A sixth overloading is provided that
+ * uses the varargs feature. This overloading may be used to create
  * an enum set initially containing an arbitrary number of elements, but
  * is likely to run slower than the overloads that do not use varargs.
  */

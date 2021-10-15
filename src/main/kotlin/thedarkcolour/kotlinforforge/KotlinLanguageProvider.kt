@@ -8,16 +8,10 @@ import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.IModLanguageProvider
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.objectweb.asm.Type
-import java.lang.Enum
 import java.lang.reflect.InvocationTargetException
 import java.util.function.Consumer
 import java.util.function.Supplier
-import kotlin.Exception
-import kotlin.Nothing
-import kotlin.RuntimeException
 import kotlin.String
-import kotlin.Throwable
-import kotlin.to
 
 /**
  * Reuse a bit of code from FMLJavaModLanguageProvider
@@ -71,7 +65,7 @@ public class KotlinLanguageProvider : IModLanguageProvider {
             }
         }
 
-        // No need for LamdbaExceptionUtils with Kotlin
+        // No need for LambdaExceptionUtils with Kotlin
         private fun catastrophe(info: IModInfo, exception: Exception): Nothing {
             LOGGER.fatal(LogMarkers.LOADING, "Unable to load KotlinModContainer, wat", exception)
 
@@ -81,7 +75,7 @@ public class KotlinLanguageProvider : IModLanguageProvider {
             val mls = Class.forName("net.minecraftforge.fml.ModLoadingStage", true, Thread.currentThread().contextClassLoader) as Class<ModLoadingStage>
 
             // Throw a new ModLoadingException containing the exception
-            throw mle.getConstructor(IModInfo::class.java, mls, String::class.java, Throwable::class.java).newInstance(info, Enum.valueOf(mls, "CONSTRUCT"), "fml.modloading.failedtoloadmodclass", exception)
+            throw mle.getConstructor(IModInfo::class.java, mls, String::class.java, Throwable::class.java).newInstance(info, java.lang.Enum.valueOf(mls, "CONSTRUCT"), "fml.modloading.failedtoloadmodclass", exception)
         }
     }
 }

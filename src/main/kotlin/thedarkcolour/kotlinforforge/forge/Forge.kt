@@ -1,18 +1,13 @@
 package thedarkcolour.kotlinforforge.forge
 
-import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.common.ForgeConfigSpec
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.eventbus.EventBus
+import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.config.ModConfig
 import net.minecraftforge.fml.loading.FMLEnvironment
-import net.minecraftforge.registries.GameData
-import net.minecraftforge.registries.IForgeRegistryEntry
 import thedarkcolour.kotlinforforge.KotlinModLoadingContext
-import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
-import thedarkcolour.kotlinforforge.eventbus.KotlinEventBusWrapper
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -25,7 +20,8 @@ import kotlin.reflect.KProperty
  *   @see net.minecraftforge.event.entity.living.LivingEvent
  *   @see net.minecraftforge.event.world.BlockEvent
  */
-public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
+public inline val FORGE_BUS: IEventBus
+    get() = MinecraftForge.EVENT_BUS
 
 /**
  * Mod-specific event bus.
@@ -36,7 +32,7 @@ public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftFor
  *   @see net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
  *   @see net.minecraftforge.event.RegistryEvent
  */
-public inline val MOD_BUS: KotlinEventBus
+public inline val MOD_BUS: IEventBus
     get() = KotlinModLoadingContext.get().getKEventBus()
 
 /**
@@ -49,7 +45,8 @@ public inline val LOADING_CONTEXT: ModLoadingContext
     get() = ModLoadingContext.get()
 
 /** Current dist */
-public inline val DIST: Dist get() = FMLEnvironment.dist
+public inline val DIST: Dist
+    get() = FMLEnvironment.dist
 
 /**
  * An alternative to using [net.minecraftforge.fml.DistExecutor]
@@ -67,7 +64,7 @@ public fun <T> callWhenOn(dist: Dist, toRun: () -> T): T? {
 /**
  * An alternative to using [net.minecraftforge.fml.DistExecutor]
  */
-public fun runWhenOn(dist: Dist, toRun: () -> Unit) {
+public inline fun runWhenOn(dist: Dist, toRun: () -> Unit) {
     if (DIST == dist) {
         toRun()
     }
@@ -76,22 +73,23 @@ public fun runWhenOn(dist: Dist, toRun: () -> Unit) {
 /**
  * An alternative to using [net.minecraftforge.fml.DistExecutor]
  */
-public fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
-    return when (DIST) {
-        Dist.CLIENT -> clientTarget()
-        Dist.DEDICATED_SERVER -> serverTarget()
+public inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): T {
+    return if (DIST == Dist.CLIENT) {
+        clientTarget()
+    } else {
+        serverTarget()
     }
 }
 
 /**
  * Register a config
  */
-public fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String? = null) {
-    if (fileName == null) {
-        LOADING_CONTEXT.registerConfig(type, spec)
-    } else {
-        LOADING_CONTEXT.registerConfig(type, spec, fileName)
-    }
+public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
+    LOADING_CONTEXT.registerConfig(type, spec, fileName)
+}
+
+public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
+    LOADING_CONTEXT.registerConfig(type, spec)
 }
 
 /**
@@ -118,31 +116,7 @@ public fun <T> lazySidedDelegate(clientValue: () -> T, serverValue: () -> T): Re
  * @param T the common type of both values. It is recommended to not use [Any] when possible.
  */
 public fun <T> sidedDelegate(clientValue: () -> T, serverValue: () -> T): ReadOnlyProperty<Any?, T> {
-    return SidedDelegate(clientValue, serverValue)
-}
-
-/**
- * Provides ObjectHolder as a property delegate instead of magic annotations.
- */
-public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(registryName: ResourceLocation): ReadOnlyProperty<Any?, T> {
-    return ObjectHolderDelegate(registryName, ObjectHolderDelegate.getRegistry(T::class.java))
-}
-
-/**
- * Provides ObjectHolder as a property delegate instead of magic annotations.
- */
-public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(namespace: String, registryName: String): ReadOnlyProperty<Any?, T> {
-    return ObjectHolderDelegate(ResourceLocation(namespace, registryName), ObjectHolderDelegate.getRegistry(T::class.java))
-}
-
-/**
- * Provides ObjectHolder as a property delegate instead of magic annotations.
- */
-public inline fun <reified T : IForgeRegistryEntry<in T>> objectHolder(registryName: String): ReadOnlyProperty<Any?, T> {
-    return ObjectHolderDelegate(
-        registryName = GameData.checkPrefix(registryName, true),
-        registry = ObjectHolderDelegate.getRegistry(T::class.java)
-    )
+    return SidedGetterDelegate(clientValue, serverValue)
 }
 
 /**
@@ -165,11 +139,8 @@ private class LazySidedDelegate<T>(clientValue: () -> T, serverValue: () -> T) :
  * or just a null checker for values that only exist on one side.
  * Values are computed each time they are accessed.
  */
-private class SidedDelegate<T>(private val clientValue: () -> T, private val serverValue: () -> T) : ReadOnlyProperty<Any?, T> {
+private class SidedGetterDelegate<T>(private val clientValue: () -> T, private val serverValue: () -> T) : ReadOnlyProperty<Any?, T> {
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return when (DIST) {
-            Dist.CLIENT -> clientValue()
-            Dist.DEDICATED_SERVER -> serverValue()
-        }
+        return runForDist(clientValue, serverValue)
     }
 }
