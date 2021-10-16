@@ -25,7 +25,7 @@ To implement in an existing project, paste the following into your build.gradle:
 ```groovy
 buildscript {
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
     }
 }
 
@@ -40,14 +40,14 @@ repositories {
 
 dependencies {
     // Use the latest version of KotlinForForge
-    implementation 'thedarkcolour:kotlinforforge:1.14.0'
+    implementation 'thedarkcolour:kotlinforforge:2.0.1'
 }
 ```
 Then, change the following to your mods.toml file:
 ```toml
 modLoader="kotlinforforge"
 # Change this if you require a certain version of KotlinForForge
-loaderVersion="[1,)"
+loaderVersion="[2,)"
 ```
 
 Use

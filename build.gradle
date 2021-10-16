@@ -17,7 +17,7 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 
-version = "2.0.0"
+version = "2.0.1"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -101,7 +101,7 @@ minecraft {
 }
 
 shadowJar {
-    archiveClassifier.set("obf")
+    archiveClassifier.set(null)
 
     dependencies {
         include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
@@ -118,6 +118,8 @@ shadowJar {
 }
 
 jar {
+    archiveClassifier.set("slim")
+
     manifest {
         attributes([
                 "FMLModType": "LANGPROVIDER",
