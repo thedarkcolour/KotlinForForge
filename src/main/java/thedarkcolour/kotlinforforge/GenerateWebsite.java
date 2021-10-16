@@ -20,8 +20,8 @@ public class GenerateWebsite {
                 if (file.isDirectory()) {
                     for (var jar : file.listFiles()) {
                         if (jar.isFile() && (jar.getName().endsWith(".jar") || jar.getName().endsWith(".pom"))) {
-                            var sum = writeSum(jar, "MD5", ".md5");
-                            String path = sum.getPath();
+                            writeSum(jar, "MD5", ".md5");
+                            writeSum(jar, "SHA-1", ".sha1");
                         }
                     }
                 }
@@ -36,7 +36,7 @@ public class GenerateWebsite {
     }
 
 
-    public static File writeSum(File file, String digest, String extension) throws IOException, NoSuchAlgorithmException {
+    public static void writeSum(File file, String digest, String extension) throws IOException, NoSuchAlgorithmException {
         var sumFile = new File(file.getPath() + extension);
         var sum = new BigInteger(1, MessageDigest.getInstance(digest).digest(Files.readAllBytes(file.toPath()))).toString(16);
         sumFile.setWritable(true);
@@ -47,7 +47,5 @@ public class GenerateWebsite {
                 sumFile.createNewFile();
             }
         }
-
-        return sumFile;
     }
 }
