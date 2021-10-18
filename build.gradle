@@ -1,11 +1,11 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = "https://maven.minecraftforge.net" }
         maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
     }
 }
 
@@ -15,11 +15,11 @@ plugins {
     id "org.jetbrains.kotlin.plugin.serialization" version "$kotlin_version"
 }
 
-apply plugin: 'net.minecraftforge.gradle'
+apply plugin: "net.minecraftforge.gradle"
 
 version = "2.0.1"
-group = 'thedarkcolour.kotlinforforge'
-archivesBaseName = 'kotlinforforge'
+group = "thedarkcolour.kotlinforforge"
+archivesBaseName = "kotlinforforge"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 kotlin.jvmToolchain {}
@@ -31,7 +31,7 @@ repositories {
     mavenCentral()
 }
 
-// Workaround to remove build\java from MOD_CLASSES because SJH doesn't like nonexistent dirs
+// Workaround to remove build\java from MOD_CLASSES because SJH doesn"t like nonexistent dirs
 for (def sourceSet : [sourceSets.main, sourceSets.test]) {
     def mutClassesDirs = sourceSet.output.classesDirs as ConfigurableFileCollection
     def javaClassDir = sourceSet.java.classesDirectory.get()
@@ -45,32 +45,35 @@ configurations {
     api.extendsFrom library
 }
 minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
+    lazyToken("minecraft_classpath") {
         configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
     }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.86'
+    minecraft "net.minecraftforge:forge:1.17.1-37.0.97"
 
-	library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
-	library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
+    library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin.coreLibrariesVersion
+    library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin.coreLibrariesVersion
     library group: "org.jetbrains", name: "annotations", version: annotations_version
-	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
-	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
-	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
+    library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
+    library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
+    library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
     library group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
+
+    // Tests
+    implementation "junit:junit:4.11"
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.17.1'
+    mappings channel: "official", version: "1.17.1"
 
     runs {
         client {
-            workingDirectory project.file('run')
+            workingDirectory project.file("run")
 
-            property 'forge.logging.markers', 'SCAN,LOADING,CORE'
-            property 'forge.logging.console.level', 'debug'
+            property "forge.logging.markers", "SCAN,LOADING,CORE"
+            property "forge.logging.console.level", "debug"
 
             mods {
                 kotlinforforge {
@@ -83,10 +86,10 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run/server')
+            workingDirectory project.file("run/server")
 
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.logging.markers', 'scan,loading,core'
+            property "forge.logging.console.level", "debug"
+            property "forge.logging.markers", "scan,loading,core"
 
             mods {
                 kotlinforforge {
@@ -104,10 +107,9 @@ shadowJar {
     archiveClassifier.set(null)
 
     dependencies {
-        include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
-        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}")
-        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}")
-        include dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.coreLibrariesVersion}")
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin.coreLibrariesVersion}")
+        include dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin.coreLibrariesVersion}")
         include dependency("org.jetbrains:annotations:${annotations_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
@@ -127,17 +129,18 @@ jar {
                 "Specification-Vendor": "Forge",
                 "Specification-Version": "1",
                 "Implementation-Title": project.name,
-                "Implementation-Version": "${project.version}",
+                "Implementation-Version": project.version,
                 "Implementation-Vendor" :"thedarkcolour",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+	])
     }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions.freeCompilerArgs = ['-Xexplicit-api=warning', '-Xjvm-default=all']
+    kotlinOptions.freeCompilerArgs = ["-Xexplicit-api=warning", "-Xjvm-default=all"]
 }
 
 kotlinSourcesJar {
     from(sourceSets.main.kotlin.srcDirs)
 }
+
