@@ -72,7 +72,7 @@ public object AutoKotlinEventBusSubscriber {
             val busTarget = Mod.EventBusSubscriber.Bus.valueOf(busTargetHolder.value)
 
             if (mod.modId == modid && DIST in sides) {
-                val kClass = Class.forName(annotationData.annotationType.className, true, classLoader).kotlin
+                val kClass = Class.forName(annotationData.clazz.className, true, classLoader).kotlin
 
                 var ktObject: Any?
 

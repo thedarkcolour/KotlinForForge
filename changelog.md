@@ -1,3 +1,6 @@
+## Kotlin for Forge 2.0.2
+- Fixed bug with @EventBusSubscriber
+
 ## Kotlin for Forge 2.0.1
 - Updated to Kotlin 1.5.31, serialization 1.3.0
 - Maven now has fat jar
