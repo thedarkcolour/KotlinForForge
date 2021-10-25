@@ -17,7 +17,7 @@ plugins {
 
 apply plugin: "net.minecraftforge.gradle"
 
-version = "2.0.1"
+version = "2.0.2"
 group = "thedarkcolour.kotlinforforge"
 archivesBaseName = "kotlinforforge"
 
@@ -100,22 +100,6 @@ minecraft {
                 }
             }
         }
-    }
-}
-
-shadowJar {
-    archiveClassifier.set(null)
-
-    dependencies {
-        include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.coreLibrariesVersion}")
-        include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin.coreLibrariesVersion}")
-        include dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin.coreLibrariesVersion}")
-        include dependency("org.jetbrains:annotations:${annotations_version}")
-        include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
-        include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
-        include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
-        include dependency("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${serialization_version}")
-        include dependency("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:${serialization_version}")
     }
 }
 
