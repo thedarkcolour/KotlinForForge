@@ -5,7 +5,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext
 
 /**
  * Set `modLoader` in mods.toml to
- * `"kotlinforforge"` and loaderVersion to `"[1.15,)"`.
+ * `"kotlinforforge"` and loaderVersion to `"[1.16,)"`.
  *
  * Make sure to use [KotlinModLoadingContext]
  * instead of [FMLJavaModLoadingContext].

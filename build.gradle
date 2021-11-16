@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
         mavenCentral()
     }
     dependencies {
@@ -10,14 +10,14 @@ buildscript {
 }
 
 plugins {
-    id "com.github.johnrengelman.shadow" version "6.1.0"
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id "org.jetbrains.kotlin.jvm" version "$kotlin_version"
     id "org.jetbrains.kotlin.plugin.serialization" version "$kotlin_version"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 
-version = "1.15.1"
+version = '1.16.0'
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -33,15 +33,15 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.4'
 
-    api group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
-    api group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk7", version: kotlin_version
-    api group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
-	api group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
-    api group: "org.jetbrains", name: "annotations", version: annotations_version
-	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
-	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
-	api group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
-    api group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
+    api group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlin_version
+    api group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk7', version: kotlin_version
+    api group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version
+	api group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
+    api group: 'org.jetbrains', name: 'annotations', version: annotations_version
+	api group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version
+	api group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: coroutines_version
+	api group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: coroutines_version
+    api group: 'org.jetbrains.kotlinx', name: 'kotlinx-serialization-json', version: serialization_version
 }
 
 minecraft {
@@ -63,7 +63,7 @@ minecraft {
 }
 
 shadowJar {
-    archiveClassifier.set("obf")
+    archiveClassifier.set('obf')
 
     dependencies {
         include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
@@ -81,16 +81,16 @@ shadowJar {
 
 jar {
     manifest {
-        attributes(["FMLModType": "LANGPROVIDER"])
+        attributes(['FMLModType': 'LANGPROVIDER'])
         attributes([
-                "Specification-Title": "Mod Language Provider",
-                "Specification-Vendor": "Forge",
-                "Specification-Version": "1",
-                "Implementation-Title": project.name,
-                "Implementation-Version": "${project.version}",
-                "Implementation-Vendor" :"thedarkcolour",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ], "thedarkcolour/kotlinforforge/")
+                'Specification-Title': 'Mod Language Provider',
+                'Specification-Vendor': 'Forge',
+                'Specification-Version': '1',
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor' :'thedarkcolour',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ], 'thedarkcolour/kotlinforforge/')
     }
 }
 
@@ -108,35 +108,4 @@ compileTestKotlin {
 
 kotlinSourcesJar {
     from(sourceSets.main.kotlin.srcDirs)
-}
-
-import java.nio.file.Files
-import java.security.MessageDigest
-
-tasks.register("addToMaven") {
-    def folder = file("thedarkcolour/kotlinforforge/" + project.version)
-
-    for (def file : folder.listFiles()) {
-        def split = file.name.split('-')
-        if (split.length > 1 && split[1].contains(project.version) && !(file.path.endsWith("sha1") || file.path.endsWith("md5"))) {
-            copySpec().from(file.path).into(folder.path)
-
-            writeSum(file, "MD5", ".md5")
-            writeSum(file, "SHA-1", ".sha1")
-        }
-    }
-
-    def metadata = file("thedarkcolour/kotlinforforge/maven-metadata.xml")
-    writeSum(metadata, "MD5", ".md5")
-    writeSum(metadata, "SHA-1", ".sha1")
-}
-
-static def writeSum(File file, String digest, String extension) {
-    def sumFile = new File(file.path + extension)
-    def sum = new BigInteger(1, MessageDigest.getInstance(digest).digest(Files.readAllBytes(file.toPath()))).toString(16)
-    sumFile.setWritable(true)
-    def writer = new BufferedWriter(new FileWriter(sumFile))
-    writer.write(sum)
-    sumFile.createNewFile()
-    writer.close()
 }

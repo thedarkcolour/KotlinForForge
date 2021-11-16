@@ -1,3 +1,6 @@
+##Kotlin for Forge 1.16.0
+- Updated to Kotlin 1.5.31, Jetbrains annotations 23.0.0, serialization 1.3.1
+
 ##Kotlin for Forge 1.15.1
 - Fixed missing dependencies on Curseforge
 
