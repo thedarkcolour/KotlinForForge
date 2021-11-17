@@ -3,12 +3,24 @@ package thedarkcolour.kotlinforforge.forge
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.IForgeRegistry
 import net.minecraftforge.registries.IForgeRegistryEntry
+import java.util.function.Supplier
 import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 /**
  * Got rid of KDeferredRegister because KFF can no longer access forge/mc code
  */
 public typealias KDeferredRegister<T> = DeferredRegister<T>
+
+public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<V>> : ReadOnlyProperty<Any?, V>, Supplier<V>, () -> V {
+    override fun getValue(thisRef: Any?, property: KProperty<*>): V {
+        return get()
+    }
+
+    override fun invoke(): V {
+        return get()
+    }
+}
 
 @Deprecated(
     message = "KDeferredRegister no longer exists in 1.17+ because of the module system",
@@ -26,7 +38,7 @@ public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister(registry: IForg
 public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister<V>.registerObject(
     name: String,
     noinline supplier: () -> V
-): ReadOnlyProperty<Any, V> {
+): ObjectHolderDelegate<V> {
     val registryObject = this.register(name, supplier)
-    return ReadOnlyProperty { thisRef, _ -> registryObject.get() }
+    return ObjectHolderDelegate { registryObject.get() }
 }
