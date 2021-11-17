@@ -103,11 +103,6 @@ public object AutoKotlinEventBusSubscriber {
     }
 
     private fun registerTo(any: Any, target: Mod.EventBusSubscriber.Bus) {
-        if (target == Mod.EventBusSubscriber.Bus.MOD) {
-            MOD_BUS.register(any)
-            FMLJavaModLoadingContext.get().modEventBus.register(any)
-        } else {
-            FORGE_BUS.register(any)
-        }
+        target.bus().get().register(any)
     }
 }
