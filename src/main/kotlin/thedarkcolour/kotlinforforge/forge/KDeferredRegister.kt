@@ -1,5 +1,6 @@
 package thedarkcolour.kotlinforforge.forge
 
+import net.minecraftforge.fmllegacy.RegistryObject
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.IForgeRegistry
 import net.minecraftforge.registries.IForgeRegistryEntry
@@ -12,7 +13,7 @@ import kotlin.reflect.KProperty
  */
 public typealias KDeferredRegister<T> = DeferredRegister<T>
 
-public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<V>> : ReadOnlyProperty<Any?, V>, Supplier<V>, () -> V {
+public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<in V>> : ReadOnlyProperty<Any?, V>, Supplier<V>, () -> V {
     override fun getValue(thisRef: Any?, property: KProperty<*>): V {
         return get()
     }
@@ -35,10 +36,10 @@ public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister(registry: IForg
 /**
  * Inline function to replace ObjectHolderDelegate
  */
-public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister<V>.registerObject(
+public inline fun <V : IForgeRegistryEntry<V>, T : V> KDeferredRegister<V>.registerObject(
     name: String,
-    noinline supplier: () -> V
-): ObjectHolderDelegate<V> {
-    val registryObject = this.register(name, supplier)
+    noinline supplier: () -> T
+): ObjectHolderDelegate<T> {
+    val registryObject = this.register<T>(name, supplier)
     return ObjectHolderDelegate { registryObject.get() }
 }

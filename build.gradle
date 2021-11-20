@@ -17,7 +17,7 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 
-version = "2.1.1"
+version = "2.2.0"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
@@ -101,7 +101,7 @@ minecraft {
 }
 
 shadowJar {
-    archiveClassifier.set(null)
+    archiveClassifier.set("obf")
 
     dependencies {
         include dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
@@ -118,7 +118,7 @@ shadowJar {
 }
 
 jar {
-    archiveClassifier.set("slim")
+    //archiveClassifier.set("slim")
 
     manifest {
         attributes([

@@ -1,5 +1,13 @@
+## Kotlin for Forge 2.2.0
+- Fix generic types with `registerObject` to work like they used to
+- Go back to using slim jars on maven (todo update the readme)
+- You will now need to manually add kotlin in your `build.gradle`
+
+## Kotlin for Forge 2.1.2
+- Another attempt to fix @EventBusSubscriber
+
 ## Kotlin for Forge 2.1.1
-- Actually fixed bug with @EventBusSubscriber
+- ~~Actually fixed bug with @EventBusSubscriber~~
 
 ## Kotlin for Forge 2.1.0
 - Fixed bug with @EventBusSubscriber (from unpublished version 2.0.2)

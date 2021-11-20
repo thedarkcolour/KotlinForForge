@@ -11,6 +11,7 @@ import org.objectweb.asm.Type
 import thedarkcolour.kotlinforforge.forge.DIST
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
+import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
 import thedarkcolour.kotlinforforge.kotlin.enumSet
 
 /**
@@ -57,7 +58,7 @@ public object AutoKotlinEventBusSubscriber {
      * listeners are registered. Instead, prefer to directly
      * register event listeners to the [FORGE_BUS] or [MOD_BUS].
      */
-    public fun inject(mod: ModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
+    public fun inject(mod: KotlinModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
         LOGGER.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
 
         val data = scanData.annotations.filter { annotationData ->
@@ -83,7 +84,7 @@ public object AutoKotlinEventBusSubscriber {
                         throw unsupported
                     } else {
                         LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin file ${annotationData.annotationType.className} to $busTarget")
-                        registerTo(kClass.java, busTarget)
+                        registerTo(kClass.java, busTarget, mod)
                         continue
                     }
                 }
@@ -92,7 +93,7 @@ public object AutoKotlinEventBusSubscriber {
                     try {
                         LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.annotationType.className} to $busTarget")
 
-                        registerTo(ktObject, busTarget)
+                        registerTo(ktObject, busTarget, mod)
                     } catch (e: Throwable) {
                         LOGGER.fatal(Logging.LOADING, "Failed to load mod class ${annotationData.annotationType} for @EventBusSubscriber annotation", e)
                         throw RuntimeException(e)
@@ -102,7 +103,11 @@ public object AutoKotlinEventBusSubscriber {
         }
     }
 
-    private fun registerTo(any: Any, target: Mod.EventBusSubscriber.Bus) {
-        target.bus().get().register(any)
+    private fun registerTo(any: Any, target: Mod.EventBusSubscriber.Bus, mod: KotlinModContainer) {
+        if (target == Mod.EventBusSubscriber.Bus.FORGE) {
+            target.bus().get().register(any)
+        } else {
+            mod.eventBus.register(any)
+        }
     }
 }
