@@ -17,11 +17,11 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 
-version = "2.2.0"
+version = "3.0.0"
 group = 'thedarkcolour.kotlinforforge'
 archivesBaseName = 'kotlinforforge'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 kotlin.jvmToolchain {}
 
 tasks.build.dependsOn kotlinSourcesJar
@@ -51,11 +51,10 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.86'
+    minecraft 'net.minecraftforge:forge:1.18-38.0.8'
 
 	library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
 	library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
-    library group: "org.jetbrains", name: "annotations", version: annotations_version
 	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
 	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
 	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
@@ -63,7 +62,7 @@ dependencies {
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.17.1'
+    mappings channel: 'official', version: '1.18'
 
     runs {
         client {
@@ -108,7 +107,6 @@ shadowJar {
         include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}")
         include dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}")
         include dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
-        include dependency("org.jetbrains:annotations:${annotations_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
         include dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
@@ -118,8 +116,6 @@ shadowJar {
 }
 
 jar {
-    //archiveClassifier.set("slim")
-
     manifest {
         attributes([
                 "FMLModType": "LANGPROVIDER",
@@ -136,8 +132,4 @@ jar {
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions.freeCompilerArgs = ['-Xexplicit-api=warning', '-Xjvm-default=all']
-}
-
-kotlinSourcesJar {
-    from(sourceSets.main.kotlin.srcDirs)
 }

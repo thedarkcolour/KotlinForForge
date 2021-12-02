@@ -1,3 +1,7 @@
+## Kotlin for Forge 3.0.0
+- Updated to 1.18
+- Removed JetBrains annotations from bundled dependencies because Forge now includes it
+
 ## Kotlin for Forge 2.2.0
 - Fix generic types with `registerObject` to work like they used to
 - Go back to using slim jars on maven (todo update the readme)

@@ -3,11 +3,14 @@ package thedarkcolour.kotlinforforge.forge
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.common.ForgeConfigSpec
 import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.eventbus.api.EventPriority
+import net.minecraftforge.eventbus.api.GenericEvent
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.config.ModConfig
 import net.minecraftforge.fml.loading.FMLEnvironment
 import thedarkcolour.kotlinforforge.KotlinModLoadingContext
+import java.util.function.Consumer
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -92,8 +95,16 @@ public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
     LOADING_CONTEXT.registerConfig(type, spec)
 }
 
+public inline fun <T : GenericEvent<out F>, reified F> IEventBus.addGenericListener(
+    listener: Consumer<T>,
+    priority: EventPriority = EventPriority.NORMAL,
+    receiveCancelled: Boolean = false
+) {
+    addGenericListener(F::class.java, priority, receiveCancelled, listener)
+}
+
 /**
- * Sided delegate with lazy values. This works well with proxies, if you are still using those.
+ * Sided delegate with lazy values. This works well with proxies, if you still use those.
  * It is safe to use side-specific values in [clientValue] and [serverValue].
  *
  * @param clientValue the value of this property on the client side.

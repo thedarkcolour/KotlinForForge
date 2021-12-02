@@ -1,6 +1,5 @@
 package thedarkcolour.kotlinforforge.forge
 
-import net.minecraftforge.fmllegacy.RegistryObject
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.IForgeRegistry
 import net.minecraftforge.registries.IForgeRegistryEntry
@@ -40,6 +39,6 @@ public inline fun <V : IForgeRegistryEntry<V>, T : V> KDeferredRegister<V>.regis
     name: String,
     noinline supplier: () -> T
 ): ObjectHolderDelegate<T> {
-    val registryObject = this.register<T>(name, supplier)
+    val registryObject = this.register(name, supplier)
     return ObjectHolderDelegate { registryObject.get() }
 }
