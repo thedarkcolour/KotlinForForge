@@ -1,4 +1,3 @@
-
 buildscript {
     repositories {
         maven("https://maven.minecraftforge.net")
@@ -54,9 +53,9 @@ val kotlinSourceJar = tasks.register<Copy>("kotlinSourceJar") {
 tasks.build.get().dependsOn(kotlinSourceJar)
 tasks.build.get().dependsOn(shadowJar)
 
-        repositories {
-            mavenCentral()
-        }
+repositories {
+    mavenCentral()
+}
 
 // Workaround to remove build\java from MOD_CLASSES because SJH doesn"t like nonexistent dirs
 for (s in arrayOf(sourceSets.main, sourceSets.test)) {
