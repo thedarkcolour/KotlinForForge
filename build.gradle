@@ -1,11 +1,3 @@
 plugins {
     id 'java'
 }
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation('com.jcabi.incubator:xembly:0.25.0')
-}
