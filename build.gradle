@@ -51,7 +51,7 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18-38.0.8'
+    minecraft 'net.minecraftforge:forge:1.18-38.0.12'
 
 	library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
 	library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
