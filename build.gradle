@@ -56,7 +56,6 @@ dependencies {
 	library group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
 	library group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
 	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
-	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core-jvm", version: coroutines_version
 	library group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
     library group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: serialization_version
 }
