@@ -16,14 +16,14 @@ ext.serialization_version = '1.3.1'
 project.properties['kotlin.stdlib.default.dependency'] = false
 
 configurations {
-    kff_library
+    library
 }
 
 // Used to manually add non-mc libraries to the runtime classpaths found in build/classpath
 // If you have any module issues, check these files to make sure there are no duplicate dependencies
 minecraft.runs.all {
     lazyToken('minecraft_classpath') {
-        configurations.kff_library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
     }
 }
 
@@ -41,11 +41,11 @@ dependencies {
     groovy.lang.Closure exclude_annotations = { exclude group: 'org.jetbrains', module: 'annotations' }
 
     // Add everything to the classpath correctly
-    kff_library(group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version, exclude_annotations)
-    kff_library(group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version, exclude_annotations)
-    kff_library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version, exclude_annotations)
-    kff_library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: coroutines_version, exclude_annotations)
-    kff_library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-serialization-json', version: serialization_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: coroutines_version, exclude_annotations)
+    library(group: 'org.jetbrains.kotlinx', name: 'kotlinx-serialization-json', version: serialization_version, exclude_annotations)
 }
 
 compileKotlin {
