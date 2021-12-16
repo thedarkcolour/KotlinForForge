@@ -8,7 +8,7 @@ Makes Kotlin Forge-friendly by doing the following:
 - Provides useful utility functions and constants
 - Provides sided property delegates and object holder property delegates
 
-An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton).
+An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton/tree/1.18.x).
 
 If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repository.
 ```git
