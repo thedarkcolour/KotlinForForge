@@ -12,7 +12,8 @@ import kotlin.reflect.KProperty
  */
 public typealias KDeferredRegister<T> = DeferredRegister<T>
 
-public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<in V>> : ReadOnlyProperty<Any?, V>, Supplier<V>, () -> V {
+// TODO re-add once Jar in Jar is a thing
+/*public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<in V>> : ReadOnlyProperty<Any?, V>, Supplier<V>, () -> V {
     override fun getValue(thisRef: Any?, property: KProperty<*>): V {
         return get()
     }
@@ -20,7 +21,7 @@ public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<in V>> : ReadO
     override fun invoke(): V {
         return get()
     }
-}
+}*/
 
 @Deprecated(
     message = "KDeferredRegister no longer exists in 1.17+ because of the module system",
@@ -32,13 +33,20 @@ public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<in V>> : ReadO
 public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister(registry: IForgeRegistry<V>, modId: String) =
     DeferredRegister.create(registry, modId)
 
-/**
+/** TODO ~~~
  * Inline function to replace ObjectHolderDelegate
  */
 public inline fun <V : IForgeRegistryEntry<V>, T : V> KDeferredRegister<V>.registerObject(
     name: String,
     noinline supplier: () -> T
-): ObjectHolderDelegate<T> {
+): ReadOnlyProperty<Any?, T> {
     val registryObject = this.register(name, supplier)
-    return ObjectHolderDelegate { registryObject.get() }
+
+    return object : ReadOnlyProperty<Any?, T>, Supplier<T>, () -> T {
+        override fun get(): T = registryObject.get()
+
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T = get()
+
+        override fun invoke(): T = get()
+    }
 }

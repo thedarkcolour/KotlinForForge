@@ -18,13 +18,13 @@ val serialization_version: String by project
 
 plugins {
     id("com.github.johnrengelman.shadow") version "7.1.1"
-    kotlin("jvm")
+    id("org.jetbrains.kotlin.jvm") version "1.6.10"
     id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 apply(plugin = "net.minecraftforge.gradle")
 
-version = "3.0.0"
+version = "3.1.0"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -47,9 +47,11 @@ val shadowJar = tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.
     }
 }
 
-val kotlinSourceJar = tasks.register<Copy>("kotlinSourceJar") {
-    val kotlinSourceSet = sourceSets.main.get() as org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+val kotlinSourceJar by tasks.creating(Jar::class) {
+    val kotlinSourceSet = kotlin.sourceSets.main.get()
+
     from(kotlinSourceSet.kotlin.srcDirs)
+    archiveClassifier.set("sources")
 }
 
 tasks.build.get().dependsOn(kotlinSourceJar)
@@ -137,8 +139,6 @@ minecraft.let {
         }
     }
 }
-
-
 
 tasks.withType<Jar> {
     //archiveClassifier.set("slim")

@@ -1,5 +1,5 @@
 # KotlinForForge
-**\*\*These instructions are for 1.18. To see instructions for 1.14-1.16, [click here](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md).**
+**\*\*These instructions are for 1.18.1. To see instructions for 1.14-1.16, [click here](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md).**
 
 Makes Kotlin Forge-friendly by doing the following:
 - Provides Kotlin stdlib, reflection, JSON serialization, and coroutines libraries.
@@ -20,9 +20,9 @@ To implement in an existing project, paste the following into your build.gradle:
 // Adds the Kotlin Gradle plugin
 buildscript {
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
         // OPTIONAL Kotlin Serialization plugin
-        classpath 'org.jetbrains.kotlin:kotlin-serialization:1.6.0'
+        classpath 'org.jetbrains.kotlin:kotlin-serialization:1.6.10'
     }
 }
 apply plugin: 'kotlin'
@@ -31,7 +31,7 @@ apply plugin: 'kotlinx-serialization'
 
 // Adds KFF as dependency and Kotlin libs to the runtime classpath
 // If you already know how to add the Kotlin plugin to Gradle, this is the only line you need for KFF
-apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.0.0.gradle'
+apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.1.0.gradle'
 
 ```
 Then, change the following to your mods.toml file:

@@ -1,3 +1,8 @@
+## Kotlin for Forge 3.1.0
+- Updated to Kotlin 1.6.10, coroutines 1.6.0, serialization 1.3.2
+- Fix Java module issue with ObjectHolderDelegates
+- Fix sources jar in gradle
+
 ## Kotlin for Forge 3.0.0
 - Updated to 1.18
 - Removed JetBrains annotations from bundled dependencies because Forge now includes it
