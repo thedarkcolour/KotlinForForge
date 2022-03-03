@@ -4,15 +4,19 @@ import net.minecraftforge.eventbus.EventBus
 import net.minecraftforge.eventbus.api.*
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import java.util.concurrent.ConcurrentHashMap
+import java.util.function.Consumer
 
 /** @since 1.2.0
  * Fixes [IEventBus.addListener] for Kotlin SAM interfaces
  * when using [FORGE_BUS].
+ *
+ *  @since 1.17.0
+ * Uses IEventBus instead of EventBus so that SpongeForge doesn't crash
  */
-public class KotlinEventBusWrapper(private val parent: EventBus) : KotlinEventBus(BusBuilder()
+public open class KotlinEventBusWrapper(private val parent: EventBus) : KotlinEventBus(BusBuilder()
     .setExceptionHandler(getExceptionHandler(parent))
     .setTrackPhases(getTrackPhases(parent))
-    .also { if (getShutdown(parent)) it.startShutdown() }
+    .also { if (getShutdown(parent)) it.startShutdown() }, synthetic = true
 ) {
     override val busID: Int = getBusID(parent)
     override val listeners: ConcurrentHashMap<Any, MutableList<IEventListener>> = getListeners(parent)

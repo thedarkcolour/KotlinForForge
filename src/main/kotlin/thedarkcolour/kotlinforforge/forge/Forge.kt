@@ -13,6 +13,7 @@ import thedarkcolour.kotlinforforge.KotlinModLoadingContext
 import thedarkcolour.kotlinforforge.LOGGER
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBus
 import thedarkcolour.kotlinforforge.eventbus.KotlinEventBusWrapper
+import thedarkcolour.kotlinforforge.eventbus.SpongeKotlinEventBusWrapper
 import java.util.*
 import java.util.function.Consumer
 import java.util.function.Predicate
@@ -34,7 +35,7 @@ import kotlin.reflect.KProperty
  *   @see net.minecraftforge.event.entity.living.LivingEvent
  *   @see net.minecraftforge.event.world.BlockEvent
  */
-public val FORGE_BUS: KotlinEventBusWrapper = KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
+public val FORGE_BUS: KotlinEventBusWrapper = if (MinecraftForge.EVENT_BUS !is EventBus) SpongeKotlinEventBusWrapper(MinecraftForge.EVENT_BUS) else KotlinEventBusWrapper(MinecraftForge.EVENT_BUS as EventBus)
 
 /** @since 1.0.0
  * The mod-specific [EventBus].
