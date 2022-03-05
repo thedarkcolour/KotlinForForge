@@ -5,7 +5,7 @@ import net.minecraftforge.eventbus.api.Event
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.eventbus.api.IEventListener
 
-internal class SpongeKotlinEventBusWrapper(private val spongeBus: IEventBus) : KotlinEventBusWrapper(getWrappedBus(spongeBus)) {
+internal class SpongeKotlinEventBusWrapper(private val spongeBus: IEventBus) : KotlinEventBusWrapper(getWrappedBus(spongeBus.also { println(it.javaClass) })) {
     override fun post(event: Event): Boolean {
         return spongeBus.post(event)
     }
@@ -15,7 +15,7 @@ internal class SpongeKotlinEventBusWrapper(private val spongeBus: IEventBus) : K
     }
 
     private companion object {
-        private val GET_BUS_ID = Class.forName("org.spongepowered.forge.launch.event.ForgeEventManager")::class.java.getDeclaredField("wrappedEventBus").also { it.isAccessible = true }
+        private val GET_BUS_ID = Class.forName("org.spongepowered.forge.launch.event.ForgeEventManager").getDeclaredField("wrappedEventBus").also { it.isAccessible = true }
 
         private fun getWrappedBus(eventBus: IEventBus): EventBus {
             return GET_BUS_ID[eventBus] as EventBus
