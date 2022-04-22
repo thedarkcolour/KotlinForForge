@@ -33,20 +33,31 @@ public typealias KDeferredRegister<T> = DeferredRegister<T>
 public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister(registry: IForgeRegistry<V>, modId: String) =
     DeferredRegister.create(registry, modId)
 
-/** TODO ~~~
+/**
  * Inline function to replace ObjectHolderDelegate
+ *
+ * @param name Path used in the registry name of this object
+ * (if modid of deferred register is "foo", name "bar" would create "foo:bar")
+ *
+ * @param V Type of deferred register
+ * @param T Specific type of object being registered
+ * @param OBJ "Registry object type" that represents the type of the anonymous property delegate returned
+ * The returned object can be used as an instance of either `ReadOnlyProperty`, `() -> T`, or `Supplier`.
+ *
+ * @return `ReadOnlyProperty` delegate, can be used as `() -> T` or `Supplier<T>` if needed without casting
  */
-public inline fun <V : IForgeRegistryEntry<V>, T : V> KDeferredRegister<V>.registerObject(
+public inline fun <V, T : V, OBJ> KDeferredRegister<V>.registerObject(
     name: String,
     noinline supplier: () -> T
-): ReadOnlyProperty<Any?, T> {
+): OBJ where OBJ : ReadOnlyProperty<Any?, T>, OBJ : () -> T, OBJ : Supplier<T> {
     val registryObject = this.register(name, supplier)
 
+    // note that this anonymous class inherits three types
     return object : ReadOnlyProperty<Any?, T>, Supplier<T>, () -> T {
         override fun get(): T = registryObject.get()
 
         override fun getValue(thisRef: Any?, property: KProperty<*>): T = get()
 
         override fun invoke(): T = get()
-    }
+    } as OBJ
 }
