@@ -1,3 +1,8 @@
+## Kotlin for Forge 3.3.0
+- Updated to Kotlin 1.6.21
+- `registerObject` now supports Deferred Registers with vanilla registry types
+  because Forge supports those types of registries as of 40.1.0
+
 ## Kotlin for Forge 3.2.0
 - Updated to Kotlin 1.6.20, coroutines 1.6.1
 
