@@ -3,12 +3,13 @@
     <groupId>thedarkcolour</groupId>
     <artifactId>kotlinforforge</artifactId>
     <versioning>
-        <release>3.3.0</release>
+        <release>3.3.1</release>
         <versions>
             <version>3.0.0</version>
             <version>3.1.0</version>
             <version>3.2.0</version>
             <version>3.3.0</version>
+            <version>3.3.1</version>
 
             <version>2.0.0</version>
             <version>2.0.1</version>
