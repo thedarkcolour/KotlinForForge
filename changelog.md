@@ -1,3 +1,6 @@
+## Kotlin for Forge 3.3.1
+- Removed multiple generic type bounds on `registerObject` because it was causing errors
+
 ## Kotlin for Forge 3.3.0
 - Updated to Kotlin 1.6.21
 - `registerObject` now supports Deferred Registers with vanilla registry types

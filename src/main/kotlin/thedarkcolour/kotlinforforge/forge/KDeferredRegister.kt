@@ -41,15 +41,11 @@ public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister(registry: IForg
  *
  * @param V Type of deferred register
  * @param T Specific type of object being registered
- * @param OBJ "Registry object type" that represents the type of the anonymous property delegate returned
- * The returned object can be used as an instance of either `ReadOnlyProperty`, `() -> T`, or `Supplier`.
- *
- * @return `ReadOnlyProperty` delegate, can be used as `() -> T` or `Supplier<T>` if needed without casting
  */
-public inline fun <V, T : V, OBJ> KDeferredRegister<V>.registerObject(
+public inline fun <V, T : V> KDeferredRegister<V>.registerObject(
     name: String,
     noinline supplier: () -> T
-): OBJ where OBJ : ReadOnlyProperty<Any?, T>, OBJ : () -> T, OBJ : Supplier<T> {
+): ReadOnlyProperty<Any?, T> {
     val registryObject = this.register(name, supplier)
 
     // note that this anonymous class inherits three types
@@ -59,5 +55,5 @@ public inline fun <V, T : V, OBJ> KDeferredRegister<V>.registerObject(
         override fun getValue(thisRef: Any?, property: KProperty<*>): T = get()
 
         override fun invoke(): T = get()
-    } as OBJ
+    }
 }
