@@ -12,6 +12,7 @@ buildscript {
 }
 
 val kotlin_version: String by project
+val annotations_version: String by project
 val coroutines_version: String by project
 val serialization_version: String by project
 
@@ -23,7 +24,7 @@ plugins {
 
 apply(plugin = "net.minecraftforge.gradle")
 
-version = "3.3.0"
+version = "3.3.2"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -37,6 +38,7 @@ val shadowJar = tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"))
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"))
         include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
+        include(dependency("org.jetbrains:annotations:${annotations_version}"))
         include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
         include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}"))
         include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))

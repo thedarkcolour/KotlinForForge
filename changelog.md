@@ -1,3 +1,6 @@
+## Kotlin for Forge 3.3.2
+- Bundle JetBrains annotations 23.0.0 again because Forge does not bundle it in production
+
 ## Kotlin for Forge 3.3.1
 - Removed multiple generic type bounds on `registerObject` because it was causing errors
 
