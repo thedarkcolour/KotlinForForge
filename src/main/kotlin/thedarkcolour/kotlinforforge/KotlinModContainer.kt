@@ -27,7 +27,7 @@ public class KotlinModContainer(
     gameLayer: ModuleLayer,
 ) : ModContainer(info) {
     // Mod instance
-    private lateinit var modInstance: Any
+    private var modInstance: Any? = null
     // Mod-specific event bus
     public val eventBus: IEventBus
     // Main mod class (moved out of constructMod)
@@ -85,7 +85,7 @@ public class KotlinModContainer(
         return mod == modInstance
     }
 
-    override fun getMod(): Any = modInstance
+    override fun getMod(): Any? = modInstance
 
     public override fun <T> acceptEvent(e: T) where T : Event, T : IModBusEvent {
         try {

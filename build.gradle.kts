@@ -24,7 +24,7 @@ plugins {
 
 apply(plugin = "net.minecraftforge.gradle")
 
-version = "3.3.2"
+version = "3.4.0"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -88,7 +88,7 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:1.18.2-40.0.52")
+    minecraft("net.minecraftforge:forge:1.18.2-40.1.25")
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
