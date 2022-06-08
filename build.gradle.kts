@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.minecraftforge.gradle:ForgeGradle:5.1.+") {
+        classpath("net.minecraftforge.gradle:ForgeGradle:5.+") {
             isChanging = true
         }
     }
@@ -24,7 +24,7 @@ plugins {
 
 apply(plugin = "net.minecraftforge.gradle")
 
-version = "3.4.0"
+version = "3.5.0"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -88,7 +88,7 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:1.18.2-40.1.25")
+    minecraft("net.minecraftforge:forge:1.19-41.0.1")
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
@@ -102,7 +102,7 @@ val Project.minecraft: net.minecraftforge.gradle.common.util.MinecraftExtension
     get() = extensions.getByType()
 
 minecraft.let {
-    it.mappings("official", "1.18.2")
+    it.mappings("official", "1.19")
 
     it.runs {
         create("client") {

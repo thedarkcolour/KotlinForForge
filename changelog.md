@@ -1,3 +1,11 @@
+## Kotlin for Forge 3.5.0
+- Switch logging markers to work with 1.19
+- Now works with 1.18 - 1.19
+
+## Kotlin for Forge 3.4.0
+- Updated to coroutines 1.6.2, serialization 1.3.3
+- Changed KotlinModContainer to fix an issue with LuckPerms
+
 ## Kotlin for Forge 3.3.2
 - Bundle JetBrains annotations 23.0.0 again because Forge does not bundle it in production
 

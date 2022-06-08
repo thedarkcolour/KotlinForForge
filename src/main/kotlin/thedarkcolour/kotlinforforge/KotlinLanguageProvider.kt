@@ -1,8 +1,8 @@
 package thedarkcolour.kotlinforforge
 
+import net.minecraftforge.fml.Logging
 import net.minecraftforge.fml.ModLoadingException
 import net.minecraftforge.fml.ModLoadingStage
-import net.minecraftforge.fml.loading.LogMarkers
 import net.minecraftforge.forgespi.language.ILifecycleEvent
 import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.IModLanguageProvider
@@ -29,7 +29,7 @@ public class KotlinLanguageProvider : IModLanguageProvider {
                 val modid = data.annotationData["value"] as String
                 val modClass = data.clazz.className
 
-                LOGGER.debug(LogMarkers.SCAN, "Found @Mod class $modClass with mod id $modid")
+                LOGGER.debug(Logging.SCAN, "Found @Mod class $modClass with mod id $modid")
                 modid to KotlinModTarget(modClass)
             })
         }
@@ -41,11 +41,11 @@ public class KotlinLanguageProvider : IModLanguageProvider {
         override fun <T> loadMod(info: IModInfo, modFileScanResults: ModFileScanData, gameLayer: ModuleLayer): T {
             try {
                 val ktContainer = Class.forName("thedarkcolour.kotlinforforge.KotlinModContainer", true, Thread.currentThread().contextClassLoader)
-                LOGGER.debug(LogMarkers.LOADING, "Loading KotlinModContainer from classloader ${Thread.currentThread().contextClassLoader} - got ${ktContainer.classLoader}}")
+                LOGGER.debug(Logging.LOADING, "Loading KotlinModContainer from classloader ${Thread.currentThread().contextClassLoader} - got ${ktContainer.classLoader}}")
                 val constructor = ktContainer.getConstructor(IModInfo::class.java, String::class.java, ModFileScanData::class.java, ModuleLayer::class.java)
                 return constructor.newInstance(info, className, modFileScanResults, gameLayer) as T
             } catch (e: InvocationTargetException) {
-                LOGGER.fatal(LogMarkers.LOADING, "Failed to build mod", e)
+                LOGGER.fatal(Logging.LOADING, "Failed to build mod", e)
 
                 val targetException = e.targetException
 
@@ -67,7 +67,7 @@ public class KotlinLanguageProvider : IModLanguageProvider {
 
         // No need for LambdaExceptionUtils with Kotlin
         private fun catastrophe(info: IModInfo, exception: Exception): Nothing {
-            LOGGER.fatal(LogMarkers.LOADING, "Unable to load KotlinModContainer, wat", exception)
+            LOGGER.fatal(Logging.LOADING, "Unable to load KotlinModContainer, wat", exception)
 
             // ModLoadingException
             val mle = Class.forName("net.minecraftforge.fml.ModLoadingException", true, Thread.currentThread().contextClassLoader) as Class<RuntimeException>

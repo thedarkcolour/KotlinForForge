@@ -1,8 +1,6 @@
 package thedarkcolour.kotlinforforge.forge
 
 import net.minecraftforge.registries.DeferredRegister
-import net.minecraftforge.registries.IForgeRegistry
-import net.minecraftforge.registries.IForgeRegistryEntry
 import java.util.function.Supplier
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -22,16 +20,6 @@ public typealias KDeferredRegister<T> = DeferredRegister<T>
         return get()
     }
 }*/
-
-@Deprecated(
-    message = "KDeferredRegister no longer exists in 1.17+ because of the module system",
-    replaceWith = ReplaceWith(
-        "DeferredRegister.create(registry, modId)",
-        "net.minecraftforge.registries.DeferredRegister"
-    )
-)
-public inline fun <V : IForgeRegistryEntry<V>> KDeferredRegister(registry: IForgeRegistry<V>, modId: String) =
-    DeferredRegister.create(registry, modId)
 
 /**
  * Inline function to replace ObjectHolderDelegate
