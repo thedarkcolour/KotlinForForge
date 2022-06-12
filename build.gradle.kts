@@ -1,30 +1,16 @@
-buildscript {
-    repositories {
-        maven("https://maven.minecraftforge.net")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
-        mavenCentral()
-    }
-    dependencies {
-        classpath("net.minecraftforge.gradle:ForgeGradle:5.+") {
-            isChanging = true
-        }
-    }
-}
-
 val kotlin_version: String by project
 val annotations_version: String by project
 val coroutines_version: String by project
 val serialization_version: String by project
 
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.1"
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("org.jetbrains.kotlin.jvm") version "1.7.0"
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("net.minecraftforge.gradle") version "5.1.+"
 }
 
-apply(plugin = "net.minecraftforge.gradle")
-
-version = "3.5.0"
+version = "3.6.0"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))

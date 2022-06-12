@@ -1,3 +1,6 @@
+## Kotlin for Forge 3.6.0
+- Updated to Kotlin 1.7.0
+
 ## Kotlin for Forge 3.5.0
 - Switch logging markers to work with 1.19
 - Now works with 1.18 - 1.19
