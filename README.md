@@ -30,7 +30,7 @@ apply plugin: 'kotlinx-serialization'
 
 // Adds KFF as dependency and Kotlin libs to the runtime classpath
 // **If you already know how to add the Kotlin plugin to Gradle, this is the only line you need for KFF
-apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.1.0.gradle'
+apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.6.0.gradle'
 
 ```
 Then, change the following to your mods.toml file:
