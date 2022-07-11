@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.7.0"
     id("org.jetbrains.kotlin.plugin.serialization")
     id("net.minecraftforge.gradle") version "5.1.+"
+    id("com.modrinth.minotaur") version "2.+"
 }
 
 version = "3.6.0"
@@ -142,8 +143,8 @@ minecraft.run {
 }
 
 tasks.withType<Jar> {
-    //archiveClassifier.set("slim")
     archiveBaseName.set("kotlinforforge")
+
     manifest {
         attributes(
             mapOf(
@@ -168,3 +169,16 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 fun DependencyHandler.minecraft(
     dependencyNotation: Any
 ): Dependency? = add("minecraft", dependencyNotation)
+
+fun DependencyHandler.library(
+    dependencyNotation: Any
+): Dependency? = add("library", dependencyNotation)
+
+modrinth {
+    projectId.set("ordsPcFz")
+    versionNumber.set("${project.version}")
+    versionType.set("release")
+    uploadFile.set(tasks.shadowJar as Any)
+    gameVersions.addAll("1.18", "1.18.1", "1.19")
+    loaders.add("forge")
+}
