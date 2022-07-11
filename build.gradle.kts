@@ -62,37 +62,37 @@ dependencies {
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
         exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+        jarJar(group = "org.jetbrains", name = name, version = "[$kotlin_version, 1.8)") {
             exclude(group = "org.jetbrains", module = "annotations")
         }
     }
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") {
         exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+        jarJar(group = "org.jetbrains", name = name, version = "[$kotlin_version, 1.8)") {
             exclude(group = "org.jetbrains", module = "annotations")
         }
     }
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version") {
         exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+        jarJar(group = "org.jetbrains", name = name, version = "[$coroutines_version, 1.7)") {
             exclude(group = "org.jetbrains", module = "annotations")
         }
     }
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version") {
         exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+        jarJar(group = "org.jetbrains", name = name, version = "[$coroutines_version, 1.7)") {
             exclude(group = "org.jetbrains", module = "annotations")
         }
     }
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version") {
         exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+        jarJar(group = "org.jetbrains", name = name, version = "[$coroutines_version, 1.7)") {
             exclude(group = "org.jetbrains", module = "annotations")
         }
     }
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version") {
         exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+        jarJar(group = "org.jetbrains", name = name, version = "[$serialization_version, 1.4)") {
             exclude(group = "org.jetbrains", module = "annotations")
         }
     }
