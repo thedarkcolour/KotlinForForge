@@ -87,11 +87,11 @@ public inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): 
 /**
  * Register a config
  */
-public fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
+public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
     LOADING_CONTEXT.registerConfig(type, spec, fileName)
 }
 
-public fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
+public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
     LOADING_CONTEXT.registerConfig(type, spec)
 }
 
