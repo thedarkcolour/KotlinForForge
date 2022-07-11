@@ -4,7 +4,6 @@ val coroutines_version: String by project
 val serialization_version: String by project
 
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jetbrains.kotlin.jvm") version "1.7.0"
     id("org.jetbrains.kotlin.plugin.serialization")
     id("net.minecraftforge.gradle") version "5.1.+"
@@ -15,23 +14,7 @@ group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 kotlin.jvmToolchain {}
-
-val shadowJar = tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    archiveClassifier.set("obf")
-
-    dependencies {
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
-        include(dependency("org.jetbrains:annotations:${annotations_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${serialization_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:${serialization_version}"))
-    }
-}
+jarJar.enable()
 
 val kotlinSourceJar by tasks.creating(Jar::class) {
     val kotlinSourceSet = kotlin.sourceSets.main.get()
@@ -41,7 +24,6 @@ val kotlinSourceJar by tasks.creating(Jar::class) {
 }
 
 tasks.build.get().dependsOn(kotlinSourceJar)
-tasks.build.get().dependsOn(shadowJar)
 
 repositories {
     mavenCentral()
@@ -61,36 +43,70 @@ for (s in arrayOf(sourceSets.main, sourceSets.test)) {
 }
 
 configurations {
-    val library = this.maybeCreate("library")
+    val library = maybeCreate("library")
     api.configure {
         extendsFrom(library)
     }
 }
 minecraft.runs.all {
     lazyToken("minecraft_classpath") {
-        return@lazyToken configurations.getByName("library").copyRecursive().resolve()
+        return@lazyToken configurations["library"].copyRecursive().resolve()
             .joinToString(File.pathSeparator) { it.absolutePath }
     }
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:1.19-41.0.1")
+    minecraft("net.minecraftforge:forge:1.19-41.0.91")
 
-    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
+    val library = configurations["library"]
+
+    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
+        exclude(group = "org.jetbrains", module = "annotations")
+        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+            exclude(group = "org.jetbrains", module = "annotations")
+        }
+    }
+    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") {
+        exclude(group = "org.jetbrains", module = "annotations")
+        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+            exclude(group = "org.jetbrains", module = "annotations")
+        }
+    }
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version") {
+        exclude(group = "org.jetbrains", module = "annotations")
+        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+            exclude(group = "org.jetbrains", module = "annotations")
+        }
+    }
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version") {
+        exclude(group = "org.jetbrains", module = "annotations")
+        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+            exclude(group = "org.jetbrains", module = "annotations")
+        }
+    }
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version") {
+        exclude(group = "org.jetbrains", module = "annotations")
+        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+            exclude(group = "org.jetbrains", module = "annotations")
+        }
+    }
+    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version") {
+        exclude(group = "org.jetbrains", module = "annotations")
+        jarJar(group = group!!, name = name, version = "[$version, 2.0)") {
+            exclude(group = "org.jetbrains", module = "annotations")
+        }
+    }
+
+    jarJar(group = "org.jetbrains", name = "annotations", version = "[$annotations_version, 24.0.0)")
 }
 
 val Project.minecraft: net.minecraftforge.gradle.common.util.MinecraftExtension
     get() = extensions.getByType()
 
-minecraft.let {
-    it.mappings("official", "1.19")
+minecraft.run {
+    mappings("official", "1.19")
 
-    it.runs {
+    runs {
         create("client") {
             workingDirectory(project.file("run"))
 
@@ -98,10 +114,10 @@ minecraft.let {
             property("forge.logging.console.level", "debug")
 
             mods {
-                this.create("kotlinforforge") {
+                create("kotlinforforge") {
                     source(sourceSets.main.get())
                 }
-                this.create("kotlinforforgetest") {
+                create("kotlinforforgetest") {
                     source(sourceSets.test.get())
                 }
             }
@@ -111,13 +127,13 @@ minecraft.let {
             workingDirectory(project.file("run/server"))
 
             property("forge.logging.console.level", "debug")
-            property("forge.logging.markers", "scan,loading,core")
+            property("forge.logging.markers", "SCAN,LOADING,CORE")
 
             mods {
-                this.create("kotlinforforge") {
+                create("kotlinforforge") {
                     source(sourceSets.main.get())
                 }
-                this.create("kotlinforforgetest") {
+                create("kotlinforforgetest") {
                     source(sourceSets.test.get())
                 }
             }
@@ -152,8 +168,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 fun DependencyHandler.minecraft(
     dependencyNotation: Any
 ): Dependency? = add("minecraft", dependencyNotation)
-
-
-fun DependencyHandler.library(
-    dependencyNotation: Any
-): Dependency? = add("library", dependencyNotation)
