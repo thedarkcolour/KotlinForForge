@@ -33,7 +33,7 @@ public inline val FORGE_BUS: IEventBus
  * Examples:
  *   @see net.minecraftforge.fml.event.lifecycle.InterModProcessEvent
  *   @see net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
- *   @see net.minecraftforge.event.RegistryEvent
+ *   @see net.minecraftforge.registries.NewRegistryEvent
  */
 public inline val MOD_BUS: IEventBus
     get() = KotlinModLoadingContext.get().getKEventBus()
@@ -87,11 +87,11 @@ public inline fun <T> runForDist(clientTarget: () -> T, serverTarget: () -> T): 
 /**
  * Register a config
  */
-public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
+public fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
     LOADING_CONTEXT.registerConfig(type, spec, fileName)
 }
 
-public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
+public fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
     LOADING_CONTEXT.registerConfig(type, spec)
 }
 

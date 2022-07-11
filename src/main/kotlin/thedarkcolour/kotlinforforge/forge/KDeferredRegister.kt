@@ -10,8 +10,7 @@ import kotlin.reflect.KProperty
  */
 public typealias KDeferredRegister<T> = DeferredRegister<T>
 
-// TODO re-add once Jar in Jar is a thing
-/*public fun interface ObjectHolderDelegate<V : IForgeRegistryEntry<in V>> : ReadOnlyProperty<Any?, V>, Supplier<V>, () -> V {
+public fun interface ObjectHolderDelegate<V> : ReadOnlyProperty<Any?, V>, Supplier<V>, () -> V {
     override fun getValue(thisRef: Any?, property: KProperty<*>): V {
         return get()
     }
@@ -19,7 +18,7 @@ public typealias KDeferredRegister<T> = DeferredRegister<T>
     override fun invoke(): V {
         return get()
     }
-}*/
+}
 
 /**
  * Inline function to replace ObjectHolderDelegate
@@ -30,18 +29,12 @@ public typealias KDeferredRegister<T> = DeferredRegister<T>
  * @param V Type of deferred register
  * @param T Specific type of object being registered
  */
-public inline fun <V, T : V> KDeferredRegister<V>.registerObject(
+public fun <V, T : V> KDeferredRegister<V>.registerObject(
     name: String,
-    noinline supplier: () -> T
-): ReadOnlyProperty<Any?, T> {
+    supplier: () -> T
+): ObjectHolderDelegate<T> {
     val registryObject = this.register(name, supplier)
 
     // note that this anonymous class inherits three types
-    return object : ReadOnlyProperty<Any?, T>, Supplier<T>, () -> T {
-        override fun get(): T = registryObject.get()
-
-        override fun getValue(thisRef: Any?, property: KProperty<*>): T = get()
-
-        override fun invoke(): T = get()
-    }
+    return ObjectHolderDelegate { registryObject.get() }
 }

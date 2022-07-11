@@ -6,7 +6,7 @@ import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
 
 /**
  * Set `modLoader` in mods.toml to
- * `"kotlinforforge"` and loaderVersion to `"[2.0,)"`.
+ * `"kotlinforforge"` and loaderVersion to `"[3,)"`.
  *
  * Make sure to use [MOD_CONTEXT]
  * instead of [FMLJavaModLoadingContext].

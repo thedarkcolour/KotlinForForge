@@ -41,35 +41,35 @@ public inline fun <reified E : Enum<E>> enumSet(): EnumSet<E> {
  * an enum set initially containing an arbitrary number of elements, but
  * is likely to run slower than the overloads that do not use varargs.
  */
-public inline fun <E : Enum<E>> enumSetOf(e: E): EnumSet<E> {
+public fun <E : Enum<E>> enumSetOf(e: E): EnumSet<E> {
     return EnumSet.of(e)
 }
 
 /**
  * @see enumSetOf
  */
-public inline fun <E : Enum<E>> enumSetOf(e1: E, e2: E): EnumSet<E> {
+public fun <E : Enum<E>> enumSetOf(e1: E, e2: E): EnumSet<E> {
     return EnumSet.of(e1, e2)
 }
 
 /**
  * @see enumSetOf
  */
-public inline fun <E : Enum<E>> enumSetOf(e1: E, e2: E, e3: E): EnumSet<E> {
+public fun <E : Enum<E>> enumSetOf(e1: E, e2: E, e3: E): EnumSet<E> {
     return EnumSet.of(e1, e2, e3)
 }
 
 /**
  * @see enumSetOf
  */
-public inline fun <E : Enum<E>> enumSetOf(e1: E, e2: E, e3: E, e4: E): EnumSet<E> {
+public fun <E : Enum<E>> enumSetOf(e1: E, e2: E, e3: E, e4: E): EnumSet<E> {
     return EnumSet.of(e1, e2, e3, e4)
 }
 
 /**
  * @see enumSetOf
  */
-public inline fun <E : Enum<E>> enumSetOf(e1: E, e2: E, e3: E, e4: E, e5: E): EnumSet<E> {
+public fun <E : Enum<E>> enumSetOf(e1: E, e2: E, e3: E, e4: E, e5: E): EnumSet<E> {
     return EnumSet.of(e1, e2, e3, e4, e5)
 }
 
@@ -80,6 +80,6 @@ public inline fun <E : Enum<E>> enumSetOf(e1: E, e2: E, e3: E, e4: E, e5: E): En
  * number of elements, but it is likely to run slower than the overloads
  * that do not use varargs.
  */
-public inline fun <E : Enum<E>> enumSetOf(first: E, vararg rest: E): EnumSet<E> {
+public fun <E : Enum<E>> enumSetOf(first: E, vararg rest: E): EnumSet<E> {
     return EnumSet.of(first, *rest)
 }
