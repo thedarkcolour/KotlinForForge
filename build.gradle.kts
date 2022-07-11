@@ -2,6 +2,9 @@ val kotlin_version: String by project
 val annotations_version: String by project
 val coroutines_version: String by project
 val serialization_version: String by project
+val max_kotlin: String by project
+val max_coroutines: String by project
+val max_serialization: String by project
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.7.0"
@@ -10,7 +13,7 @@ plugins {
     id("com.modrinth.minotaur") version "2.+"
 }
 
-version = "3.6.0"
+version = "3.7.0"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -59,44 +62,26 @@ minecraft.runs.all {
 dependencies {
     minecraft("net.minecraftforge:forge:1.19-41.0.91")
 
-    val library = configurations["library"]
+    val libraryConfig = configurations["library"]
 
-    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
-        exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = "org.jetbrains", name = name, version = "[$kotlin_version, 1.8)") {
-            exclude(group = "org.jetbrains", module = "annotations")
+    fun library(dependencyNotation: String, maxVersion: String) {
+        libraryConfig(dependencyNotation) {
+            exclude("org.jetbrains", "annotations")
+            jarJar(group = group!!, name = name, version = "[$version, $maxVersion)") {
+                exclude("org.jetbrains", "annotations")
+            }
         }
     }
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") {
-        exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = "org.jetbrains", name = name, version = "[$kotlin_version, 1.8)") {
-            exclude(group = "org.jetbrains", module = "annotations")
-        }
-    }
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version") {
-        exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = "org.jetbrains", name = name, version = "[$coroutines_version, 1.7)") {
-            exclude(group = "org.jetbrains", module = "annotations")
-        }
-    }
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version") {
-        exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = "org.jetbrains", name = name, version = "[$coroutines_version, 1.7)") {
-            exclude(group = "org.jetbrains", module = "annotations")
-        }
-    }
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version") {
-        exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = "org.jetbrains", name = name, version = "[$coroutines_version, 1.7)") {
-            exclude(group = "org.jetbrains", module = "annotations")
-        }
-    }
-    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version") {
-        exclude(group = "org.jetbrains", module = "annotations")
-        jarJar(group = "org.jetbrains", name = name, version = "[$serialization_version, 1.4)") {
-            exclude(group = "org.jetbrains", module = "annotations")
-        }
-    }
+
+    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version", max_kotlin)
+    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version", max_kotlin)
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version", max_coroutines)
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", max_coroutines)
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", max_coroutines)
+    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", max_serialization)
+    //implementation(project(":kfflib")) {
+    //    jarJar(group = "thedarkcolour.kotlinforforge", name = "kfflib", version = "${project.version}")
+    //}
 
     jarJar(group = "org.jetbrains", name = "annotations", version = "[$annotations_version, 24.0.0)")
 }
@@ -127,8 +112,8 @@ minecraft.run {
         create("server") {
             workingDirectory(project.file("run/server"))
 
-            property("forge.logging.console.level", "debug")
             property("forge.logging.markers", "SCAN,LOADING,CORE")
+            property("forge.logging.console.level", "debug")
 
             mods {
                 create("kotlinforforge") {
@@ -140,6 +125,10 @@ minecraft.run {
             }
         }
     }
+}
+
+sourceSets {
+    test
 }
 
 tasks.withType<Jar> {
@@ -162,6 +151,10 @@ tasks.withType<Jar> {
     }
 }
 
+tasks.withType<net.minecraftforge.gradle.userdev.tasks.JarJar> {
+    archiveClassifier.set("obf")
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
 }
@@ -178,7 +171,7 @@ modrinth {
     projectId.set("ordsPcFz")
     versionNumber.set("${project.version}")
     versionType.set("release")
-    uploadFile.set(tasks.shadowJar as Any)
+    uploadFile.set(tasks.jarJar as Any)
     gameVersions.addAll("1.18", "1.18.1", "1.19")
     loaders.add("forge")
 }
