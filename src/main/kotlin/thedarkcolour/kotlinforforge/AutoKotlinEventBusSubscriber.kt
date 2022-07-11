@@ -2,16 +2,13 @@ package thedarkcolour.kotlinforforge
 
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.fml.Logging
-import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext
 import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.objectweb.asm.Type
 import thedarkcolour.kotlinforforge.forge.DIST
 import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
-import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
 import thedarkcolour.kotlinforforge.kotlin.enumSet
 
 /**

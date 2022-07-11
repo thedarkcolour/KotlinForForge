@@ -1,11 +1,11 @@
 modLoader="kotlinforforge"
-loaderVersion="[2.0,)"
+loaderVersion="[3,)"
 license="LGPL v2.1"
 
 [[mods]]
 displayName="Kotlin for Forge"
 modId="kotlinforforgetest"
-version="2.0.0"
+version="3.6.0"
 authors="TheDarkColour"
 credits="Herobrine knows all. Thanks to Username404-59 and TheOnlyTails on GitHub"
 issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues"
@@ -16,12 +16,12 @@ Kotlin for Forge. Allows mods to use the Kotlin programming language.
 [[dependencies.kotlinforforgetest]]
 modId="forge"
 mandatory=true
-versionRange="[37,)"
+versionRange="[41,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.kotlinforforgetest]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.17,1.18)"
+versionRange="[1.19,1.20)"
 ordering="NONE"
 side="BOTH"

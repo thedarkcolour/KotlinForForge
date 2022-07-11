@@ -33,7 +33,7 @@ public inline val FORGE_BUS: IEventBus
  * Examples:
  *   @see net.minecraftforge.fml.event.lifecycle.InterModProcessEvent
  *   @see net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
- *   @see net.minecraftforge.event.RegistryEvent
+ *   @see net.minecraftforge.registries.NewRegistryEvent
  */
 public inline val MOD_BUS: IEventBus
     get() = KotlinModLoadingContext.get().getKEventBus()

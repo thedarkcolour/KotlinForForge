@@ -1,3 +1,5 @@
+
+
 package thedarkcolour.kotlinforforge.forge
 
 import net.minecraftforge.registries.DeferredRegister
@@ -15,7 +17,6 @@ public typealias KDeferredRegister<T> = DeferredRegister<T>
     override fun getValue(thisRef: Any?, property: KProperty<*>): V {
         return get()
     }
-
     override fun invoke(): V {
         return get()
     }
