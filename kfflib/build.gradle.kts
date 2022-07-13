@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.incremental.ChangesCollector.Companion.getNonPrivateNames
+import org.jetbrains.kotlin.utils.addToStdlib.cast
+
 val kotlin_version: String by project
 val annotations_version: String by project
 val coroutines_version: String by project
@@ -62,6 +65,13 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["kotlin"])
+
+            // Remove Minecraft from transitive dependencies
+            pom.withXml {
+                asNode().get("dependencies").cast<groovy.util.NodeList>().first().cast<groovy.util.Node>().children().cast<MutableList<groovy.util.Node>>().removeAll { child ->
+                    child.get("groupId").cast<groovy.util.NodeList>().first().cast<groovy.util.Node>().value() == "net.minecraftforge"
+                }
+            }
         }
     }
 }

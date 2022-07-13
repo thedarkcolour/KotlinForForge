@@ -29,7 +29,8 @@ val kotlinSourceJar by tasks.creating(Jar::class) {
 }
 
 tasks.build.get().dependsOn(kotlinSourceJar)
-tasks.build.get().dependsOn(project(":kfflib").tasks.getByName("publishToMavenLocal"))
+// Workaround for JarJar not handling project dependencies
+tasks.getByName("compileKotlin").dependsOn(project(":kfflib").tasks.getByName("publishToMavenLocal"))
 
 // Workaround to remove build\java from MOD_CLASSES because SJH doesn't like nonexistent dirs
 for (s in arrayOf(sourceSets.main, sourceSets.test)) {
@@ -81,8 +82,9 @@ dependencies {
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", max_serialization)
-    implementation(project(":kfflib")) {
-        jarJar(group = "thedarkcolour.kotlinforforge", name = "kfflib", version = "[${project.version}, 4.0)")
+    implementation(group = "thedarkcolour.kotlinforforge", name = "kfflib", version = "[${project.version}, 4.0)") {
+        jarJar.pin(this, "${project.version}")
+        isTransitive = false
     }
 
     implementation(group = "org.jetbrains", name = "annotations", version = "[$annotations_version,)") {
