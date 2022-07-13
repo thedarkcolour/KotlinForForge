@@ -28,7 +28,7 @@ public class ObjectHolderDelegate<V>(public val registryObject: RegistryObject<V
 public fun <V, T : V> DeferredRegister<V>.registerObject(
     name: String,
     supplier: () -> T,
-): ReadOnlyProperty<Any?, T> {
+): ObjectHolderDelegate<T> {
     val registryObject = this.register(name, supplier)
 
     // note that this anonymous class inherits three types

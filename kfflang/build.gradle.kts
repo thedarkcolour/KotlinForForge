@@ -30,7 +30,7 @@ val kotlinSourceJar by tasks.creating(Jar::class) {
 
 tasks.build.get().dependsOn(kotlinSourceJar)
 // Workaround for JarJar not handling project dependencies
-tasks.getByName("compileKotlin").dependsOn(project(":kfflib").tasks.getByName("publishToMavenLocal"))
+tasks.getByName("compileKotlin").dependsOn(project(":kfflib").tasks.getByName("build"), project(":kfflib").tasks.getByName("publishToMavenLocal"))
 
 // Workaround to remove build\java from MOD_CLASSES because SJH doesn't like nonexistent dirs
 for (s in arrayOf(sourceSets.main, sourceSets.test)) {
@@ -132,7 +132,6 @@ minecraft.run {
 
 tasks.withType<Jar> {
     archiveBaseName.set("kotlinforforge")
-    destinationDir = file("$rootDir/build/libs/thedarkcolour/kotlinforforge")
 
     manifest {
         attributes(
