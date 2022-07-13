@@ -17,14 +17,12 @@ import kotlin.String
  * Reuse a bit of code from FMLJavaModLanguageProvider
  */
 public class KotlinLanguageProvider : IModLanguageProvider {
-    val MODANNOTATION = Type.getType("Lnet/minecraftforge/fml/common/Mod;")
-
-    override fun name() = "kotlinforforge"
+    override fun name(): String = "kotlinforforge"
 
     override fun getFileVisitor(): Consumer<ModFileScanData> {
         return Consumer { scanData ->
             scanData.addLanguageLoader(scanData.annotations.filter { data ->
-                data.annotationType == MODANNOTATION
+                data.annotationType == MOD_ANNOTATION
             }.associate { data ->
                 val modid = data.annotationData["value"] as String
                 val modClass = data.clazz.className
@@ -37,7 +35,7 @@ public class KotlinLanguageProvider : IModLanguageProvider {
 
     override fun <R : ILifecycleEvent<R>?> consumeLifecycleEvent(consumeEvent: Supplier<R>?) {}
 
-    public class KotlinModTarget(private val className: String) : IModLanguageProvider.IModLanguageLoader {
+    private class KotlinModTarget(private val className: String) : IModLanguageProvider.IModLanguageLoader {
         override fun <T> loadMod(info: IModInfo, modFileScanResults: ModFileScanData, gameLayer: ModuleLayer): T {
             try {
                 val ktContainer = Class.forName("thedarkcolour.kotlinforforge.KotlinModContainer", true, Thread.currentThread().contextClassLoader)
@@ -70,12 +68,16 @@ public class KotlinLanguageProvider : IModLanguageProvider {
             LOGGER.fatal(Logging.LOADING, "Unable to load KotlinModContainer, wat", exception)
 
             // ModLoadingException
-            val mle = Class.forName("net.minecraftforge.fml.ModLoadingException", true, Thread.currentThread().contextClassLoader) as Class<RuntimeException>
+            val mle = Class.forName("net.minecraftforge.fml.ModLoadingException", true, Thread.currentThread().contextClassLoader) as Class<ModLoadingException>
             // ModLoadingStage
             val mls = Class.forName("net.minecraftforge.fml.ModLoadingStage", true, Thread.currentThread().contextClassLoader) as Class<ModLoadingStage>
 
             // Throw a new ModLoadingException containing the exception
             throw mle.getConstructor(IModInfo::class.java, mls, String::class.java, Throwable::class.java).newInstance(info, java.lang.Enum.valueOf(mls, "CONSTRUCT"), "fml.modloading.failedtoloadmodclass", exception)
         }
+    }
+
+    private companion object {
+        private val MOD_ANNOTATION = Type.getType("Lnet/minecraftforge/fml/common/Mod;")
     }
 }
