@@ -65,6 +65,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["kotlin"])
+            artifact(kotlinSourceJar)
 
             // Remove Minecraft from transitive dependencies
             pom.withXml {

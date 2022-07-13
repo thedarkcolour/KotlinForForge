@@ -155,7 +155,8 @@ tasks.withType<net.minecraftforge.gradle.userdev.tasks.JarJar> {
     archiveClassifier.set("obf")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+// Only require the lang provider to use explicit visibility modifiers, not the test mod
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().getByName("compileKotlin") {
     kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
 }
 
