@@ -1,12 +1,13 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    id("org.jetbrains.kotlin.jvm") version "1.7.10" apply false
     id("net.minecraftforge.gradle") version "5.1.+" apply false
 }
 
 // Current KFF version
-version = "3.7.0"
-group = "thedarkcolour.kotlinforforge"
+val kffVersion = "3.7.0"
+val kffGroup = "thedarkcolour.kotlinforforge"
 
-repositories {
-    mavenCentral()
+allprojects {
+    version = kffVersion
+    group = kffGroup
 }

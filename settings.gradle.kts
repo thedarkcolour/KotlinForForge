@@ -9,5 +9,4 @@ pluginManagement {
         id("org.jetbrains.kotlin.plugin.serialization") version kotlin_version
     }
 }
-include("kfflib")
-include("kfflang")
+include("kfflib", "kfflang")

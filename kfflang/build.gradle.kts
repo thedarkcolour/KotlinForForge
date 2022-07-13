@@ -6,16 +6,14 @@ val max_kotlin: String by project
 val max_coroutines: String by project
 val max_serialization: String by project
 
+evaluationDependsOn(":kfflib")
+
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("net.minecraftforge.gradle")
     id("com.modrinth.minotaur") version "2.+"
 }
-
-// Current KFF version
-version = "3.7.0"
-group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 kotlin.jvmToolchain {}
@@ -31,6 +29,7 @@ val kotlinSourceJar by tasks.creating(Jar::class) {
 }
 
 tasks.build.get().dependsOn(kotlinSourceJar)
+tasks.build.get().dependsOn(project(":kfflib").tasks.getByName("publishToMavenLocal"))
 
 // Workaround to remove build\java from MOD_CLASSES because SJH doesn't like nonexistent dirs
 for (s in arrayOf(sourceSets.main, sourceSets.test)) {
@@ -60,6 +59,8 @@ minecraft.runs.all {
 
 repositories {
     mavenCentral()
+    // For testing with kfflib and making JarJar shut up
+    mavenLocal()
 }
 
 dependencies {
@@ -80,17 +81,14 @@ dependencies {
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", max_serialization)
-    //implementation(project(":kfflib")) {
-    //    jarJar(group = "thedarkcolour.kotlinforforge", name = "kfflib", version = "[${project.version}, 4.0)")
-    //}
+    implementation(project(":kfflib")) {
+        jarJar(group = "thedarkcolour.kotlinforforge", name = "kfflib", version = "[${project.version}, 4.0)")
+    }
 
     implementation(group = "org.jetbrains", name = "annotations", version = "[$annotations_version,)") {
         jarJar.pin(this, annotations_version)
     }
 }
-
-val Project.minecraft: net.minecraftforge.gradle.common.util.MinecraftExtension
-    get() = extensions.getByType()
 
 minecraft.run {
     mappings("official", "1.19")
