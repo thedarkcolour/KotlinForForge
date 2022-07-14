@@ -13,9 +13,9 @@ import net.minecraftforge.fml.ModLoadingStage
 import net.minecraftforge.fml.event.IModBusEvent
 import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.ModFileScanData
-import thedarkcolour.kotlinforforge.kotlin.supply
 import java.util.*
 import java.util.function.Consumer
+import java.util.function.Supplier
 
 /**
  * Kotlin mod container
@@ -42,8 +42,9 @@ public class KotlinModContainer(
         configHandler = Optional.of(Consumer { event ->
             eventBus.post(event.self())
         })
-        
-        contextExtension = supply(KotlinModLoadingContext(this))
+
+        val ctx = KotlinModLoadingContext(this)
+        contextExtension = Supplier {ctx}
         
         try {
             val layer = gameLayer.findModule(info.owningFile.moduleName()).orElseThrow()

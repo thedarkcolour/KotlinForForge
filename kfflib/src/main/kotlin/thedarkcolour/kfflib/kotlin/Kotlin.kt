@@ -1,4 +1,4 @@
-package thedarkcolour.kotlinforforge.kotlin
+package thedarkcolour.kfflib.kotlin
 
 import java.util.*
 import java.util.function.Supplier

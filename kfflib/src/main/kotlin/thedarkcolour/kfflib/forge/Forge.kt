@@ -1,4 +1,4 @@
-package thedarkcolour.kotlinforforge.forge
+package thedarkcolour.kfflib.forge
 
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.common.ForgeConfigSpec
