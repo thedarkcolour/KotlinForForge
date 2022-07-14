@@ -1,4 +1,4 @@
-package thedarkcolour.kfflib.forge
+package thedarkcolour.kotlinforforge.forge
 
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.RegistryObject

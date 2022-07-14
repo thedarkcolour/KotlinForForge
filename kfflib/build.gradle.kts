@@ -52,15 +52,10 @@ dependencies {
     }
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version", excludeAnnotations)
-
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version", excludeAnnotations)
-
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version", excludeAnnotations)
-
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", excludeAnnotations)
-
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", excludeAnnotations)
-
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", excludeAnnotations)
 
     implementation(group = "thedarkcolour", name = "kotlinforforge", version = "[${project.version}, 4.0)")
@@ -119,10 +114,10 @@ minecraft.run {
     }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+// Only require the lang provider to use explicit visibility modifiers, not the test mod
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().getByName("compileKotlin") {
     kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
 }
-
 
 tasks.withType<Jar> {
     archiveBaseName.set("kfflib")
