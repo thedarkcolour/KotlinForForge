@@ -61,6 +61,28 @@ minecraft.run {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
 }
+
+
+tasks.withType<Jar> {
+    archiveBaseName.set("kfflib")
+
+    manifest {
+        attributes(
+            mapOf(
+                "FMLModType" to "GAMELIBRARY",
+                "Specification-Title" to "kfflib",
+                "Specification-Vendor" to "Forge",
+                "Specification-Version" to "1",
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to "${project.version}",
+                "Implementation-Vendor" to "thedarkcolour",
+                "Implementation-Timestamp" to `java.text`.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                    .format(`java.util`.Date())
+            )
+        )
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
