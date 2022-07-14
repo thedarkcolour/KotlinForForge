@@ -5,7 +5,7 @@ plugins {
 
 // Current KFF version
 val kffVersion = "3.7.0"
-val kffGroup = "thedarkcolour.kotlinforforge"
+val kffGroup = "thedarkcolour"
 
 allprojects {
     version = kffVersion

@@ -1,4 +1,4 @@
-package thedarkcolour.kotlinforforge.forge
+package thedarkcolour.kfflib.forge
 
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.RegistryObject
@@ -28,7 +28,8 @@ public class ObjectHolderDelegate<V>(public val registryObject: RegistryObject<V
 public fun <V, T : V> DeferredRegister<V>.registerObject(
     name: String,
     supplier: () -> T,
-): ObjectHolderDelegate<T> {
+): ObjectHolderDelegate<T>
+{
     val registryObject = this.register(name, supplier)
 
     // note that this anonymous class inherits three types

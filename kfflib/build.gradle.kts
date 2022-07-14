@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.incremental.ChangesCollector.Companion.getNonPrivateNames
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 val kotlin_version: String by project
@@ -26,6 +25,8 @@ tasks.build.get().dependsOn(kotlinSourceJar)
 
 repositories {
     mavenCentral()
+
+    mavenLocal()
 }
 
 configurations {
@@ -45,17 +46,77 @@ dependencies {
     minecraft("net.minecraftforge:forge:1.19-41.0.91")
 
     val library = configurations["library"]
+    
+    val excludeAnnotations: ExternalModuleDependency.() -> Unit = {
+        exclude(group = "org.jetbrains", module = "annotations")
+    }
 
-    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
+    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version", excludeAnnotations)
+
+    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version", excludeAnnotations)
+
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version", excludeAnnotations)
+
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", excludeAnnotations)
+
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", excludeAnnotations)
+
+    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", excludeAnnotations)
+
+    implementation(group = "thedarkcolour", name = "kotlinforforge", version = "[${project.version}, 4.0)")
+}
+
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("thedarkcolour:kotlinforforge")).using(project(":kfflang")).because("Include from local instead of maven")
+    }
 }
 
 minecraft.run {
     mappings("official", "1.19")
+
+    runs {
+        runs {
+            create("client") {
+                workingDirectory(project.file("run"))
+
+                property("forge.logging.markers", "SCAN,LOADING,CORE")
+                property("forge.logging.console.level", "debug")
+
+                mods {
+                    create("kfflib") {
+                        source(sourceSets.main.get())
+                    }
+                }
+
+                mods {
+                    create("kfflibtest") {
+                        source(sourceSets.test.get())
+                    }
+                }
+            }
+
+
+            create("server") {
+                workingDirectory(project.file("run/server"))
+
+                property("forge.logging.markers", "SCAN,LOADING,CORE")
+                property("forge.logging.console.level", "debug")
+
+                mods {
+                    create("kfflib") {
+                        source(sourceSets.main.get())
+                    }
+                }
+
+                mods {
+                    create("kfflibtest") {
+                        source(sourceSets.test.get())
+                    }
+                }
+            }
+        }
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
