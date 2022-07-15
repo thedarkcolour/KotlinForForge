@@ -18,7 +18,7 @@ public inline fun <reified K : Enum<K>, V> enumMapOf(): MutableMap<K, V> {
 }
 
 /**
- * Returns an new [EnumMap] with the specified contents, given as a list of pairs
+ * Returns a new [EnumMap] with the specified contents, given as a list of pairs
  * where the first component is the key and the second is the value.
  */
 public inline fun <reified K : Enum<K>, V> enumMapOf(vararg pairs: Pair<K, V>): MutableMap<K, V> {

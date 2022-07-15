@@ -3,8 +3,8 @@ loaderVersion="[3,)"
 license="LGPL v2.1"
 
 [[mods]]
-displayName="Kotlin for Forge Language Test"
-modId="kfflangtest"
+displayName="Kotlin for Forge Library Test"
+modId="kfflibtest"
 version="3.7.0"
 authors="TheDarkColour"
 credits="Herobrine knows all. Thanks to Username404-59 and TheOnlyTails on GitHub"
@@ -13,13 +13,13 @@ description='''
 Kotlin for Forge. Allows mods to use the Kotlin programming language.
 '''
 
-[[dependencies.kfflangtest]]
+[[dependencies.kfflibtest]]
 modId="forge"
 mandatory=true
 versionRange="[41,)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.kfflangtest]]
+[[dependencies.kfflibtest]]
 modId="minecraft"
 mandatory=true
 versionRange="[1.19,1.20)"

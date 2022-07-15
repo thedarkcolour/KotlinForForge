@@ -1,3 +1,6 @@
+import net.minecraftforge.gradle.userdev.tasks.JarJar
+import org.jetbrains.kotlin.utils.addToStdlib.cast
+
 val kotlin_version: String by project
 val annotations_version: String by project
 val coroutines_version: String by project
@@ -6,13 +9,12 @@ val max_kotlin: String by project
 val max_coroutines: String by project
 val max_serialization: String by project
 
-evaluationDependsOn(":kfflib")
-
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("net.minecraftforge.gradle")
     id("com.modrinth.minotaur") version "2.+"
+    `maven-publish`
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -29,8 +31,6 @@ val kotlinSourceJar by tasks.creating(Jar::class) {
 }
 
 tasks.build.get().dependsOn(kotlinSourceJar)
-// Workaround for JarJar not handling project dependencies
-tasks.getByName("compileKotlin").dependsOn(project(":kfflib").tasks.getByName("build"), project(":kfflib").tasks.getByName("publishToMavenLocal"))
 
 // Workaround to remove build\java from MOD_CLASSES because SJH doesn't like nonexistent dirs
 for (s in arrayOf(sourceSets.main, sourceSets.test)) {
@@ -82,9 +82,13 @@ dependencies {
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", max_serialization)
-    implementation(group = "thedarkcolour.kotlinforforge", name = "kfflib", version = "[${project.version}, 4.0)") {
-        jarJar.pin(this, "${project.version}")
+
+    // Include kfflib into JarInJar, but doesn't use it as actual dependency
+    val kfflib = create(group = "thedarkcolour", name = "kfflib", version = "[${project.version}, 4.0)")
+
+    jarJar(kfflib) {
         isTransitive = false
+        jarJar.pin(this, "${project.version}")
     }
 
     implementation(group = "org.jetbrains", name = "annotations", version = "[$annotations_version,)") {
@@ -106,7 +110,8 @@ minecraft.run {
                 create("kotlinforforge") {
                     source(sourceSets.main.get())
                 }
-                create("kotlinforforgetest") {
+
+                create("kfflangtest") {
                     source(sourceSets.test.get())
                 }
             }
@@ -122,7 +127,8 @@ minecraft.run {
                 create("kotlinforforge") {
                     source(sourceSets.main.get())
                 }
-                create("kotlinforforgetest") {
+
+                create("kfflangtest") {
                     source(sourceSets.test.get())
                 }
             }
@@ -150,7 +156,7 @@ tasks.withType<Jar> {
     }
 }
 
-tasks.withType<net.minecraftforge.gradle.userdev.tasks.JarJar> {
+tasks.withType<JarJar> {
     archiveClassifier.set("obf")
 }
 
@@ -166,6 +172,23 @@ fun DependencyHandler.minecraft(
 fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = "kotlinforforge"
+            from(components["kotlin"])
+            artifact(kotlinSourceJar)
+
+            // Remove Minecraft from transitive dependencies
+            pom.withXml {
+                asNode().get("dependencies").cast<groovy.util.NodeList>().first().cast<groovy.util.Node>().children().cast<MutableList<groovy.util.Node>>().removeAll { child ->
+                    child.get("groupId").cast<groovy.util.NodeList>().first().cast<groovy.util.Node>().value() == "net.minecraftforge"
+                }
+            }
+        }
+    }
+}
 
 modrinth {
     projectId.set("ordsPcFz")
