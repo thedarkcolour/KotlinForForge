@@ -71,25 +71,36 @@ dependencies {
         add("library", dependencyNotation) {
             exclude("org.jetbrains", "annotations")
             jarJar(group = group!!, name = name, version = "[$version, $maxVersion)") {
+                isTransitive = false
                 exclude("org.jetbrains", "annotations")
             }
+        }
+    }
+    // Adds to JarJar without using as Gradle dependency
+    fun compileLibrary(group: String, name: String, version: String, maxVersion: String) {
+        val lib = this.create(group, name, version = "[$version,$maxVersion)")
+        jarJar(lib) {
+            isTransitive = false
+            jarJar.pin(this, version)
         }
     }
 
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version", max_kotlin)
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version", max_kotlin)
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version", max_coroutines)
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", max_serialization)
 
-    // Include kfflib into JarInJar, but doesn't use it as actual dependency
-    val kfflib = create(group = "thedarkcolour", name = "kfflib", version = "[${project.version}, 4.0)")
+    // These are necessary to make sure JarJar includes all the correct libraries.
+    // The above "library" deps are not transitive in JarJar because JarJar fails to
+    // handle them properly, so they are manually added here, one by one.
+    compileLibrary("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin_version, max_kotlin)
+    compileLibrary("org.jetbrains.kotlinx", "kotlinx-serialization-core", serialization_version, max_serialization)
+    compileLibrary("org.jetbrains.kotlin", "kotlin-stdlib", kotlin_version, max_kotlin)
+    compileLibrary("org.jetbrains.kotlin", "kotlin-stdlib-common", kotlin_version, max_kotlin)
 
-    jarJar(kfflib) {
-        isTransitive = false
-        jarJar.pin(this, "${project.version}")
-    }
+    // Include kfflib into JarInJar, but doesn't use it as actual dependency
+    compileLibrary("thedarkcolour", "kfflib", "${project.version}", "4.0")
 
     implementation(group = "org.jetbrains", name = "annotations", version = "[$annotations_version,)") {
         jarJar.pin(this, annotations_version)
@@ -144,6 +155,7 @@ tasks.withType<Jar> {
             mapOf(
                 "FMLModType" to "LANGPROVIDER",
                 "Specification-Title" to "Kotlin for Forge",
+                "Automatic-Module-Name" to "kotlinforforge",
                 "Specification-Vendor" to "Forge",
                 "Specification-Version" to "1",
                 "Implementation-Title" to project.name,

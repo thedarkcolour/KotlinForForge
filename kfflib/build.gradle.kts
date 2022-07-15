@@ -127,6 +127,7 @@ tasks.withType<Jar> {
             mapOf(
                 "FMLModType" to "GAMELIBRARY",
                 "Specification-Title" to "kfflib",
+                "Automatic-Module-Name" to "kfflib",
                 "Specification-Vendor" to "Forge",
                 "Specification-Version" to "1",
                 "Implementation-Title" to project.name,
