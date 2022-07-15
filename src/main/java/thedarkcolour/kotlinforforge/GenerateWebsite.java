@@ -11,7 +11,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class GenerateWebsite {
     public static void main(String[] args) {
-        var f = new File("thedarkcolour/kotlinforforge/");
+        forArtifact("kotlinforforge");
+        forArtifact("kfflib");
+    }
+
+    public static void forArtifact(String artifact) {
+        var f = new File("thedarkcolour/" + artifact + "/");
 
         assert f.isDirectory();
 
@@ -27,7 +32,7 @@ public class GenerateWebsite {
                 }
             }
 
-            var metadata = new File("thedarkcolour/kotlinforforge/maven-metadata.xml");
+            var metadata = new File("thedarkcolour/" + artifact + "/maven-metadata.xml");
             writeSum(metadata, "MD5", ".md5");
             writeSum(metadata, "SHA-1", ".sha1");
         } catch (IOException | NoSuchAlgorithmException exception) {
@@ -35,16 +40,15 @@ public class GenerateWebsite {
         }
     }
 
-
     public static void writeSum(File file, String digest, String extension) throws IOException, NoSuchAlgorithmException {
         var sumFile = new File(file.getPath() + extension);
         var sum = new BigInteger(1, MessageDigest.getInstance(digest).digest(Files.readAllBytes(file.toPath()))).toString(16);
-        sumFile.setWritable(true);
+        assert sumFile.setWritable(true);
 
         try (var writer = new FileWriter(sumFile)) {
             try (var bufferedWriter = new BufferedWriter(writer)) {
                 bufferedWriter.write(sum);
-                sumFile.createNewFile();
+                assert sumFile.createNewFile();
             }
         }
     }
