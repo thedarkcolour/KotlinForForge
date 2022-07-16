@@ -101,10 +101,7 @@ dependencies {
 
     // Include kfflib into JarInJar, but doesn't use it as actual dependency
     compileLibrary("thedarkcolour", "kfflib", "${project.version}", "4.0")
-
-    implementation(group = "org.jetbrains", name = "annotations", version = "[$annotations_version,)") {
-        jarJar.pin(this, annotations_version)
-    }
+    compileLibrary("org.jetbrains", "annotations", annotations_version, "")
 }
 
 minecraft.run {
