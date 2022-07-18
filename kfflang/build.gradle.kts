@@ -70,7 +70,7 @@ dependencies {
     val library = configurations["library"]
 
     fun include(group: String, name: String, version: String) {
-        library(group = group, name = name, version = version, classifier = "modular") {
+        library(group = group, name = name, version = version) {
             exclude(group = "org.jetbrains", module = "annotations")
             isTransitive = false
         }
