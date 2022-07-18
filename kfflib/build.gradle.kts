@@ -58,12 +58,12 @@ dependencies {
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", excludeAnnotations)
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", excludeAnnotations)
 
-    implementation(group = "thedarkcolour", name = "kotlinforforge", version = "[${project.version}, 4.0)")
+    implementation(group = "thedarkcolour", name = "kfflang", version = "[${project.version}, 4.0)")
 }
 
 configurations.all {
     resolutionStrategy.dependencySubstitution {
-        substitute(module("thedarkcolour:kotlinforforge")).using(project(":kfflang")).because("Include from local instead of maven")
+        substitute(module("thedarkcolour:kfflang")).using(project(":kfflang")).because("Include from local instead of maven")
     }
 }
 
