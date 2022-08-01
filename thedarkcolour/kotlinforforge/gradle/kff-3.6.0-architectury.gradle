@@ -1,0 +1,31 @@
+// CHANGE THESE EACH KFF UPDATE
+ext.kotlin_version = '1.7.0'
+ext.coroutines_version = '1.6.2'
+ext.serialization_version = '1.3.3'
+
+project.properties['kotlin.stdlib.default.dependency'] = false
+
+repositories {
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+}
+
+dependencies {
+    // Kotlin for Forge
+    implementation 'thedarkcolour:kotlinforforge:3.6.0'
+
+    groovy.lang.Closure exclude_annotations = { exclude group: 'org.jetbrains', module: 'annotations' }
+
+    // Add everything to the classpath correctly
+    implementation(group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version, exclude_annotations)
+    implementation(group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version, exclude_annotations)
+    implementation(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version, exclude_annotations)
+    implementation(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: coroutines_version, exclude_annotations)
+    implementation(group: 'org.jetbrains.kotlinx', name: 'kotlinx-serialization-json', version: serialization_version, exclude_annotations)
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '17'
+}
