@@ -1,6 +1,5 @@
 package thedarkcolour.kotlinforforge
 
-import net.minecraftforge.eventbus.EventBus
 import net.minecraftforge.eventbus.EventBusErrorMessage
 import net.minecraftforge.eventbus.api.BusBuilder
 import net.minecraftforge.eventbus.api.Event
@@ -37,7 +36,15 @@ public class KotlinModContainer(
         LOGGER.debug(Logging.LOADING, "Creating KotlinModContainer instance for $className")
 
         activityMap[ModLoadingStage.CONSTRUCT] = Runnable(::constructMod)
-        eventBus = EventBus(BusBuilder.builder().setExceptionHandler(::onEventFailed).setTrackPhases(false).markerType(IModBusEvent::class.java))
+        val builder = BusBuilder.builder().setExceptionHandler(::onEventFailed).setTrackPhases(false).markerType(IModBusEvent::class.java)
+        eventBus = try {
+            val busBuilder = Class.forName("net.minecraftforge.eventbus.BusBuilder")
+            val m = busBuilder.getDeclaredMethod("useModLauncher")
+            m.invoke(builder)
+            builder.build()
+        } catch (e: NoSuchMethodException) {
+            builder.build()
+        }
         
         configHandler = Optional.of(Consumer { event ->
             eventBus.post(event.self())

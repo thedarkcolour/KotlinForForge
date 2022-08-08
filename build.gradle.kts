@@ -7,13 +7,13 @@ val max_coroutines: String by project
 val max_serialization: String by project
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.0"
+    id("org.jetbrains.kotlin.jvm") version "1.7.10"
     id("org.jetbrains.kotlin.plugin.serialization")
     id("net.minecraftforge.gradle") version "5.1.+"
     id("com.modrinth.minotaur") version "2.+"
 }
 
-version = "3.7.0"
+version = "3.7.1"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -60,16 +60,28 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:1.19-41.0.91")
+    minecraft("net.minecraftforge:forge:1.19.2-43.0.2")
 
     val libraryConfig = configurations["library"]
 
     fun library(dependencyNotation: String, maxVersion: String) {
         libraryConfig(dependencyNotation) {
+            val version = this.version
+
             exclude("org.jetbrains", "annotations")
             jarJar(group = group!!, name = name, version = "[$version, $maxVersion)") {
-                exclude("org.jetbrains", "annotations")
+                isTransitive = false
+                jarJar.pin(this, version)
             }
+        }
+    }
+
+    // Adds to JarJar without using as Gradle dependency
+    fun bundleOnly(group: String, name: String, version: String, maxVersion: String) {
+        val lib = this.create(group, name, version = "[$version,$maxVersion)")
+        jarJar(lib) {
+            isTransitive = false
+            jarJar.pin(this, version)
         }
     }
 
@@ -79,9 +91,12 @@ dependencies {
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version", max_coroutines)
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version", max_serialization)
-    //implementation(project(":kfflib")) {
-    //    jarJar(group = "thedarkcolour.kotlinforforge", name = "kfflib", version = "${project.version}")
-    //}
+
+    bundleOnly("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin_version, max_kotlin)
+    bundleOnly("org.jetbrains.kotlinx", "kotlinx-serialization-core", serialization_version, max_serialization)
+    bundleOnly("org.jetbrains.kotlin", "kotlin-stdlib", kotlin_version, max_kotlin)
+    bundleOnly("org.jetbrains.kotlin", "kotlin-stdlib-common", kotlin_version, max_kotlin)
+    bundleOnly("org.jetbrains", "annotations", "23.0.0", "")
 
     jarJar(group = "org.jetbrains", name = "annotations", version = "[$annotations_version, 24.0.0)")
 }
@@ -169,9 +184,10 @@ fun DependencyHandler.library(
 
 modrinth {
     projectId.set("ordsPcFz")
+    versionName.set("Kotlin for Forge ${project.version}")
     versionNumber.set("${project.version}")
     versionType.set("release")
     uploadFile.set(tasks.jarJar as Any)
-    gameVersions.addAll("1.18", "1.18.1", "1.19")
+    gameVersions.addAll("1.18", "1.18.1", "1.19", "1.19.1", "1.19.2")
     loaders.add("forge")
 }

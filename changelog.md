@@ -1,3 +1,8 @@
+## Kotlin for Forge 3.7.1
+- Updated to Kotlin 1.7.10, coroutines 1.6.4
+- Fixed incompatibility with Forge 1.19.2 43.0.1+
+- Use JarJar instead of shadow for libraries
+
 ## Kotlin for Forge 3.6.0
 - Updated to Kotlin 1.7.0
 
