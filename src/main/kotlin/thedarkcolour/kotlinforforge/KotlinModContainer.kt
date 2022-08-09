@@ -29,7 +29,7 @@ public class KotlinModContainer(
     // Mod instance
     private var modInstance: Any? = null
     // Mod-specific event bus
-    public val eventBus: IEventBus
+    internal val eventBus: IEventBus
     // Main mod class (moved out of constructMod)
     private val modClass: Class<*>
 
@@ -37,7 +37,14 @@ public class KotlinModContainer(
         LOGGER.debug(Logging.LOADING, "Creating KotlinModContainer instance for $className")
 
         activityMap[ModLoadingStage.CONSTRUCT] = Runnable(::constructMod)
-        eventBus = EventBus(BusBuilder.builder().setExceptionHandler(::onEventFailed).setTrackPhases(false).markerType(IModBusEvent::class.java))
+
+        // Fixes incompatibility introduced in 1.19.2
+        eventBus = try {
+            BusBuilder::class.java.getDeclaredMethod("useModLauncher")
+            NewEventBusMaker.make(::onEventFailed)
+        } catch (e: NoSuchMethodException) {
+            OldEventBusMaker.make(::onEventFailed)
+        }
         
         configHandler = Optional.of(Consumer { event ->
             eventBus.post(event.self())

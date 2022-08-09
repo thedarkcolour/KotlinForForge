@@ -1,3 +1,5 @@
+import groovy.lang.Closure
+
 val kotlin_version: String by project
 val annotations_version: String by project
 val coroutines_version: String by project
@@ -5,13 +7,14 @@ val serialization_version: String by project
 
 plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.jetbrains.kotlin.jvm") version "1.7.0"
+    id("org.jetbrains.kotlin.jvm") version "1.7.10"
     id("org.jetbrains.kotlin.plugin.serialization")
     id("net.minecraftforge.gradle") version "5.1.+"
     id("com.modrinth.minotaur") version "2.+"
+    id("com.matthewprenger.cursegradle") version "1.4.0"
 }
 
-version = "3.6.0"
+version = "3.7.1"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -75,7 +78,7 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:1.19-41.0.1")
+    minecraft("net.minecraftforge:forge:1.19.2-43.0.2")
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
@@ -89,7 +92,7 @@ val Project.minecraft: net.minecraftforge.gradle.common.util.MinecraftExtension
     get() = extensions.getByType()
 
 minecraft.let {
-    it.mappings("official", "1.19")
+    it.mappings("official", "1.19.2")
 
     it.runs {
         create("client") {
@@ -158,11 +161,31 @@ fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
 
+val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2")
+val shadowArtifact = shadowJar.iterator().next()
+
+curseforge {
+    apiKey = "7e7a97ae-67fd-40eb-b1ef-b6302676dca9"//System.getenv("CURSEFORGE_API_KEY")
+
+    project(closureOf<com.matthewprenger.cursegradle.CurseProject> {
+        id = "351264"
+        releaseType = "release"
+        gameVersionStrings.add("Forge")
+        gameVersionStrings.add("Java 17")
+        gameVersionStrings.addAll(supportedMcVersions)
+
+        mainArtifact(shadowArtifact, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
+            displayName = "Kotlin for Forge ${project.version}"
+        })
+    })
+}
+
 modrinth {
     projectId.set("ordsPcFz")
+    versionName.set("Kotlin for Forge ${project.version}")
     versionNumber.set("${project.version}")
     versionType.set("release")
-    uploadFile.set(tasks.shadowJar as Any)
-    gameVersions.addAll("1.18", "1.18.1", "1.19")
+    uploadFile.set(shadowArtifact)
+    gameVersions.addAll(supportedMcVersions)
     loaders.add("forge")
 }
