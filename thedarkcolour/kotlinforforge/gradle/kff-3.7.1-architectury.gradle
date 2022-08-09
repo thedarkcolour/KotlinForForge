@@ -1,0 +1,27 @@
+// CHANGE THESE EACH KFF UPDATE
+ext.kotlin_version = '1.7.10'
+ext.coroutines_version = '1.6.4'
+ext.serialization_version = '1.3.3'
+
+repositories {
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+}
+
+dependencies {
+    // Kotlin for Forge
+    implementation 'thedarkcolour:kotlinforforge:3.7.1'
+
+    // Add everything to the classpath correctly
+    forgeRuntimeLibrary(group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version)
+    forgeRuntimeLibrary(group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version)
+    forgeRuntimeLibrary(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version)
+    forgeRuntimeLibrary(group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: coroutines_version)
+    forgeRuntimeLibrary(group: 'org.jetbrains.kotlinx', name: 'kotlinx-serialization-json', version: serialization_version)
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '17'
+}
