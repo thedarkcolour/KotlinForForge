@@ -165,7 +165,7 @@ val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "
 val shadowArtifact = shadowJar.iterator().next()
 
 curseforge {
-    apiKey = "7e7a97ae-67fd-40eb-b1ef-b6302676dca9"//System.getenv("CURSEFORGE_API_KEY")
+    System.getenv("CURSEFORGE_API_KEY")
 
     project(closureOf<com.matthewprenger.cursegradle.CurseProject> {
         id = "351264"
