@@ -35,15 +35,19 @@ repositories {
     mavenLocal()
 }
 
+val library: Configuration by configurations.creating {
+    exclude("org.jetbrains", "annotations")
+    isTransitive = false
+}
+
 configurations {
-    val library = maybeCreate("library")
     api.configure {
         extendsFrom(library)
     }
 }
 minecraft.runs.all {
     lazyToken("minecraft_classpath") {
-        return@lazyToken configurations["library"].copyRecursive().resolve()
+        return@lazyToken library.copyRecursive().resolve()
             .joinToString(File.pathSeparator) { it.absolutePath }
     }
 }
@@ -82,41 +86,35 @@ minecraft.run {
 
 dependencies {
     minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
-
     // Default classpath
-    include("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlin_version, max_kotlin)
-    include("org.jetbrains.kotlin", "kotlin-reflect", kotlin_version, max_kotlin)
-    include("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutines_version, max_coroutines)
-    include("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", coroutines_version, max_coroutines)
-    include("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutines_version, max_coroutines)
-    include("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version, max_serialization)
-    // Inherited
-    include("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin_version, max_kotlin, true)
-    include("org.jetbrains.kotlinx", "kotlinx-serialization-core", serialization_version, max_serialization, true)
-    include("org.jetbrains.kotlin", "kotlin-stdlib", kotlin_version, max_kotlin, true)
-    include("org.jetbrains.kotlin", "kotlin-stdlib-common", kotlin_version, max_kotlin, true)
+    library("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlin_version)
+    library("org.jetbrains.kotlin", "kotlin-reflect", kotlin_version)
+    library("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutines_version)
+    library("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", coroutines_version)
+    library("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutines_version)
+    library("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
+    library("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin_version)
+    library("org.jetbrains.kotlinx", "kotlinx-serialization-core", serialization_version)
+    library("org.jetbrains.kotlin", "kotlin-stdlib", kotlin_version)
+    library("org.jetbrains.kotlin", "kotlin-stdlib-common", kotlin_version)
 
     // KFF Modules
-    include("thedarkcolour", "kfflib", "${project.version}", "4.0", false)
-    include("thedarkcolour", "kfflang", "${project.version}", "4.0", false)
-}
-configurations.all {
-    resolutionStrategy.dependencySubstitution {
-        substitute(module("thedarkcolour:kfflib")).using(project(":kfflib"))
-        substitute(module("thedarkcolour:kfflang")).using(project(":kfflang"))
-    }
-}
-
-// Adds to JarJar without using as Gradle dependency
-fun DependencyHandlerScope.include(group: String, name: String, version: String, maxVersion: String, isLibrary: Boolean = true) {
-    val lib = if (isLibrary) {
-        configurations["library"](group = group, name = name, "[$version, $maxVersion)")
-    } else {
-        implementation(group, name, "[$version, $maxVersion)")
-    }
-    jarJar(lib) {
+    val kfflib = project(":kfflib")
+    val kfflang = project(":kfflang")
+    implementation(kfflib) {
         isTransitive = false
-        jarJar.pin(this, version)
+        jarJar(kfflib) {
+            jarJar.pin(kfflib, "${project.version}")
+            jarJar.ranged(kfflib, "[${project.version}, 4.0)")
+        }
+    }
+
+    implementation(kfflang) {
+        isTransitive = false
+        jarJar(kfflang) {
+            jarJar.pin(kfflang, "${project.version}")
+            jarJar.ranged(kfflang, "[${project.version}, 4.0)")
+        }
     }
 }
 
@@ -127,9 +125,9 @@ tasks.withType<net.minecraftforge.gradle.userdev.tasks.JarJar> {
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "17"
 }
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "17"
 }
