@@ -1,33 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.utils.addToStdlib.cast
-
-val kotlin_version: String by project
-val annotations_version: String by project
-val coroutines_version: String by project
-val serialization_version: String by project
+import java.time.LocalDateTime
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    kotlin("jvm")
     id("net.minecraftforge.gradle")
     `maven-publish`
 }
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-kotlin.jvmToolchain {}
+val mc_version: String by project
+val forge_version: String by project
+val kotlin_version: String by project
+val coroutines_version: String by project
+val serialization_version: String by project
 
-val kotlinSourceJar by tasks.creating(Jar::class) {
-    val kotlinSourceSet = kotlin.sourceSets.main.get()
-
-    from(kotlinSourceSet.kotlin.srcDirs)
-    archiveClassifier.set("sources")
-}
-
-tasks.build.get().dependsOn(kotlinSourceJar)
-
-repositories {
-    mavenCentral()
-
-    mavenLocal()
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    withSourcesJar()
 }
 
 val library: Configuration by configurations.creating {
@@ -35,9 +23,12 @@ val library: Configuration by configurations.creating {
 }
 
 configurations {
-    api.configure {
+    api {
         extendsFrom(library)
     }
+//    minecraftLibrary {
+//        extendsFrom(library)
+//    }
 
     runtimeElements {
         exclude(group = "net.minecraftforge", module = "forge")
@@ -45,7 +36,7 @@ configurations {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:1.19-41.0.91")
+    minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
@@ -54,11 +45,11 @@ dependencies {
     library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
     library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
 
-    implementation(project(":kfflang"))
+    compileOnly(project(":kfflang"))
 }
 
 minecraft {
-    mappings("official", "1.19")
+    mappings("official", mc_version)
 
     runs {
         runs {
@@ -100,57 +91,37 @@ minecraft {
                     }
                 }
             }
-
-            all {
-                lazyToken("minecraft_classpath") {
-                    return@lazyToken library.copyRecursive().resolve()
-                        .joinToString(File.pathSeparator) { it.absolutePath }
-                }
-            }
         }
     }
 }
 
 tasks {
-    // Only require the lang provider to use explicit visibility modifiers, not the test mod
-    withType<KotlinCompile>().getByName("compileKotlin") {
-        kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
-    }
-
     withType<Jar> {
-        archiveBaseName.set("kfflib")
-
         manifest {
             attributes(
-                mapOf(
-                    "FMLModType" to "GAMELIBRARY",
-                    "Specification-Title" to "kfflib",
-                    "Automatic-Module-Name" to "kfflib",
-                    "Specification-Vendor" to "Forge",
-                    "Specification-Version" to "1",
-                    "Implementation-Title" to project.name,
-                    "Implementation-Version" to "${project.version}",
-                    "Implementation-Vendor" to "thedarkcolour",
-                    "Implementation-Timestamp" to `java.text`.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                        .format(`java.util`.Date())
-                )
+                "Specification-Title" to "kfflib",
+                "Specification-Vendor" to "Forge",
+                "Specification-Version" to "1",
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version,
+                "Implementation-Vendor" to "thedarkcolour",
+                "Implementation-Timestamp" to LocalDateTime.now(),
+                "Automatic-Module-Name" to "kfflib",
+                "FMLModType" to "GAMELIBRARY"
             )
         }
+    }
+    
+    // Only require the lang provider to use explicit visibility modifiers, not the test mod
+    withType<KotlinCompile> {
+        kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
     }
 }
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            from(components["kotlin"])
-            artifact(kotlinSourceJar)
-
-            // Remove Minecraft from transitive dependencies
-            pom.withXml {
-                asNode().get("dependencies").cast<groovy.util.NodeList>().first().cast<groovy.util.Node>().children().cast<MutableList<groovy.util.Node>>().removeAll { child ->
-                    child.get("groupId").cast<groovy.util.NodeList>().first().cast<groovy.util.Node>().value() == "net.minecraftforge"
-                }
-            }
+        register<MavenPublication>("maven") {
+            from(components["java"])
         }
     }
 }
