@@ -7,7 +7,7 @@ license='LGPL'
 
 [[mods]]
 modId="kotlinforforge"
-version="3.7.0"
+version="${file.jarVersion}"
 displayName="Kotlin For Forge"
 credits="thedarkcolour and his \"minions\""
 authors="thedarkcolour"

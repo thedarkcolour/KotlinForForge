@@ -3,6 +3,7 @@ import java.time.LocalDateTime
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
     id("net.minecraftforge.gradle")
     `maven-publish`
 }
@@ -16,36 +17,6 @@ val serialization_version: String by project
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
     withSourcesJar()
-}
-
-val library: Configuration by configurations.creating {
-    exclude("org.jetbrains", "annotations")
-}
-
-configurations {
-    api {
-        extendsFrom(library)
-    }
-//    minecraftLibrary {
-//        extendsFrom(library)
-//    }
-
-    runtimeElements {
-        exclude(group = "net.minecraftforge", module = "forge")
-    }
-}
-
-dependencies {
-    minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
-
-    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
-
-    compileOnly(project(":kfflang"))
 }
 
 minecraft {
@@ -95,6 +66,25 @@ minecraft {
     }
 }
 
+configurations {
+    runtimeElements {
+        setExtendsFrom(emptySet())
+    }
+}
+
+dependencies {
+    minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
+
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutines_version)
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", coroutines_version)
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", serialization_version)
+    implementation("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
+
+    implementation(project(":kfflang"))
+}
+
 tasks {
     withType<Jar> {
         manifest {
@@ -106,7 +96,7 @@ tasks {
                 "Implementation-Version" to project.version,
                 "Implementation-Vendor" to "thedarkcolour",
                 "Implementation-Timestamp" to LocalDateTime.now(),
-                "Automatic-Module-Name" to "kfflib",
+                "Automatic-Module-Name" to "thedarkcolour.kotlinforforge.lib",
                 "FMLModType" to "GAMELIBRARY"
             )
         }
