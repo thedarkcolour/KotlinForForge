@@ -67,11 +67,11 @@ dependencies {
     minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
 
     // Default classpath
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib", kotlin_version)
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib-common", kotlin_version)
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlin_version)
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin_version)
-    implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlin_version)
+    api(kotlin("stdlib"))
+    api(kotlin("stdlib-common"))
+    api(kotlin("stdlib-jdk8"))
+    api(kotlin("stdlib-jdk7"))
+    api(kotlin("reflect"))
 }
 
 tasks {

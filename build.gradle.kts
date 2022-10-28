@@ -1,4 +1,3 @@
-import net.minecraftforge.gradle.common.util.RunConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -38,11 +37,17 @@ java {
 jarJar.enable()
 
 configurations {
+    apiElements {
+        artifacts.clear()
+    }
     runtimeElements {
         setExtendsFrom(emptySet())
         // Publish the jarJar
         artifacts.clear()
         outgoing.artifact(tasks.jarJar)
+    }
+    minecraftLibrary {
+        extendsFrom(shadow)
     }
 }
 
@@ -84,17 +89,21 @@ dependencies {
     shadow("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutines_version)
     shadow("org.jetbrains.kotlinx", "kotlinx-serialization-core", serialization_version)
     shadow("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
-    
+
     // KFF Modules
-    api(include(project(":kfflang"), kffMaxVersion))
-    api(include(project(":kfflib"), kffMaxVersion))
+    implementation(include(project(":kfflang"), kffMaxVersion))
+    implementation(include(project(":kfflib"), kffMaxVersion))
+    implementation(include(project(":kffmod"), kffMaxVersion))
 }
 
 tasks {
-    // Sets final jar name to match old name
+    jar {
+        isEnabled = false
+    }
+
     jarJar.configure {
         from(shadow.map(::zipTree).toTypedArray())
-        manifest { 
+        manifest {
             attributes(
                 "Automatic-Module-Name" to "thedarkcolour.kotlinforforge",
                 "FMLModType" to "LIBRARY"
@@ -102,10 +111,19 @@ tasks {
         }
     }
 
+    // Fight ForgeGradle and Forge crashing when MOD_CLASSES don't exist
+    whenTaskAdded {
+        if (name == "prepareRuns") {
+            doFirst {
+                sourceSets.main.get().output.files.forEach(File::mkdirs)
+            }
+        }
+    }
+
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
     }
-    
+
     assemble {
         dependsOn(jarJar)
     }
@@ -121,7 +139,8 @@ publishing {
 }
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
-    jarJar(dep) {
+    api(dep) // Add module metadata compileOnly dependency
+    jarJar(dep.copy()) {
         isTransitive = false
         jarJar.pin(this, version)
         if (maxVersion != null) {

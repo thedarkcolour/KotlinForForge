@@ -75,12 +75,12 @@ configurations {
 dependencies {
     minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
 
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutines_version)
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", coroutines_version)
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", serialization_version)
-    implementation("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
+    api(kotlin("stdlib-jdk8"))
+    api(kotlin("reflect"))
+    api("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutines_version)
+    api("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", coroutines_version)
+    api("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutines_version)
+    api("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
 
     implementation(project(":kfflang"))
 }
