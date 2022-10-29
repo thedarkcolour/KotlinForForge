@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     id("net.minecraftforge.gradle") version "5.1.+"
+    id("com.modrinth.minotaur") version "2.+"
     `maven-publish`
 }
 
@@ -138,6 +139,15 @@ publishing {
     }
 }
 
+modrinth {
+    projectId.set("ordsPcFz")
+    versionNumber.set(project.version.toString())
+    versionType.set("release")
+    gameVersions.addAll("1.18", "1.18.1", "1.19", "1.19.2")
+    loaders.add("forge")
+    uploadFile.provider(tasks.jarJar)
+}
+
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
     api(dep) // Add module metadata compileOnly dependency
     jarJar(dep.copy()) {
@@ -148,4 +158,9 @@ fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null)
         }
     }
     return dep
+}
+
+// Kotlin function ambiguity fix
+fun <T> Property<T>.provider(value: T) {
+    set(value)
 }

@@ -4,7 +4,6 @@ import java.time.LocalDateTime
 plugins {
     kotlin("jvm")
     id("net.minecraftforge.gradle")
-    id("com.modrinth.minotaur") version "2.+" // TODO Move modrinth to main
     `maven-publish`
 }
 
@@ -118,12 +117,4 @@ publishing {
             from(components["java"])
         }
     }
-}
-
-modrinth {
-    projectId.set("ordsPcFz")
-    versionNumber.set(project.version.toString())
-    versionType.set("release")
-    gameVersions.addAll("1.18", "1.18.1", "1.19")
-    loaders.add("forge")
 }
