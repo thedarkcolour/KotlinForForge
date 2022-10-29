@@ -99,7 +99,7 @@ dependencies {
 
 tasks {
     jar {
-        isEnabled = false
+        enabled = false
     }
 
     jarJar.configure {
@@ -112,8 +112,12 @@ tasks {
         }
     }
 
-    // Fight ForgeGradle and Forge crashing when MOD_CLASSES don't exist
     whenTaskAdded {
+        // Disable reobfJar
+        if (name == "reobfJar") {
+            enabled = false
+        }
+        // Fight ForgeGradle and Forge crashing when MOD_CLASSES don't exist
         if (name == "prepareRuns") {
             doFirst {
                 sourceSets.main.get().output.files.forEach(File::mkdirs)
