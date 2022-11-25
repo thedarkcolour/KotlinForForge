@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.time.LocalDateTime
 
 plugins {
@@ -25,16 +24,6 @@ minecraft {
 
             property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
-
-            mods {
-                create("kfflang") {
-                    source(sourceSets.main.get())
-                }
-
-                create("kfflangtest") {
-                    source(sourceSets.test.get())
-                }
-            }
         }
 
         create("server") {
@@ -42,16 +31,6 @@ minecraft {
 
             property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
-
-            mods {
-                create("kfflang") {
-                    source(sourceSets.main.get())
-                }
-
-                create("kfflangtest") {
-                    source(sourceSets.test.get())
-                }
-            }
         }
     }
 }
@@ -60,6 +39,10 @@ configurations {
     runtimeElements {
         setExtendsFrom(emptySet())
     }
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -83,33 +66,11 @@ tasks {
                 "Implementation-Title" to project.name,
                 "Implementation-Version" to project.version,
                 "Implementation-Vendor" to "thedarkcolour",
-                "Implementation-Timestamp" to LocalDateTime.now(),
-                "Automatic-Module-Name" to "thedarkcolour.kotlinforforge.lang",
-                "FMLModType" to "LANGPROVIDER",
+                "Implementation-Timestamp" to LocalDateTime.now()
             )
         }
     }
-
-    // Only require the lang provider to use explicit visibility modifiers, not the test mod
-    withType<KotlinCompile> {
-        kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
-    }
 }
-
-// Workaround to remove build\classes\java from MOD_CLASSES because SJH doesn't like nonexistent dirs
-setOf(sourceSets.main, sourceSets.test)
-    .map(Provider<SourceSet>::get)
-    .forEach { sourceSet ->
-        val mutClassesDirs = sourceSet.output.classesDirs as ConfigurableFileCollection
-        val javaClassDir = sourceSet.java.classesDirectory.get()
-        val mutClassesFrom = mutClassesDirs.from
-            .filter {
-                val toCompare = (it as? Provider<*>)?.get()
-                return@filter javaClassDir != toCompare
-            }
-            .toMutableSet()
-        mutClassesDirs.setFrom(mutClassesFrom)
-    }
 
 publishing {
     publications {
