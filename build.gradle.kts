@@ -7,14 +7,14 @@ val serialization_version: String by project
 
 plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    id("org.jetbrains.kotlin.jvm") version "1.7.20"
     id("org.jetbrains.kotlin.plugin.serialization")
     id("net.minecraftforge.gradle") version "5.1.+"
     id("com.modrinth.minotaur") version "2.+"
     id("com.matthewprenger.cursegradle") version "1.4.0"
 }
 
-version = "3.7.1"
+version = "3.8.0"
 group = "thedarkcolour.kotlinforforge"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -78,7 +78,7 @@ minecraft.runs.all {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:1.19.2-43.0.2")
+    minecraft("net.minecraftforge:forge:1.19.3-44.0.4")
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
