@@ -161,11 +161,11 @@ fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
 
-val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2")
+val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3")
 val shadowArtifact = shadowJar.iterator().next()
 
 curseforge {
-    System.getenv("CURSEFORGE_API_KEY")
+    apiKey = System.getenv("CURSEFORGE_API_KEY")
 
     project(closureOf<com.matthewprenger.cursegradle.CurseProject> {
         id = "351264"
