@@ -13,8 +13,7 @@ It is not a traditional Maven, here are the steps to publishing a new version:
 6. Replace the transitive library versions in the POM file with the versions matching the KFF version
 7. Add the version as an entry in `thedarkcolour/kotlinforforge/maven-metadata.xml` as well as
   in the `thedarkcolour/kotlinforforge/web.html` file
-8. Run the Java file at `src/main/java/thedarkcolour/kotlinforforge/GenerateWebsite.java`
-  to generate all the checksums for the newly added/changed files
+8. Run "generate_checksums.jl" with the Julia REPL
 9. Add any changed/new files and commit them to Git, then push to the remote website branch!
 
 [I am open to any improvements to this process :)](https://discord.com/invite/tmVmZtx)
