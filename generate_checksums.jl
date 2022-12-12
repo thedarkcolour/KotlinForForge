@@ -3,7 +3,9 @@ Pkg.add("MD5")
 using SHA
 using MD5
 
-write_hash(path, hash_function) = write(open(path * "." * String(Symbol(hash_function)), "w"), bytes2hex(open(hash_function, path)))
+write_hash(path, hash_function) = open(path * "." * String(Symbol(hash_function)), "w") do io
+  write(io, bytes2hex(open(hash_function, path)))
+end
 
 for (root, dir, files) in walkdir("thedarkcolour")
   for file_name in files
