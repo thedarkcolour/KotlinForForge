@@ -70,6 +70,10 @@ configurations {
     runtimeElements {
         setExtendsFrom(emptySet())
     }
+    api {
+        minecraftLibrary.get().extendsFrom(this)
+        minecraftLibrary.get().exclude("org.jetbrains", "annotations")
+    }
 }
 
 dependencies {
