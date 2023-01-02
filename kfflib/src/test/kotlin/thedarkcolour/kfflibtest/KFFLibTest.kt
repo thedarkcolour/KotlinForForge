@@ -19,14 +19,21 @@ import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
  * check out the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton).
  */
 @Mod(KFFLibTest.ID)
-object KFFLibTest {
-    const val ID = "kfflibtest"
+public object KFFLibTest {
+    internal const val ID = "kfflibtest"
 
-    val LOGGER: Logger = LogManager.getLogger(ID)
+    internal val LOGGER: Logger = LogManager.getLogger(ID)
 
     init {
         LOGGER.log(Level.INFO, "Hello world!")
 
         ModBlocks.REGISTRY.register(MOD_BUS)
+
+        testVec2()
+        testVec3i()
+        testVec3()
+        testVector3d()
+        testVector3f()
+        testVector4f()
     }
 }
