@@ -1,0 +1,28 @@
+# Make sure this is set to "kotlinforforge"
+modLoader="kotlinforforge"
+# Make sure this is set to the appropriate version range
+loaderVersion="[3,)" # Require at least 3.x
+# License is REQUIRED after 1.16
+license='LGPL'
+
+[[mods]]
+modId="kotlinforforge"
+version="${file.jarVersion}"
+displayName="Kotlin For Forge"
+credits="thedarkcolour and his \"minions\""
+authors="thedarkcolour"
+description='''
+Makes kotiln forge-friendly
+'''
+[[dependencies.kotlinforforge]]
+modId="forge"
+mandatory=true
+versionRange="[41,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.kotlinforforge]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.19,1.20)"
+ordering="NONE"
+side="BOTH"

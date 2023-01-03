@@ -14,24 +14,27 @@ If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repo
 git clone --branch 1.19.x https://github.com/thedarkcolour/KotlinModdingSkeleton.git
 ```
 
-To implement in an existing project, paste the following into your build.gradle:
+To implement in an existing project, merge the following into your build.gradle:
 ```groovy
-// Adds the Kotlin Gradle plugin
-buildscript {
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0"
-        // OPTIONAL Kotlin Serialization plugin
-        classpath 'org.jetbrains.kotlin:kotlin-serialization:1.7.0'
+plugins {
+    // Adds the Kotlin Gradle plugin
+    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
+    // OPTIONAL Kotlin Serialization plugin
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20'
+}
+
+repositories {
+    // Add KFF Maven repository
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
     }
 }
-apply plugin: 'kotlin'
-// OPTIONAL Kotlin Serialization plugin
-apply plugin: 'kotlinx-serialization'
 
-// Adds KFF as dependency and Kotlin libs to the runtime classpath
-// **If you already know how to add the Kotlin plugin to Gradle, this is the only line you need for KFF
-apply from: 'https://raw.githubusercontent.com/thedarkcolour/KotlinForForge/site/thedarkcolour/kotlinforforge/gradle/kff-3.7.1.gradle'
-
+dependencies {
+    // Adds KFF as dependency and Kotlin libs
+    implementation 'thedarkcolour:kotlinforforge:3.8.0'
+}
 ```
 Then, change the following to your mods.toml file:
 ```toml

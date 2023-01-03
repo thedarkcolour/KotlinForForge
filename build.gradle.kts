@@ -1,156 +1,147 @@
-import groovy.lang.Closure
-
-val kotlin_version: String by project
-val annotations_version: String by project
-val coroutines_version: String by project
-val serialization_version: String by project
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
-    id("org.jetbrains.kotlin.plugin.serialization")
+    kotlin("jvm")
     id("net.minecraftforge.gradle") version "5.1.+"
     id("com.modrinth.minotaur") version "2.+"
+    `maven-publish`
     id("com.matthewprenger.cursegradle") version "1.4.0"
 }
 
-version = "3.8.0"
-group = "thedarkcolour.kotlinforforge"
+// Current KFF version
+val kffVersion = "3.8.0"
+val kffMaxVersion = "3.9.0"
+val kffGroup = "thedarkcolour"
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-kotlin.jvmToolchain {}
-
-val shadowJar = tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    archiveClassifier.set("obf")
-
-    dependencies {
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"))
-        include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
-        include(dependency("org.jetbrains:annotations:${annotations_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${serialization_version}"))
-        include(dependency("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:${serialization_version}"))
-    }
+allprojects {
+    version = kffVersion
+    group = kffGroup
 }
 
-val kotlinSourceJar by tasks.creating(Jar::class) {
-    val kotlinSourceSet = kotlin.sourceSets.main.get()
+evaluationDependsOnChildren()
 
-    from(kotlinSourceSet.kotlin.srcDirs)
-    archiveClassifier.set("sources")
+val mc_version: String by project
+val forge_version: String by project
+
+val coroutines_version: String by project
+val max_coroutines: String by project
+val serialization_version: String by project
+
+val shadow: Configuration by configurations.creating {
+    exclude("org.jetbrains", "annotations")
 }
 
-tasks.build.get().dependsOn(kotlinSourceJar)
-tasks.build.get().dependsOn(shadowJar)
-
-repositories {
-    mavenCentral()
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    withSourcesJar()
 }
 
-// Workaround to remove build\java from MOD_CLASSES because SJH doesn"t like nonexistent dirs
-for (s in arrayOf(sourceSets.main, sourceSets.test)) {
-    val sourceSet = s.get()
-    val mutClassesDirs = sourceSet.output.classesDirs as ConfigurableFileCollection
-    val javaClassDir = sourceSet.java.classesDirectory.get()
-    val mutClassesFrom = HashSet(mutClassesDirs.from.filter {
-        val provider = it as Provider<*>?
-        val toCompare = if (it != null) provider!!.get() else it
-        return@filter javaClassDir != toCompare
-    })
-    mutClassesDirs.setFrom(mutClassesFrom)
-}
+jarJar.enable()
 
 configurations {
-    val library = this.maybeCreate("library")
-    api.configure {
-        extendsFrom(library)
+    apiElements {
+        artifacts.clear()
+    }
+    runtimeElements {
+        setExtendsFrom(emptySet())
+        // Publish the jarJar
+        artifacts.clear()
+        outgoing.artifact(tasks.jarJar)
+    }
+    minecraftLibrary {
+        extendsFrom(shadow)
     }
 }
-minecraft.runs.all {
-    lazyToken("minecraft_classpath") {
-        return@lazyToken configurations.getByName("library").copyRecursive().resolve()
-            .joinToString(File.pathSeparator) { it.absolutePath }
-    }
-}
 
-dependencies {
-    minecraft("net.minecraftforge:forge:1.19.3-44.0.4")
+minecraft {
+    mappings("official", mc_version)
 
-    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
-    library("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
-}
-
-val Project.minecraft: net.minecraftforge.gradle.common.util.MinecraftExtension
-    get() = extensions.getByType()
-
-minecraft.let {
-    it.mappings("official", "1.19.2")
-
-    it.runs {
+    runs {
         create("client") {
             workingDirectory(project.file("run"))
 
             property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
-
-            mods {
-                this.create("kotlinforforge") {
-                    source(sourceSets.main.get())
-                }
-                this.create("kotlinforforgetest") {
-                    source(sourceSets.test.get())
-                }
-            }
         }
 
         create("server") {
             workingDirectory(project.file("run/server"))
 
+            property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
-            property("forge.logging.markers", "scan,loading,core")
-
-            mods {
-                this.create("kotlinforforge") {
-                    source(sourceSets.main.get())
-                }
-                this.create("kotlinforforgetest") {
-                    source(sourceSets.test.get())
-                }
-            }
         }
     }
 }
 
-tasks.withType<Jar> {
-    archiveBaseName.set("kotlinforforge")
+repositories {
+    mavenCentral()
+}
 
-    manifest {
-        attributes(
-            mapOf(
-                "FMLModType" to "LANGPROVIDER",
-                "Specification-Title" to "Kotlin for Forge",
-                "Specification-Vendor" to "Forge",
-                "Specification-Version" to "1",
-                "Implementation-Title" to project.name,
-                "Implementation-Version" to "${project.version}",
-                "Implementation-Vendor" to "thedarkcolour",
-                "Implementation-Timestamp" to `java.text`.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                    .format(`java.util`.Date())
+dependencies {
+    minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
+
+    // Default classpath
+    shadow(kotlin("stdlib-jdk8"))
+    shadow(kotlin("stdlib-jdk7"))
+    shadow(kotlin("reflect"))
+    shadow(kotlin("stdlib"))
+    shadow(kotlin("stdlib-common"))
+    shadow("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutines_version)
+    shadow("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", coroutines_version)
+    shadow("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutines_version)
+    shadow("org.jetbrains.kotlinx", "kotlinx-serialization-core", serialization_version)
+    shadow("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
+
+    // KFF Modules
+    implementation(include(project(":kfflang"), kffMaxVersion))
+    implementation(include(project(":kfflib"), kffMaxVersion))
+    implementation(include(project(":kffmod"), kffMaxVersion))
+}
+
+tasks {
+    jar {
+        enabled = false
+    }
+
+    jarJar.configure {
+        from(shadow.map(::zipTree).toTypedArray())
+        manifest {
+            attributes(
+                "Automatic-Module-Name" to "thedarkcolour.kotlinforforge",
+                "FMLModType" to "LIBRARY"
             )
-        )
+        }
+    }
+
+    whenTaskAdded {
+        // Disable reobfJar
+        if (name == "reobfJar") {
+            enabled = false
+        }
+        // Fight ForgeGradle and Forge crashing when MOD_CLASSES don't exist
+        if (name == "prepareRuns") {
+            doFirst {
+                sourceSets.main.get().output.files.forEach(File::mkdirs)
+            }
+        }
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    assemble {
+        dependsOn(jarJar)
     }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
+publishing {
+    publications {
+        register<MavenPublication>("maven") {
+            suppressAllPomMetadataWarnings() // Shush
+            from(components["java"])
+        }
+    }
 }
 
 fun DependencyHandler.minecraft(
@@ -162,7 +153,6 @@ fun DependencyHandler.library(
 ): Dependency? = add("library", dependencyNotation)
 
 val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3")
-val shadowArtifact = shadowJar.iterator().next()
 
 curseforge {
     apiKey = System.getenv("CURSEFORGE_API_KEY")
@@ -174,7 +164,7 @@ curseforge {
         gameVersionStrings.add("Java 17")
         gameVersionStrings.addAll(supportedMcVersions)
 
-        mainArtifact(shadowArtifact, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
+        mainArtifact(tasks.jarJar, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
             displayName = "Kotlin for Forge ${project.version}"
         })
     })
@@ -185,7 +175,24 @@ modrinth {
     versionName.set("Kotlin for Forge ${project.version}")
     versionNumber.set("${project.version}")
     versionType.set("release")
-    uploadFile.set(shadowArtifact)
     gameVersions.addAll(supportedMcVersions)
     loaders.add("forge")
+    uploadFile.provider(tasks.jarJar)
+}
+
+fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
+    api(dep) // Add module metadata compileOnly dependency
+    jarJar(dep.copy()) {
+        isTransitive = false
+        jarJar.pin(this, version)
+        if (maxVersion != null) {
+            jarJar.ranged(this, "[$version,$maxVersion)")
+        }
+    }
+    return dep
+}
+
+// Kotlin function ambiguity fix
+fun <T> Property<T>.provider(value: T) {
+    set(value)
 }
