@@ -5,6 +5,7 @@ plugins {
     id("net.minecraftforge.gradle") version "5.1.+"
     id("com.modrinth.minotaur") version "2.+"
     `maven-publish`
+    id("com.matthewprenger.cursegradle") version "1.4.0"
 }
 
 // Current KFF version
@@ -143,11 +144,38 @@ publishing {
     }
 }
 
+fun DependencyHandler.minecraft(
+    dependencyNotation: Any
+): Dependency? = add("minecraft", dependencyNotation)
+
+fun DependencyHandler.library(
+    dependencyNotation: Any
+): Dependency? = add("library", dependencyNotation)
+
+val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3")
+
+curseforge {
+    apiKey = System.getenv("CURSEFORGE_API_KEY")
+
+    project(closureOf<com.matthewprenger.cursegradle.CurseProject> {
+        id = "351264"
+        releaseType = "release"
+        gameVersionStrings.add("Forge")
+        gameVersionStrings.add("Java 17")
+        gameVersionStrings.addAll(supportedMcVersions)
+
+        mainArtifact(tasks.jarJar, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
+            displayName = "Kotlin for Forge ${project.version}"
+        })
+    })
+}
+
 modrinth {
     projectId.set("ordsPcFz")
-    versionNumber.set(project.version.toString())
+    versionName.set("Kotlin for Forge ${project.version}")
+    versionNumber.set("${project.version}")
     versionType.set("release")
-    gameVersions.addAll("1.18", "1.18.1", "1.19", "1.19.2")
+    gameVersions.addAll(supportedMcVersions)
     loaders.add("forge")
     uploadFile.provider(tasks.jarJar)
 }
