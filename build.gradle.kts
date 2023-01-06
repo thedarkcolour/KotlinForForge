@@ -9,8 +9,8 @@ plugins {
 }
 
 // Current KFF version
-val kffVersion = "3.8.0"
-val kffMaxVersion = "3.9.0"
+val kffVersion = "3.9.0"
+val kffMaxVersion = "4.0.0"
 val kffGroup = "thedarkcolour"
 
 allprojects {
@@ -24,7 +24,6 @@ val mc_version: String by project
 val forge_version: String by project
 
 val coroutines_version: String by project
-val max_coroutines: String by project
 val serialization_version: String by project
 
 val shadow: Configuration by configurations.creating {
@@ -81,8 +80,6 @@ dependencies {
     minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
 
     // Default classpath
-    shadow(kotlin("stdlib-jdk8"))
-    shadow(kotlin("stdlib-jdk7"))
     shadow(kotlin("reflect"))
     shadow(kotlin("stdlib"))
     shadow(kotlin("stdlib-common"))
@@ -152,10 +149,11 @@ fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
 
-val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3")
+val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2")
 
 curseforge {
-    apiKey = System.getenv("CURSEFORGE_API_KEY")
+    // Use the command line on Linux because IntelliJ doesn't pick up from .bashrc
+    apiKey = System.getenv("CURSEFORGE_API_KEY") ?: "no-publishing-allowed"
 
     project(closureOf<com.matthewprenger.cursegradle.CurseProject> {
         id = "351264"
@@ -178,6 +176,13 @@ modrinth {
     gameVersions.addAll(supportedMcVersions)
     loaders.add("forge")
     uploadFile.provider(tasks.jarJar)
+}
+
+// maven.repo.local is set within the Julia script in the website branch
+tasks.create("publishAllMavens") {
+    for (proj in arrayOf(":", ":kfflib", ":kfflang", ":kffmod")) {
+        finalizedBy(project(proj).tasks.getByName("publishToMavenLocal"))
+    }
 }
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
