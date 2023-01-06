@@ -20,6 +20,9 @@ build
 # other
 eclipse
 run
+*local.xml
+*local.xml.md5
+*local.xml.sha1
 
 # Files from Forge MDK
 forge*changelog.txt

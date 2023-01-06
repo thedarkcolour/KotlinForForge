@@ -13,6 +13,7 @@ for (root, dir, files) in walkdir("thedarkcolour")
       path = joinpath(root, file_name)
       write_hash(path, md5)
       write_hash(path, sha1)
+      println("Generated hashes for $file_name")
     end
   end
 end
