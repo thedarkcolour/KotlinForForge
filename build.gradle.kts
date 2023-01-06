@@ -9,7 +9,7 @@ plugins {
 }
 
 // Current KFF version
-val kffVersion = "3.9.0"
+val kffVersion = "3.9.1"
 val kffMaxVersion = "4.0.0"
 val kffGroup = "thedarkcolour"
 
