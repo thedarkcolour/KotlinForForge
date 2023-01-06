@@ -162,7 +162,9 @@ curseforge {
         gameVersionStrings.add("Java 17")
         gameVersionStrings.addAll(supportedMcVersions)
 
-        mainArtifact(tasks.jarJar, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
+        // from Modrinth's Util.resolveFile
+        @Suppress("DEPRECATION")
+        mainArtifact(tasks.jarJar.get().archivePath, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
             displayName = "Kotlin for Forge ${project.version}"
         })
     })

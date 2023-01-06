@@ -1,3 +1,9 @@
+## Kotlin for Forge 3.9.0
+- Updated to Kotlin 1.8.0
+
+## Kotlin for Forge 3.8.0
+- Updated to Kotlin 1.7.20, serialization 1.4.1
+
 ## Kotlin for Forge 3.7.1
 - Updated to Kotlin 1.7.10, coroutines 1.6.4
 - Fixed incompatibility with Forge 1.19.2 43.0.1+
