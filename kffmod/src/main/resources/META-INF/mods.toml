@@ -17,12 +17,12 @@ Makes kotiln forge-friendly
 [[dependencies.kotlinforforge]]
 modId="forge"
 mandatory=true
-versionRange="[41,)"
+versionRange="[38,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.kotlinforforge]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19,1.20)"
+versionRange="[1.18,1.19.3)"
 ordering="NONE"
 side="BOTH"

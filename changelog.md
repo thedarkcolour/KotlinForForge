@@ -1,3 +1,6 @@
+## Kotlin for Forge 3.9.1
+- Fix version range on kffmod, otherwise identical to 3.9.0
+
 ## Kotlin for Forge 3.9.0
 - Updated to Kotlin 1.8.0
 
