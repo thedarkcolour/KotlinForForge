@@ -16,7 +16,7 @@ for (root, dir, files) in walkdir("thedarkcolour")
     file = joinpath(root, file_name)
 
     if (endswith(file_name, "local.xml"))
-      mv(file, replace(file, "-local.xml" => ".xml"), force=true)
+      cp(file, replace(file, "-local.xml" => ".xml"), force=true)
     elseif (!contains(file_name, "local.xml"))
       run(`git add $file`)
     end
