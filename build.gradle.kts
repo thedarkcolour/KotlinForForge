@@ -192,6 +192,11 @@ tasks.create("publishAllMavens") {
         finalizedBy(project(proj).tasks.getByName("publishToMavenLocal"))
     }
 }
+tasks.create("publishModPlatforms") {
+    println("Publishing Kotlin for Forge $kffVersion to Modrinth and CurseForge")
+    finalizedBy(tasks.modrinth)
+    finalizedBy(tasks.curseforge)
+}
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
     api(dep) // Add module metadata compileOnly dependency

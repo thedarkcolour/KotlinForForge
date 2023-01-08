@@ -18,9 +18,9 @@ To implement in an existing project, merge the following into your build.gradle:
 ```groovy
 plugins {
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
     // OPTIONAL Kotlin Serialization plugin
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0'
 }
 
 repositories {
@@ -33,14 +33,14 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation 'thedarkcolour:kotlinforforge:3.8.0'
+    implementation 'thedarkcolour:kotlinforforge:3.9.2'
 }
 ```
 Then, change the following to your mods.toml file:
 ```toml
 modLoader="kotlinforforge"
 # Change this if you require a certain version of KotlinForForge
-loaderVersion="[3,)"
+loaderVersion="[3.9,)"
 ```
 
 Use
