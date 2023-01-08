@@ -1,3 +1,6 @@
+## Kotlin for Forge 3.9.2
+- Add annotations back to the compiled JAR, hopefully the last bugfix update after switching to JarJar
+
 ## Kotlin for Forge 3.9.1
 - Fix version range on kffmod, otherwise identical to 3.9.0
 
