@@ -9,9 +9,9 @@ Makes Kotlin Forge-friendly by doing the following:
 
 An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton/tree/1.19.x).
 
-If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repository.
+If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repository (replace BRANCH with your version)
 ```git
-git clone --branch 1.19.x https://github.com/thedarkcolour/KotlinModdingSkeleton.git
+git clone --branch BRANCH https://github.com/thedarkcolour/KotlinModdingSkeleton.git
 ```
 
 To implement in an existing project, merge the following into your build.gradle:
@@ -33,7 +33,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation 'thedarkcolour:kotlinforforge:3.9.2'
+    implementation 'thedarkcolour:kotlinforforge:3.9.1'
 }
 ```
 Then, change the following to your mods.toml file:

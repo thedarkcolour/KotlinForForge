@@ -9,7 +9,7 @@ plugins {
 }
 
 // Current KFF version
-val kffVersion = "3.9.2"
+val kffVersion = "3.9.1"
 val kffMaxVersion = "4.0.0"
 val kffGroup = "thedarkcolour"
 
@@ -26,7 +26,9 @@ val forge_version: String by project
 val coroutines_version: String by project
 val serialization_version: String by project
 
-val shadow: Configuration by configurations.creating
+val shadow: Configuration by configurations.creating {
+    exclude("org.jetbrains", "annotations")
+}
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -77,23 +79,14 @@ repositories {
 dependencies {
     minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
 
-    fun shadowNoAnnotation(dependencyNotation: String) {
-        shadow(dependencyNotation) {
-            exclude("org.jetbrains", "annotations")
-        }
-    }
-
-    shadowNoAnnotation("org.jetbrains.kotlin:kotlin-reflect:${kotlin.coreLibrariesVersion}")
-    shadowNoAnnotation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.coreLibrariesVersion}")
-    shadowNoAnnotation("org.jetbrains.kotlin:kotlin-stdlib-common:${kotlin.coreLibrariesVersion}")
-    shadowNoAnnotation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
-    shadowNoAnnotation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
-    shadowNoAnnotation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
-    shadowNoAnnotation("org.jetbrains.kotlinx:kotlinx-serialization-core:${serialization_version}")
-    shadowNoAnnotation("org.jetbrains.kotlinx:kotlinx-serialization-json:${serialization_version}")
-
-    // Forge transitively depends on 23.0.0 so keep it the same
-    shadow("org.jetbrains:annotations:23.0.0")
+    shadow("org.jetbrains.kotlin:kotlin-reflect:${kotlin.coreLibrariesVersion}")
+    shadow("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.coreLibrariesVersion}")
+    shadow("org.jetbrains.kotlin:kotlin-stdlib-common:${kotlin.coreLibrariesVersion}")
+    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
+    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
+    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-core:${serialization_version}")
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:${serialization_version}")
 
     // KFF Modules
     implementation(include(project(":kfflang"), kffMaxVersion))
