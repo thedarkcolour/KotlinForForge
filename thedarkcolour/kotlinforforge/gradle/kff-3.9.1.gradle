@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     // Kotlin for Forge
-    implementation 'thedarkcolour:kotlinforforge:3.8.0'
+    implementation 'thedarkcolour:kotlinforforge:3.9.1'
 }
 
 compileKotlin {

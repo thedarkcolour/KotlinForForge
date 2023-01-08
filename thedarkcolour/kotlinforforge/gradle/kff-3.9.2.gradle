@@ -1,0 +1,22 @@
+// CHANGE THESE EACH KFF UPDATE
+ext.kotlin_version = '1.8.0'
+ext.coroutines_version = '1.6.4'
+ext.serialization_version = '1.4.1'
+
+project.properties['kotlin.stdlib.default.dependency'] = false
+
+repositories {
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+}
+
+dependencies {
+    // Kotlin for Forge
+    implementation 'thedarkcolour:kotlinforforge:3.9.2'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '17'
+}
