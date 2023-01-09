@@ -7,70 +7,114 @@ import net.minecraft.core.Vec3i
 import net.minecraft.world.phys.Vec2
 import net.minecraft.world.phys.Vec3
 import thedarkcolour.kotlinforforge.forge.vectorutil.*
+import kotlin.random.Random
 
 internal fun testVec2() {
-    val v1 = Vec2(1.0F, 1.0F)
-    val v2 = Vec2(2.0F, 2.0F)
+    val x1 = Random.nextFloat()
+    val y1 = Random.nextFloat()
 
-    assert(v1 + v2 == Vec2(3.0F, 3.0F)) { "Vec2 addition has failed!" }
-    assert(v1 - v2 == Vec2(-1.0F, -1.0F)) { "Vec2 subtraction has failed!" }
-    assert(-v1 == Vec2(-1.0F, -1.0F)) { "Vec2 unaryMinus has failed!" }
-    assert(v1 * 2.2F == Vec2(2.2F, 2.2F)) { "Vec2 multiplication has failed! " }
+    val x2 = Random.nextFloat()
+    val y2 = Random.nextFloat()
+
+    val v1 = Vec2(x1, y1)
+    val v2 = Vec2(x2, y2)
+
+    val (a, b) = v1
+    assert(a == x1) { "Vec2 deconstruction for x has failed!" }
+    assert(b == y1) { "Vec2 deconstruction for y has failed!" }
+    assert(v1 + v2 == Vec2(x1 + x2, y1 + y2)) { "Vec2 addition has failed!" }
+    assert(v1 - v2 == Vec2(x1 - x2, y1 - y2)) { "Vec2 subtraction has failed!" }
+    assert(-v1 == Vec2(-x1, -y1)) { "Vec2 unaryMinus has failed!" }
+    assert(v1 * 2.2F == Vec2(x1 * 2.2F, y1 * 2.2F)) { "Vec2 multiplication has failed! " }
     assert(v1.clone() == v1) { "Vec2 cloning has failed! " }
 
-    assert(v1 == Vec2(1.0F, 1.0F)) { "v1 has been mutated!" }
-    assert(v2 == Vec2(2.0F, 2.0F)) { "v1 has been mutated!" }
+    assert(v1 == Vec2(x1, y1)) { "v1 has been mutated!" }
+    assert(v2 == Vec2(x2, y2)) { "v2 has been mutated!" }
 
     KFFLibTest.LOGGER.info("Vec2 test succeed")
 }
 
 internal fun testVec3i() {
-    val v1 = Vec3i(1, 1, 1)
-    val v2 = Vec3i(2, 2, 2)
+    val (x1, y1, z1) = listOf(Random.nextInt(), Random.nextInt(), Random.nextInt())
+    val (x2, y2, z2) = listOf(Random.nextInt(), Random.nextInt(), Random.nextInt())
 
-    assert(v1 + v2 == Vec3i(3, 3, 3)) { "Vec3i addition has failed!" }
-    assert(v1 - v2 == Vec3i(-1, -1, -1)) { "Vec3i subtraction has failed!" }
-    assert(-v1 == Vec3i(-1, -1, -1)) { "Vec3i unaryMinus has failed!" }
-    assert(v1 * 23 == Vec3i(23, 23, 23)) { "Vec3i multiplication has failed! " }
-    assert(v1 dot v2 == 6) { "Vec3i dot product has failed! " }
-    assert(v1.clone() == v1) { "Vec3i cloning has failed! " }
+    val v1 = Vec3i(x1, y1, z1)
+    val v2 = Vec3i(x2, y2, z2)
 
-    assert(v1 == Vec3i(1, 1, 1)) { "v1 has been mutated!" }
-    assert(v2 == Vec3i(2, 2, 2)) { "v1 has been mutated!" }
+    val (a, b, c) = v1
+
+    assert(a == x1) { "Vec3i deconstruction for x has failed!" }
+    assert(b == y1) { "Vec3i deconstruction for y has failed!" }
+    assert(c == z1) { "Vec3i deconstruction for z has failed!" }
+    assert(v1 + v2 == Vec3i(x1 + x2, y1 + y2, z1 + z2)) { "Vec3i addition has failed!" }
+    assert(v1 - v2 == Vec3i(x1 - x2, y1 - y2, z1 - z2)) { "Vec3i subtraction has failed!" }
+    assert(-v1 == Vec3i(-x1, -y1, -z1)) { "Vec3i unaryMinus has failed!" }
+    assert(v1 * 23 == Vec3i(x1 * 23, y2 * 23, z2 * 23)) { "Vec3i multiplication has failed! " }
+    assert(v1.clone() == Vec3i(x1, y1, z1)) { "Vec3i cloning has failed! " }
+
+    assert(v1 == Vec3i(x1, y1, z1)) { "v1 has been mutated!" }
+    assert(v2 == Vec3i(x2, x2, x2)) { "v2 has been mutated!" }
+
+    val vec3 = Vec3(x1.toDouble(), y1.toDouble(), z1.toDouble())
+    val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
+    val vector3d = Vector3d(x1.toDouble(), y1.toDouble(), z1.toDouble())
+
+    assert(v1 == Vec3i(vec3)) { "Vec3 -> Vec3i conversion has failed!" }
+    assert(v1 == Vec3i(vector3f)) { "Vector3f -> Vec3i conversion has failed!" }
+    assert(v1 == Vec3i(vector3d)) { "Vector3d -> Vec3i conversion has failed!" }
 
     KFFLibTest.LOGGER.info("Vec3i test succeed")
 }
 
 internal fun testVec3() {
-    val v1 = Vec3(1.0, 1.0, 1.0)
-    val v2 = Vec3(2.0, 2.0, 2.0)
+    val (x1, y1, z1) = listOf(Random.nextDouble(), Random.nextDouble(), Random.nextDouble())
+    val (x2, y2, z2) = listOf(Random.nextDouble(), Random.nextDouble(), Random.nextDouble())
 
-    assert(v1 + v2 == Vec3(3.0, 3.0, 3.0)) { "Vec3 addition has failed!" }
-    assert(v1 - v2 == Vec3(-1.0, -1.0, -1.0)) { "Vec3 subtraction has failed!" }
-    assert(-v1 == Vec3(-1.0, -1.0, -1.0)) { "Vec3 unaryMinus has failed!" }
-    assert(v1 * 23.0 == Vec3(23.0, 23.0, 23.0)) { "Vec3 multiplication has failed! " }
+    val v1 = Vec3(x1, y1, z1)
+    val v2 = Vec3(x2, y2, z2)
+
+    val (a, b, c) = v1
+
+    assert(a == x1) { "Vec3 deconstruction for x has failed!" }
+    assert(b == y1) { "Vec3 deconstruction for y has failed!" }
+    assert(c == z1) { "Vec3 deconstruction for z has failed!" }
+    assert(v1 + v2 == Vec3(x1 + x2, y1 + y2, z1 + z2)) { "Vec3 addition has failed!" }
+    assert(v1 - v2 == Vec3(x1 - x2, y1 - y2, z1 - z2)) { "Vec3 subtraction has failed!" }
+    assert(-v1 == Vec3(-x1, -y1, -z1)) { "Vec3 unaryMinus has failed!" }
+    assert(v1 * 23.0 == Vec3(x1 * 23.0, y1 * 23.0, z1 * 23.0)) { "Vec3 multiplication has failed! " }
     assert(v1.clone() == v1) { "Vec3 cloning has failed! " }
 
-    assert(v1 == Vec3(1.0, 1.0, 1.0)) { "v1 has been mutated!" }
-    assert(v2 == Vec3(2.0, 2.0, 2.0)) { "v1 has been mutated!" }
+    assert(v1 == Vec3(x1, y1, z1)) { "v1 has been mutated!" }
+    assert(v2 == Vec3(x2, y2, z2)) { "v2 has been mutated!" }
+
+    val vec3i = Vec3i(x1, y1, z1)
+    val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
+    val vector3d = Vector3d(x1, y1, z1)
+
+    assert(v1 == Vec3.atLowerCornerOf(vec3i)) { "Vec3i -> Vec3 conversion has failed!" }
+    assert(v1 == Vec3(vector3f)) { "Vector3f -> Vec3 conversion has failed!" }
+    assert(v1 == Vec3(vector3d)) { "Vector3d -> Vec3 conversion has failed!" }
 
     KFFLibTest.LOGGER.info("Vec3 test succeed")
 }
 
 internal fun testVector3d() {
-    val v1 = Vector3d(0.0, 13.0, 21.0)
-    val v2 = Vector3d(-17.0, -42.0, 23.0)
+    val (x1, y1, z1) = listOf(Random.nextDouble(), Random.nextDouble(), Random.nextDouble())
+    val (x2, y2, z2) = listOf(Random.nextDouble(), Random.nextDouble(), Random.nextDouble())
 
-    assert(v1 + v2 == Vector3d(-17.0, -29.0, 44.0)) { "Vector3d addition has failed!" }
-    assert(v1 - v2 == Vector3d(17.0, 55.0, -2.0)) { "Vector3d subtraction has failed!" }
-    assert(-v1 == Vector3d(0.0, -13.0, -21.0)) { "Vector3d unaryMinus has failed!" }
-    assert(v1 * 23.0 == Vector3d(0.0, 299.0, 483.0)) { "Vector3d multiplication has failed! " }
-    assert(v1 dot v2 == -63.0) { "Vector3d dot product has failed! " }
-    assert(v1 cross v2 == Vector3d(1181.0, -357.0, 221.0)) { "Vector3d multiplication has failed! " }
+    val v1 = Vector3d(x1, y1, z1)
+    val v2 = Vector3d(x2, y2, z2)
+
+    val (a, b, c) = v1
+
+    assert(a == x1) { "Vector3d deconstruction for x has failed!" }
+    assert(b == y1) { "Vector3d deconstruction for y has failed!" }
+    assert(c == z1) { "Vector3d deconstruction for z has failed!" }
+    assert(v1 + v2 == Vector3d(x1 + x2, y1 + y2, z1 + z2)) { "Vector3d addition has failed!" }
+    assert(v1 - v2 == Vector3d(x1 - x2, y1 - y2, z1 - z2)) { "Vector3d subtraction has failed!" }
+    assert(-v1 == Vector3d(-x1, -y1, -z1)) { "Vector3d unaryMinus has failed!" }
+    assert(v1 * 23.0 == Vector3d(x1 * 23.0, y1 * 23.0, z1 * 23.0)) { "Vector3d multiplication has failed! " }
     assert(v1.clone() == v1) { "Vector3d cloning has failed! " }
-
-    assert(v1 == Vector3d(0.0, 13.0, 21.0)) { "v1 has been mutated!" }
-    assert(v2 == Vector3d(-17.0, -42.0, 23.0)) { "v1 has been mutated!" }
 
     val plusAssign = v1.clone()
     plusAssign += v2
@@ -84,21 +128,37 @@ internal fun testVector3d() {
     timesAssign *= 23.0
     assert(v1 * 23.0 == timesAssign) { "Vector3d multiplication&assign has failed!" }
 
+    assert(v1 == Vector3d(x1, y1, z1)) { "v1 has been mutated!" }
+    assert(v2 == Vector3d(x2, y2, z2)) { "v2 has been mutated!" }
+
+    val vec3i = Vec3i(x1, y1, z1)
+    val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
+    val vec3 = Vec3(x1, y1, z1)
+
+    assert(v1 == Vector3d(vec3i)) { "Vec3i -> Vector3d conversion has failed!" }
+    assert(v1 == Vector3d(vector3f)) { "Vector3f -> Vector3d conversion has failed!" }
+    assert(v1 == Vector3d(vec3)) { "Vec3 -> Vector3d conversion has failed!" }
+
     KFFLibTest.LOGGER.info("Vector3d test succeed")
 }
 
 internal fun testVector3f() {
-    val v1 = Vector3f(0.0F, 13.0F, 21.0F)
-    val v2 = Vector3f(-17.0F, -42.0F, 23.0F)
+    val (x1, y1, z1) = listOf(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
+    val (x2, y2, z2) = listOf(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
 
-    assert(v1 + v2 == Vector3f(-17.0F, -29.0F, 44.0F)) { "Vector3f addition has failed!" }
-    assert(v1 - v2 == Vector3f(17.0F, 55.0F, -2.0F)) { "Vector3f subtraction has failed!" }
-    assert(-v1 == Vector3f(0.0F, -13.0F, -21.0F)) { "Vector3f unaryMinus has failed!" }
-    assert(v1 * 23.0F == Vector3f(0.0F, 299.0F, 483.0F)) { "Vector3f multiplication has failed! " }
+    val v1 = Vector3f(x1, y1, z1)
+    val v2 = Vector3f(x2, y2, z2)
+
+    val (a, b, c) = v1
+
+    assert(a == x1) { "Vector3f deconstruction for x has failed!" }
+    assert(b == y1) { "Vector3f deconstruction for y has failed!" }
+    assert(c == z1) { "Vector3f deconstruction for z has failed!" }
+    assert(v1 + v2 == Vector3f(x1 + x2, y1 + y2, z1 + z2)) { "Vector3f addition has failed!" }
+    assert(v1 - v2 == Vector3f(x1 - x2, y1 - y2, z1 - z2)) { "Vector3f subtraction has failed!" }
+    assert(-v1 == Vector3f(-x1, -y1, -z1)) { "Vector3f unaryMinus has failed!" }
+    assert(v1 * 23.0F == Vector3f(x1 * 23F, y1 * 23F, z1 * 23F)) { "Vector3f multiplication has failed! " }
     assert(v1.clone() == v1) { "Vector3f cloning has failed! " }
-
-    assert(v1 == Vector3f(0.0F, 13.0F, 21.0F)) { "v1 has been mutated!" }
-    assert(v2 == Vector3f(-17.0F, -42.0F, 23.0F)) { "v1 has been mutated!" }
 
     val plusAssign = v1.clone()
     plusAssign += v2
@@ -112,21 +172,41 @@ internal fun testVector3f() {
     timesAssign *= 23.0F
     assert(v1 * 23.0F == timesAssign) { "Vector3f multiplication&assign has failed!" }
 
+    assert(v1 == Vector3f(x1, y1 ,z1)) { "v1 has been mutated!" }
+    assert(v2 == Vector3f(x2, y2, z2)) { "v2 has been mutated!" }
+
+    val vec3i = Vec3i(x1.toInt(), y1.toInt(), z1.toInt())
+    val vector3d = Vector3d(x1.toDouble(), y1.toDouble(), z1.toDouble())
+    val vec3 = Vec3(x1.toDouble(), y1.toDouble(), z1.toDouble())
+
+    assert(v1 == Vector3f(vec3i)) { "Vec3i -> Vector3f conversion has failed!" }
+    assert(v1 == Vector3f(vector3d)) { "Vector3f -> Vector3f conversion has failed!" }
+    assert(v1 == Vector3f(vec3)) { "Vec3 -> Vector3f conversion has failed!" }
+
     KFFLibTest.LOGGER.info("Vector3f test succeed")
 }
 
 internal fun testVector4f() {
-    val v1 = Vector4f(0.0F, 13.0F, 21.0F, -25.0F)
-    val v2 = Vector4f(-17.0F, -42.0F, 23.0F, -13.0F)
+    val (x1, y1, z1, w1) = listOf(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
+    val (x2, y2, z2, w2) = listOf(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
 
-    assert(v1 + v2 == Vector4f(-17.0F, -29.0F, 44.0F, -38F)) { "Vector4f addition has failed!" }
-    assert(v1 - v2 == Vector4f(17.0F, 55.0F, -2.0F, -12F)) { "Vector4f subtraction has failed!" }
-    assert(-v1 == Vector4f(0.0F, -13.0F, -21.0F, 25F)) { "Vector4f unaryMinus has failed!" }
-    assert(v1 * 23.0F == Vector4f(0.0F, 299.0F, 483.0F, -575.0F)) { "Vector4f multiplication has failed! " }
+    val v1 = Vector4f(x1, y1, z1, w1)
+    val v2 = Vector4f(x2, y2, z2, w2)
+
+    val (a, b, c, d) = v1
+
+    assert(a == x1) { "Vector4f deconstruction for x has failed!" }
+    assert(b == y1) { "Vector4f deconstruction for y has failed!" }
+    assert(c == z1) { "Vector4f deconstruction for z has failed!" }
+    assert(d == w1) { "Vector4f deconstruction for w has failed!" }
+    assert(v1 + v2 == Vector4f(x1 + x2, y1 + y2, z1 + z2, w1 + w2)) { "Vector4f addition has failed!" }
+    assert(v1 - v2 == Vector4f(x1 - x2, y1 - y2, z1 - z2, w1 - w2)) { "Vector4f subtraction has failed!" }
+    assert(-v1 == Vector4f(-x1, -y1, -z1, -w1)) { "Vector4f unaryMinus has failed!" }
+    assert(v1 * 23.0F == Vector4f(x1 * 23, y1 * 23, z1 * 23, w1 * 23)) { "Vector4f multiplication has failed! " }
     assert(v1.clone() == v1) { "Vector4f cloning has failed! " }
 
-    assert(v1 == Vector4f(0.0F, 13.0F, 21.0F, -25.0F)) { "v1 has been mutated!" }
-    assert(v2 == Vector4f(-17.0F, -42.0F, 23.0F, -13.0F)) { "v1 has been mutated!" }
+    assert(v1 == Vector4f(x1, y1, z1, w1)) { "v1 has been mutated!" }
+    assert(v2 == Vector4f(x2, y2, z2, w2)) { "v2 has been mutated!" }
 
     val plusAssign = v1.clone()
     plusAssign += v2

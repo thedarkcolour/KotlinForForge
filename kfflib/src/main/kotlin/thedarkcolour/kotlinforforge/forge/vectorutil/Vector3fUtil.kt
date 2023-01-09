@@ -1,6 +1,9 @@
 package thedarkcolour.kotlinforforge.forge.vectorutil
 
+import com.mojang.math.Vector3d
 import com.mojang.math.Vector3f
+import net.minecraft.core.Vec3i
+import net.minecraft.world.phys.Vec3
 
 public operator fun Vector3f.plusAssign(other: Vector3f): Unit = add(other)
 
@@ -31,3 +34,21 @@ public operator fun Vector3f.times(times: Float): Vector3f {
 public fun Vector3f.clone(): Vector3f {
     return Vector3f(x(), y(), z())
 }
+
+public fun Vector3f(other: Vec3): Vector3f {
+    return Vector3f(other.x.toFloat(), other.y.toFloat(), other.z.toFloat())
+}
+
+public fun Vector3f(other: Vector3d): Vector3f {
+    return Vector3f(other.x.toFloat(), other.y.toFloat(), other.z.toFloat())
+}
+
+public fun Vector3f(other: Vec3i): Vector3f {
+    return Vector3f(other.x.toFloat(), other.y.toFloat(), other.z.toFloat())
+}
+
+public operator fun Vector3f.component1(): Float = x()
+
+public operator fun Vector3f.component2(): Float = y()
+
+public operator fun Vector3f.component3(): Float = z()
