@@ -59,9 +59,9 @@ internal fun testVec3i() {
     val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
     val vector3d = Vector3d(x1.toDouble(), y1.toDouble(), z1.toDouble())
 
-    assert(v1 == Vec3i(vec3)) { "Vec3 -> Vec3i conversion has failed!" }
-    assert(v1 == Vec3i(vector3f)) { "Vector3f -> Vec3i conversion has failed!" }
-    assert(v1 == Vec3i(vector3d)) { "Vector3d -> Vec3i conversion has failed!" }
+    assert(v1 == vec3.toVec3i()) { "Vec3 -> Vec3i conversion has failed!" }
+    assert(v1 == vector3f.toVec3i()) { "Vector3f -> Vec3i conversion has failed!" }
+    assert(v1 == vector3d.toVec3i()) { "Vector3d -> Vec3i conversion has failed!" }
 
     KFFLibTest.LOGGER.info("Vec3i test succeed")
 }
@@ -91,9 +91,9 @@ internal fun testVec3() {
     val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
     val vector3d = Vector3d(x1, y1, z1)
 
-    assert(v1 == Vec3.atLowerCornerOf(vec3i)) { "Vec3i -> Vec3 conversion has failed!" }
-    assert(v1 == Vec3(vector3f)) { "Vector3f -> Vec3 conversion has failed!" }
-    assert(v1 == Vec3(vector3d)) { "Vector3d -> Vec3 conversion has failed!" }
+    assert(v1 == vec3i.toVec3()) { "Vec3i -> Vec3 conversion has failed!" }
+    assert(v1 == vector3f.toVec3()) { "Vector3f -> Vec3 conversion has failed!" }
+    assert(v1 == vector3d.toVec3()) { "Vector3d -> Vec3 conversion has failed!" }
 
     KFFLibTest.LOGGER.info("Vec3 test succeed")
 }
@@ -135,9 +135,9 @@ internal fun testVector3d() {
     val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
     val vec3 = Vec3(x1, y1, z1)
 
-    assert(v1 == Vector3d(vec3i)) { "Vec3i -> Vector3d conversion has failed!" }
-    assert(v1 == Vector3d(vector3f)) { "Vector3f -> Vector3d conversion has failed!" }
-    assert(v1 == Vector3d(vec3)) { "Vec3 -> Vector3d conversion has failed!" }
+    assert(v1 == vec3i.toVector3d()) { "Vec3i -> Vector3d conversion has failed!" }
+    assert(v1 == vector3f.toVector3d()) { "Vector3f -> Vector3d conversion has failed!" }
+    assert(v1 == vec3.toVector3d()) { "Vec3 -> Vector3d conversion has failed!" }
 
     KFFLibTest.LOGGER.info("Vector3d test succeed")
 }
@@ -179,9 +179,9 @@ internal fun testVector3f() {
     val vector3d = Vector3d(x1.toDouble(), y1.toDouble(), z1.toDouble())
     val vec3 = Vec3(x1.toDouble(), y1.toDouble(), z1.toDouble())
 
-    assert(v1 == Vector3f(vec3i)) { "Vec3i -> Vector3f conversion has failed!" }
-    assert(v1 == Vector3f(vector3d)) { "Vector3f -> Vector3f conversion has failed!" }
-    assert(v1 == Vector3f(vec3)) { "Vec3 -> Vector3f conversion has failed!" }
+    assert(v1 == vec3i.toVector3f()) { "Vec3i -> Vector3f conversion has failed!" }
+    assert(v1 == vector3d.toVector3f()) { "Vector3f -> Vector3f conversion has failed!" }
+    assert(v1 == vec3.toVector3f()) { "Vec3 -> Vector3f conversion has failed!" }
 
     KFFLibTest.LOGGER.info("Vector3f test succeed")
 }

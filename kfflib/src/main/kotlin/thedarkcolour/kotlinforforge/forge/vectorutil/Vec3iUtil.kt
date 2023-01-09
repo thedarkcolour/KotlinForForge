@@ -24,17 +24,11 @@ public fun Vec3i.clone(): Vec3i {
     return Vec3i(x, y, z)
 }
 
-public fun Vec3i(other: Vec3): Vec3i {
-    return Vec3i(other.x.toInt(), other.y.toInt(), other.z.toInt())
-}
+public fun Vec3i.toVec3(): Vec3 = Vec3.atLowerCornerOf(this)
 
-public fun Vec3i(other: Vector3f): Vec3i {
-    return Vec3i(other.x().toInt(), other.y().toInt(), other.z().toInt())
-}
+public fun Vec3i.toVector3f(): Vector3f = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
 
-public fun Vec3i(other: Vector3d): Vec3i {
-    return Vec3i(other.x.toInt(), other.y.toInt(), other.z.toInt())
-}
+public fun Vec3i.toVector3d(): Vector3d = Vector3d(x.toDouble(), y.toDouble(), z.toDouble())
 
 public operator fun Vec3i.component1(): Int = x
 

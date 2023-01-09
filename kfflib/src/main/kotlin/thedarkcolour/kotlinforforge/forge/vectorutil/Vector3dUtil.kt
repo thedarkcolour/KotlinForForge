@@ -53,6 +53,12 @@ public fun Vector3d(other: Vec3i): Vector3d {
     return Vector3d(other.x.toDouble(), other.y.toDouble(), other.z.toDouble())
 }
 
+public fun Vector3d.toVec3i(): Vec3i = Vec3i(x, y, z)
+
+public fun Vector3d.toVec3(): Vec3 = Vec3(x, y, z)
+
+public fun Vector3d.toVector3f(): Vector3f = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
+
 public operator fun Vector3d.component1(): Double = x
 
 public operator fun Vector3d.component2(): Double = y
