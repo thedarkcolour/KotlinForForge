@@ -13,3 +13,7 @@ public operator fun Vec2.times(times: Float): Vec2 = scale(times)
 public fun Vec2.clone(): Vec2 {
     return Vec2(x, y)
 }
+
+public operator fun Vec2.component1(): Float = x
+
+public operator fun Vec2.component2(): Float = y

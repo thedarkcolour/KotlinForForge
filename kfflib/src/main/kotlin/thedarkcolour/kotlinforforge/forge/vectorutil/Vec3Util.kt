@@ -1,5 +1,7 @@
 package thedarkcolour.kotlinforforge.forge.vectorutil
 
+import com.mojang.math.Vector3d
+import com.mojang.math.Vector3f
 import net.minecraft.world.phys.Vec3
 
 
@@ -14,3 +16,17 @@ public operator fun Vec3.times(times: Double): Vec3 = scale(times)
 public fun Vec3.clone(): Vec3 {
     return Vec3(x, y, z)
 }
+
+public fun Vec3(other: Vector3f): Vec3 {
+    return Vec3(other.x().toDouble(), other.y().toDouble(), other.z().toDouble())
+}
+
+public fun Vec3(other: Vector3d): Vec3 {
+    return Vec3(other.x, other.y, other.z)
+}
+
+public operator fun Vec3.component1(): Double = x
+
+public operator fun Vec3.component2(): Double = y
+
+public operator fun Vec3.component3(): Double = z
