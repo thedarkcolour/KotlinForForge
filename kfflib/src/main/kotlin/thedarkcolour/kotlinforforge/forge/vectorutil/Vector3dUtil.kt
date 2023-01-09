@@ -41,18 +41,6 @@ public fun Vector3d.clone(): Vector3d {
     return Vector3d(x, y, z)
 }
 
-public fun Vector3d(other: Vec3): Vector3d {
-    return Vector3d(other.x, other.y, other.z)
-}
-
-public fun Vector3d(other: Vector3f): Vector3d {
-    return Vector3d(other.x().toDouble(), other.y().toDouble(), other.z().toDouble())
-}
-
-public fun Vector3d(other: Vec3i): Vector3d {
-    return Vector3d(other.x.toDouble(), other.y.toDouble(), other.z.toDouble())
-}
-
 public fun Vector3d.toVec3i(): Vec3i = Vec3i(x, y, z)
 
 public fun Vector3d.toVec3(): Vec3 = Vec3(x, y, z)
