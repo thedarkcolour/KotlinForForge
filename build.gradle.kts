@@ -204,6 +204,17 @@ fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null)
     return dep
 }
 
+task<Exec>("testREADME") {
+    group = "verification"
+    description = "Applies steps in README to ensure it works on mdk"
+    workingDir("./")
+    commandLine("kotlinc", "-script", ".github/ReadmeTester.kts")
+    doLast {
+        executionResult.get().assertNormalExitValue()
+    }
+}
+
+
 // Kotlin function ambiguity fix
 fun <T> Property<T>.provider(value: T) {
     set(value)
