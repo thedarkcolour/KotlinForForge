@@ -13,12 +13,12 @@ fun main() {
 
     resetTempDir()
 
-    applyReadme(true, readmeContents)
+    applyReadme(isGroovy = true, readmeContents)
     testBuild()
 
     replaceWithKts()
     resetBuildEnv()
-    applyReadme(false, readmeContents)
+    applyReadme(isGroovy = false, readmeContents)
     testBuild()
 }
 
