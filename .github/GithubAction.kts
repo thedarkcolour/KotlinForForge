@@ -6,6 +6,7 @@ val readmeContents = File("README.md").readLines()
 val propertiesContents = File("gradle.properties").readLines()
 val mcVersion = propertiesContents.find { it.trim().startsWith("mc_version") }!!.substring(11)
 val forgeVersion = propertiesContents.find { it.trim().startsWith("forge_version") }!!.substring(14)
+
 fun main() {
     println("minecraft version: $mcVersion")
     println("forge version: $forgeVersion")
@@ -20,6 +21,8 @@ fun main() {
     applyReadme(false, readmeContents)
     testBuild()
 }
+
+main()
 
 fun resetTempDir() {
     val mdkUrl = "https://maven.minecraftforge.net/net/minecraftforge/forge/$mcVersion-$forgeVersion/forge-$mcVersion-$forgeVersion-mdk.zip"
