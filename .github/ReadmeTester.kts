@@ -1,11 +1,12 @@
 import java.io.File
+import java.lang.IllegalStateException
 import java.lang.ProcessBuilder.Redirect
-import java.net.URL
 
 val readmeContents = File("README.md").readLines()
 val propertiesContents = File("gradle.properties").readLines()
-val mcVersion = propertiesContents.find { it.trim().startsWith("mc_version") }!!.substring(11)
-val forgeVersion = propertiesContents.find { it.trim().startsWith("forge_version") }!!.substring(14)
+val mcVersion = propertiesContents.find { it.trim().startsWith("mc_version") }!!.substringAfter("=").trim()
+val forgeVersion = propertiesContents.find { it.trim().startsWith("forge_version") }!!.substringAfter("=").trim()
+val kffVersion = propertiesContents.find { it.trim().startsWith("kff_version") }!!.substringAfter("=").trim()
 
 fun main() {
     println("minecraft version: $mcVersion")
@@ -24,6 +25,8 @@ fun main() {
     resetBuildEnv()
     applyReadme(isGroovy = false, readmeContents)
     testBuild()
+
+    testTOML()
 }
 
 main()
@@ -93,6 +96,77 @@ fun applyReadme(isGroovy: Boolean, readme: List<String>) {
 fun testBuild() {
     val exitValue = "./gradlew build".runCommand(File("./.github/readmetester"))
     require(exitValue == 0) { "Build test failed!" }
+}
+
+fun testTOML() {
+    val tomlSection = getRangeOfSection("```toml", "```", readmeContents)
+    val tomlLines = readmeContents.subList(tomlSection.first, tomlSection.last + 1)
+
+    val modloaderLine = tomlLines
+        .find { it.startsWith("modLoader") }!!
+        .split('=')[1]
+        .trim()
+        .replace("\"", "")
+
+    val loaderVersionLine = tomlLines
+        .find { it.startsWith("loaderVersion") }!!
+        .split('=')[1]
+        .trim()
+        .replace("\"", "")
+
+    val rootProjectName = File("settings.gradle.kts")
+        .readLines()
+        .find { it.startsWith("rootProject.name") }!!
+        .split("=")[1]
+        .trim()
+        .replace("\"", "")
+
+    require(modloaderLine == rootProjectName) { "$modloaderLine != $rootProjectName" }
+
+    val startInclusive = if (loaderVersionLine.startsWith('[')) true
+        else if (loaderVersionLine.startsWith('(')) false
+        else throw IllegalStateException("Failed to parse version range for toml!")
+
+    val endInclusive = if (loaderVersionLine.endsWith(']')) true
+        else if (loaderVersionLine.endsWith(')')) false
+        else throw IllegalStateException("Failed to parse version range for toml!")
+
+    val split = loaderVersionLine.split(',')
+
+    val start = split[0].replace("[", "").replace("(", "")
+    val end = split[1].replace("]", "").replace(")", "")
+
+    when (compareVersion(start, kffVersion)) {
+        -1 -> {
+            println("specified kff version in toml is bigger than start")
+        }
+        0 -> {
+            if (startInclusive) {
+                println("specified kff version in toml is equal to start, allowed")
+            } else {
+                throw IllegalStateException("specified kff version in toml is equal to start, disallowed")
+            }
+        }
+        1 -> {
+            throw IllegalStateException("specified kff version in toml is less than start")
+        }
+    }
+
+    when (compareVersion(kffVersion, end)) {
+        -1 -> {
+            println("specified kff version in toml is less than end")
+        }
+        0 -> {
+            if (endInclusive) {
+                println("specified kff version in toml is equal to end, allowed")
+            } else {
+                throw IllegalStateException("specified kff version in toml is equal to end, disallowed")
+            }
+        }
+        1 -> {
+            throw IllegalStateException("specified kff version in toml is bigger than end")
+        }
+    }
 }
 
 fun useGradle() {
@@ -176,4 +250,27 @@ fun IntRange.length(): Int {
 
 fun IntRange.shift(n: Int): IntRange {
     return (first+n)..(last+n)
+}
+
+fun compareVersion(version1: String, version2: String): Int {
+    if (version1 == version2) return 0
+    if (version1.isEmpty()) return -1
+    if (version2.isEmpty()) return -1
+
+    val split1 = version1.split(".")
+    val split2 = version2.split(".")
+
+    val n1 = split1[0].toInt()
+    val n2 = split2[0].toInt()
+
+    if (n1 > n2) return 1
+    if (n2 > n1) return -1
+
+    if(split1.size == 1 && split2.size == 1) return 0
+    if (split1.size == 1) return -1
+    if (split2.size == 1) return 1
+    return compareVersion(
+        split1.subList(1, split1.size).joinToString("."),
+        split2.subList(1, split2.size).joinToString("."),
+    )
 }
