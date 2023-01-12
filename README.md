@@ -49,9 +49,9 @@ dependencies {
 ```kotlin
 plugins {
     // Adds the Kotlin Gradle plugin
-    id("org.jetbrains.kotlin.jvm" version "1.8.0")
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     // OPTIONAL Kotlin Serialization plugin
-    id("org.jetbrains.kotlin.plugin.serialization" version "1.8.0")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
 }
 
 repositories {
