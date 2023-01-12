@@ -138,33 +138,33 @@ fun testTOML() {
 
     when (compareVersion(start, kffVersion)) {
         -1 -> {
-            println("specified kff version in toml is bigger than start")
+            println("project version in properties is bigger than start of README toml section")
         }
         0 -> {
             if (startInclusive) {
-                println("specified kff version in toml is equal to start, allowed")
+                println("project version in properties is equal to start of README toml section, allowed")
             } else {
-                throw IllegalStateException("specified kff version in toml is equal to start, disallowed")
+                throw IllegalStateException("project version in properties is equal to start of README toml section, disallowed")
             }
         }
         1 -> {
-            throw IllegalStateException("specified kff version in toml is less than start")
+            throw IllegalStateException("project version in properties is less than start of README toml section")
         }
     }
 
     when (compareVersion(kffVersion, end)) {
         -1 -> {
-            println("specified kff version in toml is less than end")
+            println("project version in properties is less than end of README toml section")
         }
         0 -> {
             if (endInclusive) {
-                println("specified kff version in toml is equal to end, allowed")
+                println("project version in properties is equal to end of README toml section, allowed")
             } else {
-                throw IllegalStateException("specified kff version in toml is equal to end, disallowed")
+                throw IllegalStateException("project version in properties is equal to end of README toml section, disallowed")
             }
         }
         1 -> {
-            throw IllegalStateException("specified kff version in toml is bigger than end")
+            throw IllegalStateException("project version in properties is bigger than end of README toml section")
         }
     }
 }
