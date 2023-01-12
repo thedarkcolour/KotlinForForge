@@ -9,12 +9,12 @@ plugins {
 }
 
 // Current KFF version
-val kffVersion = "3.9.1"
-val kffMaxVersion = "4.0.0"
+val kff_version: String by project
+val kffMaxVersion = "${kff_version.split('.')[0].toInt() + 1}.0.0"
 val kffGroup = "thedarkcolour"
 
 allprojects {
-    version = kffVersion
+    version = kff_version
     group = kffGroup
 }
 
@@ -92,6 +92,7 @@ dependencies {
     implementation(include(project(":kfflang"), kffMaxVersion))
     implementation(include(project(":kfflib"), kffMaxVersion))
     implementation(include(project(":kffmod"), kffMaxVersion))
+    implementation(kotlin("stdlib"))
 }
 
 tasks {
@@ -186,7 +187,7 @@ tasks.create("publishAllMavens") {
     }
 }
 tasks.create("publishModPlatforms") {
-    println("Publishing Kotlin for Forge $kffVersion to Modrinth and CurseForge")
+    println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge")
     finalizedBy(tasks.modrinth)
     finalizedBy(tasks.curseforge)
 }
