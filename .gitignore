@@ -25,3 +25,9 @@ website
 # Files from Forge MDK
 forge*changelog.txt
 gradle
+
+# README tester
+.github/readmetester/.gradle
+.github/readmetester/build*
+.github/readmetester/gradle
+.github/readmetester/gradlew

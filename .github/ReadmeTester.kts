@@ -11,12 +11,16 @@ fun main() {
     println("minecraft version: $mcVersion")
     println("forge version: $forgeVersion")
 
-    resetTempDir()
+    "cp -n -r gradle .github/readmetester/".runCommand()
+    "cp -n gradlew .github/readmetester/".runCommand()
 
+    newRun()
+
+    useGradle()
     applyReadme(isGroovy = true, readmeContents)
     testBuild()
 
-    replaceWithKts()
+    useKts()
     resetBuildEnv()
     applyReadme(isGroovy = false, readmeContents)
     testBuild()
@@ -24,15 +28,9 @@ fun main() {
 
 main()
 
-fun resetTempDir() {
-    val mdkUrl = "https://maven.minecraftforge.net/net/minecraftforge/forge/$mcVersion-$forgeVersion/forge-$mcVersion-$forgeVersion-mdk.zip"
-    "rm -rf temp".runCommand()
-    "mkdir temp".runCommand()
-    val mdkZip = File("temp/mdk.zip")
-    if (mdkZip.exists()) mdkZip.delete()
-    mdkZip.writeBytes(URL(mdkUrl).readBytes())
-    "unzip temp/mdk.zip -d temp".runCommand()
-    "chmod +x temp/gradlew".runCommand()
+fun newRun() {
+    "rm -rf .github/readmetester/.gradle".runCommand()
+    "rm -rf .github/readmetester/build*".runCommand()
 }
 
 fun applyReadme(isGroovy: Boolean, readme: List<String>) {
@@ -42,7 +40,7 @@ fun applyReadme(isGroovy: Boolean, readme: List<String>) {
     val readmeRepoLines = readme.subList(readmeReposSection.first + 1, readmeReposSection.last)
     val readmeDepsLines = readme.subList(readmeDepsSection.first + 1, readmeDepsSection.last)
 
-    val buildGradle = File(if (isGroovy) "temp/build.gradle" else "temp/build.gradle.kts").readLines()
+    val buildGradle = File(if (isGroovy) ".github/readmetester/build.gradle" else ".github/readmetester/build.gradle.kts").readLines()
 
     val gradlePluginsSection = getRangeOfSection("plugins {", "}", buildGradle)
     val gradleReposSection = getRangeOfSection("repositories {", "}", buildGradle)
@@ -85,7 +83,7 @@ fun applyReadme(isGroovy: Boolean, readme: List<String>) {
         newBuildGradle.add(depsInsertTarget, it)
     }
 
-    File(if (isGroovy) "temp/build.gradle" else "temp/build.gradle.kts").bufferedWriter().use { writer ->
+    File(if (isGroovy) ".github/readmetester/build.gradle" else ".github/readmetester/build.gradle.kts").bufferedWriter().use { writer ->
         newBuildGradle.forEach { newLine ->
             writer.appendLine(newLine)
         }
@@ -93,20 +91,27 @@ fun applyReadme(isGroovy: Boolean, readme: List<String>) {
 }
 
 fun testBuild() {
-    val exitValue = "./gradlew build".runCommand(File("./temp"))
+    val exitValue = "./gradlew build".runCommand(File("./.github/readmetester"))
     require(exitValue == 0) { "Build test failed!" }
 }
 
-fun replaceWithKts() {
-    "mv temp/build.gradle temp/groovy_build".runCommand()
-    "cp .github/ktstemplate.txt temp/build.gradle.kts".runCommand()
-    runSed("val mcVersion = MCVERSION", "val mcVersion = \"$mcVersion\"", "temp/build.gradle.kts")
-    runSed("val forgeVersion = FORGEVERSION", "val forgeVersion = \"$forgeVersion\"", "temp/build.gradle.kts")
+fun useGradle() {
+    "rm -f .github/readmetester/build.gradle.kts".runCommand()
+    "cp .github/readmetester/groovy .github/readmetester/build.gradle".runCommand()
+    runSed("String mcVersion = MCVERSION", "String mcVersion = \"$mcVersion\"", ".github/readmetester/build.gradle")
+    runSed("String forgeVersion = FORGEVERSION", "String forgeVersion = \"$forgeVersion\"", ".github/readmetester/build.gradle")
+}
+
+fun useKts() {
+    "rm -f .github/readmetester/build.gradle".runCommand()
+    "cp .github/readmetester/kts .github/readmetester/build.gradle.kts".runCommand()
+    runSed("val mcVersion = MCVERSION", "val mcVersion = \"$mcVersion\"", ".github/readmetester/build.gradle.kts")
+    runSed("val forgeVersion = FORGEVERSION", "val forgeVersion = \"$forgeVersion\"", ".github/readmetester/build.gradle.kts")
 }
 
 fun resetBuildEnv() {
-    "rm -rf temp/.gradle".runCommand()
-    "rm -rf temp/build".runCommand()
+    "rm -rf .github/readmetester/.gradle".runCommand()
+    "rm -rf .github/readmetester/build".runCommand()
 }
 
 fun runSed(old: String, new: String, target: String) {
