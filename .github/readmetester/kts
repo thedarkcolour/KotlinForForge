@@ -71,6 +71,10 @@ minecraft {
 
             property("forge.enabledGameTestNamespaces", "examplemod")
 
+            args("--nogui")
+
+            forceExit(false)
+
             mods {
                 create("examplemod") {
                     source(sourceSets.main.get())

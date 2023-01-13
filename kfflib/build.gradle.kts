@@ -50,6 +50,8 @@ minecraft {
                 property("forge.logging.markers", "SCAN,LOADING,CORE")
                 property("forge.logging.console.level", "debug")
 
+                args("--nogui")
+
                 mods {
                     create("kfflib") {
                         source(sourceSets.main.get())

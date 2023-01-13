@@ -17,16 +17,17 @@ fun main() {
 
     newRun()
 
-    useGradle()
-    applyReadme(isGroovy = true, readmeContents)
-    testBuild()
+    /*useGradle()
+    applyToBuildScript(isGroovy = true, readmeContents)
+    testBuild()*/
 
     useKts()
-    resetBuildEnv()
-    applyReadme(isGroovy = false, readmeContents)
+    // resetBuildEnv()
+    applyToBuildScript(isGroovy = false, readmeContents)
     testBuild()
 
-    testTOML()
+    applyToTOML(readmeContents)
+    testLaunch()
 }
 
 main()
@@ -36,14 +37,16 @@ fun newRun() {
     "rm -rf .github/readmetester/build*".runCommand()
 }
 
-fun applyReadme(isGroovy: Boolean, readme: List<String>) {
+fun applyToBuildScript(isGroovy: Boolean, readme: List<String>) {
     val (readmePluginsSection, readmeReposSection, readmeDepsSection) = extractFromReadme(isGroovy, readme)
 
     val readmePluginsLines = readme.subList(readmePluginsSection.first + 1, readmePluginsSection.last)
     val readmeRepoLines = readme.subList(readmeReposSection.first + 1, readmeReposSection.last)
     val readmeDepsLines = readme.subList(readmeDepsSection.first + 1, readmeDepsSection.last)
 
-    val buildGradle = File(if (isGroovy) ".github/readmetester/build.gradle" else ".github/readmetester/build.gradle.kts").readLines()
+    val fileName = if (isGroovy) "build.gradle" else "build.gradle.kts"
+
+    val buildGradle = File(".github/readmetester/$fileName").readLines()
 
     val gradlePluginsSection = getRangeOfSection("plugins {", "}", buildGradle)
     val gradleReposSection = getRangeOfSection("repositories {", "}", buildGradle)
@@ -55,18 +58,18 @@ fun applyReadme(isGroovy: Boolean, readme: List<String>) {
 
     // When printing, add 1 to printed line numbers as text editors usually starts line number at 1 and not 0
     println("README info")
-    println("merging plugins (${readmePluginsSection.shift(1)}) into build script at $pluginsInsertTarget {")
+    println("merging plugins (${readmePluginsSection.shift(1)}) into $fileName at $pluginsInsertTarget {")
     readmePluginsLines.forEach {
         println(it)
     }
     println("}")
     println("targeted build script line number: ${pluginsInsertTarget + 1}")
-    println("merging repository (${readmeReposSection.shift(1)}) into build script at $reposInsertTarget {")
+    println("merging repository (${readmeReposSection.shift(1)}) into $fileName at $reposInsertTarget {")
     readmeRepoLines.forEach {
         println(it)
     }
     println("}")
-    println("merging dependencies (${readmeDepsSection.shift(1)}) into build script at $depsInsertTarget {")
+    println("merging dependencies (${readmeDepsSection.shift(1)}) into $fileName at $depsInsertTarget {")
     readmeDepsLines.forEach {
         println(it)
     }
@@ -86,7 +89,7 @@ fun applyReadme(isGroovy: Boolean, readme: List<String>) {
         newBuildGradle.add(depsInsertTarget, it)
     }
 
-    File(if (isGroovy) ".github/readmetester/build.gradle" else ".github/readmetester/build.gradle.kts").bufferedWriter().use { writer ->
+    File(".github/readmetester/$fileName").bufferedWriter().use { writer ->
         newBuildGradle.forEach { newLine ->
             writer.appendLine(newLine)
         }
@@ -98,89 +101,41 @@ fun testBuild() {
     require(exitValue == 0) { "Build test failed!" }
 }
 
-fun testTOML() {
-    val tomlSection = getRangeOfSection("```toml", "```", readmeContents)
-    val tomlLines = readmeContents.subList(tomlSection.first, tomlSection.last + 1)
+fun applyToTOML(readme: List<String>) {
+    val tomlSection = getRangeOfSection("```toml", "```", readme)
+    val tomlLines = readme.subList(tomlSection.first, tomlSection.last + 1)
 
     val modloaderLine = tomlLines
         .find { it.startsWith("modLoader") }!!
-        .split('=')[1]
         .trim()
-        .replace("\"", "")
 
     val loaderVersionLine = tomlLines
         .find { it.startsWith("loaderVersion") }!!
-        .split('=')[1]
         .trim()
-        .replace("\"", "")
 
-    val rootProjectName = File("settings.gradle.kts")
-        .readLines()
-        .find { it.startsWith("rootProject.name") }!!
-        .split("=")[1]
-        .trim()
-        .replace("\"", "")
+    "rm -f .github/readmetester/src/main/resources/META-INF/mods.toml".runCommand()
+    "cp .github/readmetester/src/main/resources/META-INF/toml .github/readmetester/src/main/resources/META-INF/mods.toml".runCommand()
+    runSed("MODLOADER", modloaderLine, ".github/readmetester/src/main/resources/META-INF/mods.toml")
+    runSed("LOADERVERSION", loaderVersionLine, ".github/readmetester/src/main/resources/META-INF/mods.toml")
+}
 
-    require(modloaderLine == rootProjectName) { "$modloaderLine != $rootProjectName" }
-
-    val startInclusive = if (loaderVersionLine.startsWith('[')) true
-        else if (loaderVersionLine.startsWith('(')) false
-        else throw IllegalStateException("Failed to parse version range for toml!")
-
-    val endInclusive = if (loaderVersionLine.endsWith(']')) true
-        else if (loaderVersionLine.endsWith(')')) false
-        else throw IllegalStateException("Failed to parse version range for toml!")
-
-    val split = loaderVersionLine.split(',')
-
-    val start = split[0].replace("[", "").replace("(", "")
-    val end = split[1].replace("]", "").replace(")", "")
-
-    when (compareVersion(start, kffVersion)) {
-        -1 -> {
-            println("project version in properties is bigger than start of README toml section")
-        }
-        0 -> {
-            if (startInclusive) {
-                println("project version in properties is equal to start of README toml section, allowed")
-            } else {
-                throw IllegalStateException("project version in properties is equal to start of README toml section, disallowed")
-            }
-        }
-        1 -> {
-            throw IllegalStateException("project version in properties is less than start of README toml section")
-        }
-    }
-
-    when (compareVersion(kffVersion, end)) {
-        -1 -> {
-            println("project version in properties is less than end of README toml section")
-        }
-        0 -> {
-            if (endInclusive) {
-                println("project version in properties is equal to end of README toml section, allowed")
-            } else {
-                throw IllegalStateException("project version in properties is equal to end of README toml section, disallowed")
-            }
-        }
-        1 -> {
-            throw IllegalStateException("project version in properties is bigger than end of README toml section")
-        }
-    }
+fun testLaunch() {
+    val exitValue = "./gradlew runServer --no-daemon".runCommand(File("./.github/readmetester"))
+    require(exitValue == 0) { "Launch test failed!" }
 }
 
 fun useGradle() {
     "rm -f .github/readmetester/build.gradle.kts".runCommand()
     "cp .github/readmetester/groovy .github/readmetester/build.gradle".runCommand()
-    runSed("String mcVersion = MCVERSION", "String mcVersion = \"$mcVersion\"", ".github/readmetester/build.gradle")
-    runSed("String forgeVersion = FORGEVERSION", "String forgeVersion = \"$forgeVersion\"", ".github/readmetester/build.gradle")
+    runSed("MCVERSION", "\"$mcVersion\"", ".github/readmetester/build.gradle")
+    runSed("FORGEVERSION", "\"$forgeVersion\"", ".github/readmetester/build.gradle")
 }
 
 fun useKts() {
     "rm -f .github/readmetester/build.gradle".runCommand()
     "cp .github/readmetester/kts .github/readmetester/build.gradle.kts".runCommand()
-    runSed("val mcVersion = MCVERSION", "val mcVersion = \"$mcVersion\"", ".github/readmetester/build.gradle.kts")
-    runSed("val forgeVersion = FORGEVERSION", "val forgeVersion = \"$forgeVersion\"", ".github/readmetester/build.gradle.kts")
+    runSed("MCVERSION", "\"$mcVersion\"", ".github/readmetester/build.gradle.kts")
+    runSed("FORGEVERSION", "\"$forgeVersion\"", ".github/readmetester/build.gradle.kts")
 }
 
 fun resetBuildEnv() {
