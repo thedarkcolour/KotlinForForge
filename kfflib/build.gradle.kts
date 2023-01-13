@@ -67,7 +67,7 @@ minecraft {
                 workingDirectory(project.file("run/server"))
 
                 property("forge.logging.markers", "SCAN,LOADING,CORE")
-                property("forge.logging.console.level", "debug")
+                property("forge.logging.console.level", "warn")
                 property("forge.enabledGameTestNamespaces", "kfflibtest")
 
                 mods {

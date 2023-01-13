@@ -15,7 +15,7 @@ public object InGameTester {
     @JvmStatic
     public fun testVector(helper: GameTestHelper) {
         repeat(16) {
-            println("iteration: $it")
+            KFFLibTest.LOGGER.info("iteration: $it")
             testVec2()
             testVec3i()
             testVec3()
