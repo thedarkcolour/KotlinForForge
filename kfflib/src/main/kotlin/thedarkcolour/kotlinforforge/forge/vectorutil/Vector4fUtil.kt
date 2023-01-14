@@ -34,3 +34,11 @@ public operator fun Vector4f.times(times: Float): Vector4f {
 public fun Vector4f.clone(): Vector4f {
     return Vector4f(x(), y(), z(), w())
 }
+
+public operator fun Vector4f.component1(): Float = x()
+
+public operator fun Vector4f.component2(): Float = y()
+
+public operator fun Vector4f.component3(): Float = z()
+
+public operator fun Vector4f.component4(): Float = w()
