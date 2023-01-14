@@ -31,3 +31,4 @@ gradle
 .github/readmetester/build*
 .github/readmetester/gradle
 .github/readmetester/gradlew
+.github/readmetester/src/main/resources/META-INF/mods.toml
