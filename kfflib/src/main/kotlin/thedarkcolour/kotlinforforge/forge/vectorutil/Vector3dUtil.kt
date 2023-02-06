@@ -1,11 +1,15 @@
 package thedarkcolour.kotlinforforge.forge.vectorutil
 
-import com.mojang.math.Vector3d
-import com.mojang.math.Vector3f
+import org.joml.Vector3d
+import org.joml.Vector3f
 import net.minecraft.core.Vec3i
 import net.minecraft.world.phys.Vec3
 
-public operator fun Vector3d.plusAssign(other: Vector3d): Unit = add(other)
+public operator fun Vector3d.plusAssign(other: Vector3d) {
+    x += other.x
+    y += other.y
+    z += other.z
+}
 
 public operator fun Vector3d.plus(other: Vector3d): Vector3d {
     return Vector3d(x + other.x, y + other.y, z + other.z)
@@ -23,7 +27,11 @@ public operator fun Vector3d.minus(other: Vector3d): Vector3d {
     return Vector3d(x - other.x, y - other.y, z - other.z)
 }
 
-public operator fun Vector3d.timesAssign(times: Double): Unit = scale(times)
+public operator fun Vector3d.timesAssign(times: Double) {
+    x *= times
+    y *= times
+    z *= times
+}
 
 public operator fun Vector3d.times(times: Double): Vector3d {
     return Vector3d(x * times, y * times, z * times)
@@ -37,7 +45,7 @@ public infix fun Vector3d.cross(other: Vector3d): Vector3d {
     return Vector3d((y * other.z - z * other.y), (z * other.x - x * other.z), (x * other.y - y * other.x))
 }
 
-public fun Vector3d.clone(): Vector3d {
+public fun Vector3d.deepCopy(): Vector3d {
     return Vector3d(x, y, z)
 }
 

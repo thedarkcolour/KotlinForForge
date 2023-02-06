@@ -1,8 +1,8 @@
 package thedarkcolour.kfflibtest
 
-import com.mojang.math.Vector3d
-import com.mojang.math.Vector3f
-import com.mojang.math.Vector4f
+import org.joml.Vector3d
+import org.joml.Vector3f
+import org.joml.Vector4f
 import net.minecraft.core.Vec3i
 import net.minecraft.world.phys.Vec2
 import net.minecraft.world.phys.Vec3
@@ -33,7 +33,7 @@ internal fun testVec2() {
 
     val scalar = nextFloat()
     requireEquality(v1 * scalar, Vec2(x1 * scalar, y1 * scalar), Vec2::equals) { "Vec2 multiplication has failed! " }
-    requireEquality(v1.clone(), v1, Vec2::equals) { "Vec2 cloning has failed! " }
+    requireEquality(v1.deepCopy(), v1, Vec2::equals) { "Vec2 cloning has failed! " }
 
     requireEquality(v1, Vec2(x1, y1), Vec2::equals) { "v1 has been mutated!" }
     requireEquality(v2, Vec2(x2, y2), Vec2::equals) { "v2 has been mutated!" }
@@ -59,7 +59,7 @@ internal fun testVec3i() {
 
     val scalar = nextInt()
     requireEquality(v1 * scalar, Vec3i(x1 * scalar, y1 * scalar, z1 * scalar)) { "Vec3i multiplication has failed! " }
-    requireEquality(v1.clone(), Vec3i(x1, y1, z1)) { "Vec3i cloning has failed! " }
+    requireEquality(v1.deepCopy(), Vec3i(x1, y1, z1)) { "Vec3i cloning has failed! " }
 
     requireEquality(v1, Vec3i(x1, y1, z1)) { "v1 has been mutated!" }
     requireEquality(v2, Vec3i(x2, y2, z2)) { "v2 has been mutated!" }
@@ -93,7 +93,7 @@ internal fun testVec3() {
 
     val scalar = nextDouble()
     requireEquality(v1 * scalar, Vec3(x1 * scalar, y1 * scalar, z1 * scalar)) { "Vec3 multiplication has failed! " }
-    requireEquality(v1.clone(), v1) { "Vec3 cloning has failed! " }
+    requireEquality(v1.deepCopy(), v1) { "Vec3 cloning has failed! " }
 
     requireEquality(v1, Vec3(x1, y1, z1)) { "v1 has been mutated!" }
     requireEquality(v2, Vec3(x2, y2, z2)) { "v2 has been mutated!" }
@@ -133,17 +133,17 @@ internal fun testVector3d() {
 
     val scalar = nextDouble()
     requireEquality(v1 * scalar, Vector3d(x1 * scalar, y1 * scalar, z1 * scalar), tester) { "Vector3d multiplication has failed! " }
-    requireEquality(v1.clone(), v1, tester) { "Vector3d cloning has failed! " }
+    requireEquality(v1.deepCopy(), v1, tester) { "Vector3d cloning has failed! " }
 
-    val plusAssign = v1.clone()
+    val plusAssign = v1.deepCopy()
     plusAssign += v2
     requireEquality(v1 + v2, plusAssign, tester) { "Vector3d addition&assign has failed!" }
 
-    val minusAssign = v1.clone()
+    val minusAssign = v1.deepCopy()
     minusAssign -= v2
     requireEquality(v1 - v2, minusAssign, tester) { "Vector3d subtraction&assign has failed!" }
 
-    val timesAssign = v1.clone()
+    val timesAssign = v1.deepCopy()
     timesAssign *= scalar
     requireEquality(v1 * scalar, timesAssign, tester) { "Vector3d multiplication&assign has failed!" }
 
@@ -179,17 +179,17 @@ internal fun testVector3f() {
 
     val scalar = nextFloat()
     requireEquality(v1 * scalar, Vector3f(x1 * scalar, y1 * scalar, z1 * scalar)) { "Vector3f multiplication has failed! " }
-    requireEquality(v1.clone(), v1) { "Vector3f cloning has failed! " }
+    requireEquality(v1.deepCopy(), v1) { "Vector3f cloning has failed! " }
 
-    val plusAssign = v1.clone()
+    val plusAssign = v1.deepCopy()
     plusAssign += v2
     requireEquality(v1 + v2, plusAssign) { "Vector3f addition&assign has failed!" }
 
-    val minusAssign = v1.clone()
+    val minusAssign = v1.deepCopy()
     minusAssign -= v2
     requireEquality(v1 - v2, minusAssign) { "Vector3f subtraction&assign has failed!" }
 
-    val timesAssign = v1.clone()
+    val timesAssign = v1.deepCopy()
     timesAssign *= scalar
     requireEquality(v1 * scalar, timesAssign) { "Vector3f multiplication&assign has failed!" }
 
@@ -226,20 +226,20 @@ internal fun testVector4f() {
 
     val scalar = nextFloat()
     requireEquality(v1 * scalar, Vector4f(x1 * scalar, y1 * scalar, z1 * scalar, w1 * scalar)) { "Vector4f multiplication has failed! " }
-    requireEquality(v1.clone(), v1) { "Vector4f cloning has failed! " }
+    requireEquality(v1.deepCopy(), v1) { "Vector4f cloning has failed! " }
 
     requireEquality(v1, Vector4f(x1, y1, z1, w1)) { "v1 has been mutated!" }
     requireEquality(v2, Vector4f(x2, y2, z2, w2)) { "v2 has been mutated!" }
 
-    val plusAssign = v1.clone()
+    val plusAssign = v1.deepCopy()
     plusAssign += v2
     requireEquality(v1 + v2, plusAssign) { "Vector4f addition&assign has failed!" }
 
-    val minusAssign = v1.clone()
+    val minusAssign = v1.deepCopy()
     minusAssign -= v2
     requireEquality(v1 - v2, minusAssign) { "Vector4f subtraction&assign has failed!" }
 
-    val timesAssign = v1.clone()
+    val timesAssign = v1.deepCopy()
     timesAssign *= scalar
     requireEquality(v1 * scalar, timesAssign) { "Vector4f multiplication&assign has failed!" }
 

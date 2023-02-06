@@ -1,7 +1,7 @@
 package thedarkcolour.kotlinforforge.forge.vectorutil
 
-import com.mojang.math.Vector3d
-import com.mojang.math.Vector3f
+import org.joml.Vector3d
+import org.joml.Vector3f
 import net.minecraft.core.Vec3i
 import net.minecraft.world.phys.Vec3
 
@@ -20,7 +20,7 @@ public infix fun Vec3i.dot(other: Vec3i): Int {
     return x * other.x + y * other.y + z * other.z
 }
 
-public fun Vec3i.clone(): Vec3i {
+public fun Vec3i.deepCopy(): Vec3i {
     return Vec3i(x, y, z)
 }
 
