@@ -29,11 +29,14 @@ public object KFFLibTest {
 
         ModBlocks.REGISTRY.register(MOD_BUS)
 
-        testVec2()
-        testVec3i()
-        testVec3()
-        testVector3d()
-        testVector3f()
-        testVector4f()
+        repeat(30) {
+            testVec2()
+            testVec3i()
+            testVec3()
+            testVector3d()
+            testVector3f()
+            testVector4f()
+            testVector4d()
+        }
     }
 }
