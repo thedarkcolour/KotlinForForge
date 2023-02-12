@@ -1,3 +1,6 @@
+## Kotlin for Forge 3.10.0
+- Add utility methods for working with Mojang's Vector classes
+
 ## ~~Kotlin for Forge 3.9.2~~
 ~~- Add annotations back to the compiled JAR, hopefully the last bugfix update after switching to JarJar~~
 
