@@ -177,7 +177,7 @@ internal fun testVector3d() {
     val (x1, y1, z1) = listOf(nextDouble(), nextDouble(), nextDouble())
     val (x2, y2, z2) = listOf(nextDouble(), nextDouble(), nextDouble())
     val tester: (Vector3dc, Vector3dc) -> Boolean = { a, b ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector3dc = Vector3d(x1, y1, z1)
@@ -260,7 +260,7 @@ internal fun testVector3f() {
     val (x1, y1, z1) = listOf(nextFloat(), nextFloat(), nextFloat())
     val (x2, y2, z2) = listOf(nextFloat(), nextFloat(), nextFloat())
     val tester: (Vector3fc, Vector3fc) -> Boolean = { a, b ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector3fc = Vector3f(x1, y1, z1)
@@ -340,7 +340,7 @@ internal fun testVector4f() {
     val (x1, y1, z1, w1) = listOf(nextFloat(), nextFloat(), nextFloat(), nextFloat())
     val (x2, y2, z2, w2) = listOf(nextFloat(), nextFloat(), nextFloat(), nextFloat())
     val tester: (Vector4fc, Vector4fc) -> Boolean = { a: Vector4fc, b: Vector4fc ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector4fc = Vector4f(x1, y1, z1, w1)
@@ -420,7 +420,7 @@ internal fun testVector4d() {
     val (x1, y1, z1, w1) = listOf(nextDouble(), nextDouble(), nextDouble(), nextDouble())
     val (x2, y2, z2, w2) = listOf(nextDouble(), nextDouble(), nextDouble(), nextDouble())
     val tester: (Vector4dc, Vector4dc) -> Boolean = { a, b ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector4dc = Vector4d(x1, y1, z1, w1)
