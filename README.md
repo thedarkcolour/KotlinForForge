@@ -1,7 +1,7 @@
 # KotlinForForge
 ![Maven Version](https://img.shields.io/maven-metadata/v?color=orange&label=Kotlin%20for%20forge&metadataUrl=https%3A%2F%2Fthedarkcolour.github.io%2FKotlinForForge%2Fthedarkcolour%2Fkotlinforforge%2Fmaven-metadata.xml&style=flat-square&versionPrefix=3)
 
-**\*\*These instructions are for 1.19.3 and later. Instructions for 1.14-1.16, [is here](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md), and 1.18-1.19.2 [is here](https://github.com/thedarkcolour/KotlinForForge/blob/3.x/README.md)**
+**Instructions for other versions: [1.19.2](https://github.com/thedarkcolour/KotlinForForge/blob/3.x/README.md) | [1.14-1.16.5](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md) | [1.17-1.17.1](https://github.com/thedarkcolour/KotlinForForge/blob/2.x/README.md)**
 
 Makes Kotlin Forge-friendly by doing the following:
 - Provides Kotlin stdlib, reflection, JSON serialization, and coroutines libraries.
