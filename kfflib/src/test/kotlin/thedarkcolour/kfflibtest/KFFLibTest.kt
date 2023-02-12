@@ -28,5 +28,15 @@ public object KFFLibTest {
         LOGGER.log(Level.INFO, "Hello world!")
 
         ModBlocks.REGISTRY.register(MOD_BUS)
+
+        repeat(30) {
+            testVec2()
+            testVec3i()
+            testVec3()
+            testVector3d()
+            testVector3f()
+            testVector4f()
+            testVector4d()
+        }
     }
 }

@@ -1,3 +1,7 @@
+## Kotlin for Forge 4.0.0
+- Supports 1.19.3
+- Updated to Kotlin 1.8.10
+
 ## Kotlin for Forge 3.10.0
 - Add utility methods for working with Mojang's Vector classes
 

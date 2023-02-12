@@ -11,6 +11,7 @@ plugins {
 // Current KFF version
 val kff_version: String by project
 val kffMaxVersion = "${kff_version.split('.')[0].toInt() + 1}.0.0"
+
 val kffGroup = "thedarkcolour"
 
 allprojects {
@@ -149,7 +150,7 @@ fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
 
-val supportedMcVersions = listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2")
+val supportedMcVersions = listOf("1.19.3")
 
 curseforge {
     // Use the command line on Linux because IntelliJ doesn't pick up from .bashrc

@@ -1,7 +1,7 @@
 package thedarkcolour.kotlinforforge.forge
 
 import com.mojang.blaze3d.vertex.PoseStack
-import com.mojang.math.Quaternion
+import org.joml.Quaternionf
 
 public fun PoseStack.use(toRun: () -> Unit) {
     pushPose()
@@ -9,4 +9,4 @@ public fun PoseStack.use(toRun: () -> Unit) {
     popPose()
 }
 
-public operator fun PoseStack.timesAssign(matrix: Quaternion): Unit = mulPose(matrix)
+public operator fun PoseStack.timesAssign(matrix: Quaternionf): Unit = mulPose(matrix)
