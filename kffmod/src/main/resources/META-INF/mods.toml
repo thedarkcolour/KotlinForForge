@@ -17,7 +17,7 @@ Makes kotiln forge-friendly
 [[dependencies.kotlinforforge]]
 modId="forge"
 mandatory=true
-versionRange="[38,)"
+versionRange="[44,)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.kotlinforforge]]
