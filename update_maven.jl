@@ -3,7 +3,7 @@ update_maven_local:
 - Julia version: 1.8.4
 - Author: thedarkcolour
 - Date: 2023-01-02
-=#
+=##
 # Publish to maven local within this project
 original_pwd = pwd()
 # Compiles KFF and publishes it to local Maven within this folder
