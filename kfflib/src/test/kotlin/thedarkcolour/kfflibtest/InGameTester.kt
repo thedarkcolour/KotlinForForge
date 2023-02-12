@@ -16,7 +16,7 @@ public object InGameTester {
     public fun testBlock(helper: GameTestHelper) {
         helper.succeedIf {
             if (!ForgeRegistries.BLOCKS.containsKey(ResourceLocation(KFFLibTest.ID, "example_block"))) {
-                throw GameTestAssertException("Block is not placed correctly!")
+                throw GameTestAssertException("Block is not registered correctly!")
             }
         }
     }
