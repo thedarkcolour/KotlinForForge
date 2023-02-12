@@ -7,10 +7,10 @@ import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.ForgeRegistries
 import thedarkcolour.kotlinforforge.forge.registerObject
 
-object ModBlocks {
-    val REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, KFFLibTest.ID)
+internal object ModBlocks {
+    internal val REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, KFFLibTest.ID)
 
-    val EXAMPLE_BLOCK by REGISTRY.registerObject("example_block") {
+    internal val EXAMPLE_BLOCK by REGISTRY.registerObject("example_block") {
         Block(BlockBehaviour.Properties.of(Material.LEAVES).strength(4.0f))
     }
 }

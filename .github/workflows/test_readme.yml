@@ -1,0 +1,47 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Test Readme
+
+on:
+  push:
+    branches: [ "3.x-auto-management" ]
+  pull_request:
+    branches: [ "3.x-auto-management" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          fetch-depth: 0
+          
+    - name: Check if README.md has changed
+      id: check-readme
+      uses: tj-actions/changed-files@v35
+      with:
+        files: |
+          README.md
+          
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      if: steps.check-readme.outputs.any_changed == 'true'
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Test README.md
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      if: steps.check-readme.outputs.any_changed == 'true'
+      with:
+        arguments: testREADME

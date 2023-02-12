@@ -9,12 +9,13 @@ plugins {
 }
 
 // Current KFF version
-val kffVersion = "4.0.0"
-val kffMaxVersion = "5.0.0"
+val kff_version: String by project
+val kffMaxVersion = "${kff_version.split('.')[0].toInt() + 1}.0.0"
+
 val kffGroup = "thedarkcolour"
 
 allprojects {
-    version = kffVersion
+    version = kff_version
     group = kffGroup
 }
 
@@ -92,6 +93,7 @@ dependencies {
     implementation(include(project(":kfflang"), kffMaxVersion))
     implementation(include(project(":kfflib"), kffMaxVersion))
     implementation(include(project(":kffmod"), kffMaxVersion))
+    implementation(kotlin("stdlib"))
 }
 
 tasks {
@@ -186,7 +188,7 @@ tasks.create("publishAllMavens") {
     }
 }
 tasks.create("publishModPlatforms") {
-    println("Publishing Kotlin for Forge $kffVersion to Modrinth and CurseForge")
+    println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge")
     finalizedBy(tasks.modrinth)
     finalizedBy(tasks.curseforge)
 }
@@ -202,6 +204,17 @@ fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null)
     }
     return dep
 }
+
+task<Exec>("testREADME") {
+    group = "verification"
+    description = "Applies steps in README to ensure it works on mdk"
+    workingDir("./")
+    commandLine("kotlinc", "-script", ".github/ReadmeTester.kts")
+    doLast {
+        executionResult.get().assertNormalExitValue()
+    }
+}
+
 
 // Kotlin function ambiguity fix
 fun <T> Property<T>.provider(value: T) {

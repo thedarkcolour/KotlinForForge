@@ -57,8 +57,6 @@ internal fun testVec2() {
 
     requireEquality(v1, Vec2(x1, y1), Vec2::equals) { "v1 has been mutated!" }
     requireEquality(v2, Vec2(x2, y2), Vec2::equals) { "v2 has been mutated!" }
-
-    KFFLibTest.LOGGER.info("Vec2 test succeed")
 }
 
 internal fun testVec3i() {
@@ -116,8 +114,6 @@ internal fun testVec3i() {
     requireEquality(v1, vec3.toVec3i()) { "Vec3 -> Vec3i conversion has failed!" }
     requireEquality(v1, vector3f.toVec3i()) { "Vector3f -> Vec3i conversion has failed!" }
     requireEquality(v1, vector3d.toVec3i()) { "Vector3d -> Vec3i conversion has failed!" }
-
-    KFFLibTest.LOGGER.info("Vec3i test succeed")
 }
 
 internal fun testVec3() {
@@ -175,8 +171,6 @@ internal fun testVec3() {
     requireEquality(v1, vec3i.toVec3()) { "Vec3i -> Vec3 conversion has failed!" }
     requireEquality(v1, vector3f.toVec3()) { "Vector3f -> Vec3 conversion has failed!" }
     requireEquality(v1, vector3d.toVec3()) { "Vector3d -> Vec3 conversion has failed!" }
-
-    KFFLibTest.LOGGER.info("Vec3 test succeed")
 }
 
 internal fun testVector3d() {
@@ -340,8 +334,6 @@ internal fun testVector3f() {
     requireEquality(v1, vec3i.toVector3f()) { "Vec3i -> Vector3f conversion has failed!" }
     requireEquality(v1, vector3d.toVector3f()) { "Vector3f -> Vector3f conversion has failed!" }
     requireEquality(v1, vec3.toVector3f()) { "Vec3 -> Vector3f conversion has failed!" }
-
-    KFFLibTest.LOGGER.info("Vector3f test succeed")
 }
 
 internal fun testVector4f() {
