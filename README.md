@@ -33,7 +33,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation 'thedarkcolour:kotlinforforge:3.9.1'
+    implementation 'thedarkcolour:kotlinforforge:3.10.0'
 }
 ```
 Then, change the following to your mods.toml file:
