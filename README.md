@@ -1,5 +1,5 @@
 # KotlinForForge
-**\*\*These instructions are for 1.18-1.19. To see instructions for 1.14-1.16, [click here](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md).**
+**Instructions for other versions: [1.19.3](https://github.com/thedarkcolour/KotlinForForge/blob/4.x/README.md) | [1.14-1.16.5](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md) | [1.17-1.17.1](https://github.com/thedarkcolour/KotlinForForge/blob/2.x/README.md)**
 
 Makes Kotlin Forge-friendly by doing the following:
 - Provides Kotlin stdlib, reflection, JSON serialization, and coroutines libraries.
