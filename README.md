@@ -1,7 +1,7 @@
 # KotlinForForge
 ![Maven Version](https://img.shields.io/maven-metadata/v?color=orange&label=Kotlin%20for%20forge&metadataUrl=https%3A%2F%2Fthedarkcolour.github.io%2FKotlinForForge%2Fthedarkcolour%2Fkotlinforforge%2Fmaven-metadata.xml&style=flat-square&versionPrefix=3)
 
-**\*\*These instructions are for 1.18-1.19. To see instructions for 1.14-1.16, [click here](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md).**
+**Instructions for other versions: [1.19.2](https://github.com/thedarkcolour/KotlinForForge/blob/3.x/README.md) | [1.14-1.16.5](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md) | [1.17-1.17.1](https://github.com/thedarkcolour/KotlinForForge/blob/2.x/README.md)**
 
 Makes Kotlin Forge-friendly by doing the following:
 - Provides Kotlin stdlib, reflection, JSON serialization, and coroutines libraries.
@@ -38,7 +38,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation 'thedarkcolour:kotlinforforge:3.10.0'
+    implementation 'thedarkcolour:kotlinforforge:4.0.0'
 }
 ```
 </details>
@@ -49,9 +49,9 @@ dependencies {
 ```kotlin
 plugins {
     // Adds the Kotlin Gradle plugin
-    id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    kotlin("jvm") version "1.8.0"
     // OPTIONAL Kotlin Serialization plugin
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
 repositories {
@@ -64,7 +64,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation("thedarkcolour:kotlinforforge:3.9.1")
+    implementation("thedarkcolour:kotlinforforge:4.0.0")
 }
 ```
 </details>
@@ -73,7 +73,7 @@ Then, change the following to your mods.toml file:
 ```toml
 modLoader="kotlinforforge"
 # Change this if you require a certain version of KotlinForForge
-loaderVersion="[3.9,)"
+loaderVersion="[4,)"
 ```
 
 Use

@@ -17,12 +17,12 @@ fun main() {
 
     newRun()
 
-    /*useGradle()
+    useGradle()
     applyToBuildScript(isGroovy = true, readmeContents)
-    testBuild()*/
+    testBuild()
 
     useKts()
-    // resetBuildEnv()
+    resetBuildEnv()
     applyToBuildScript(isGroovy = false, readmeContents)
     testBuild()
 
