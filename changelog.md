@@ -1,3 +1,7 @@
+## Kotlin for Forge 3.11.0
+- Update to Kotlin 1.8.10, serialization 1.5.0
+- The mod event bus cycle is now logged under the TRACE flag instead of DEBUG
+
 ## Kotlin for Forge 3.10.0
 - Add utility methods for working with Mojang's Vector classes
 
