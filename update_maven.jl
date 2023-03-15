@@ -7,7 +7,7 @@ update_maven_local:
 # Publish to maven local within this project
 original_pwd = pwd()
 # Compiles KFF and publishes it to local Maven within this folder
-publish_special_maven() = run(`./gradlew -Dmaven.repo.local=$original_pwd publishAllMavens`)
+publish_special_maven() = run(`gradlew.bat -Dmaven.repo.local=$original_pwd publishAllMavens`)
 # Executes the Gradle task when KotlinForForge project folder is in same folder as this website folder
 cd(publish_special_maven, "../KotlinForForge")
 
