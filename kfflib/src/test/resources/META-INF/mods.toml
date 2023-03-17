@@ -1,5 +1,5 @@
 modLoader="kotlinforforge"
-loaderVersion="[3,)"
+loaderVersion="[4,)"
 license="LGPL v2.1"
 
 [[mods]]
@@ -22,6 +22,6 @@ side="BOTH"
 [[dependencies.kfflibtest]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19,1.20)"
+versionRange="[1.19.3,1.20)"
 ordering="NONE"
 side="BOTH"
