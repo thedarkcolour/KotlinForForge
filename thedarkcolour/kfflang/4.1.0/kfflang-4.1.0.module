@@ -1,0 +1,121 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "thedarkcolour",
+    "module": "kfflang",
+    "version": "4.1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.6"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.8.10"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.8.10"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.8.10"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.8.10"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.8.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "kfflang-4.1.0.jar",
+          "url": "kfflang-4.1.0.jar",
+          "size": 23395,
+          "sha512": "973418577426d0cd438e717f1d97d70931ccf9e0f5d755d4a8c6b832ddc3f7b5ea4aea8c8ecb08e76d28ef4c93643644d41c834cbb77647069bd547424331f23",
+          "sha256": "ad3e65611fced3ae1e9a4733ac068ca0be6101eba60d3e3b7e07a22ae7e6557d",
+          "sha1": "b106421a1a25b2e5557dc0282a89528c40a69cc6",
+          "md5": "ff96baf51068e886fe7192c35fe92fd9"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "kfflang-4.1.0.jar",
+          "url": "kfflang-4.1.0.jar",
+          "size": 23395,
+          "sha512": "973418577426d0cd438e717f1d97d70931ccf9e0f5d755d4a8c6b832ddc3f7b5ea4aea8c8ecb08e76d28ef4c93643644d41c834cbb77647069bd547424331f23",
+          "sha256": "ad3e65611fced3ae1e9a4733ac068ca0be6101eba60d3e3b7e07a22ae7e6557d",
+          "sha1": "b106421a1a25b2e5557dc0282a89528c40a69cc6",
+          "md5": "ff96baf51068e886fe7192c35fe92fd9"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "kfflang-4.1.0-sources.jar",
+          "url": "kfflang-4.1.0-sources.jar",
+          "size": 7645,
+          "sha512": "9e5ce20d9dcde1a916546aaa3572a6e9dd01996d86820caed972bff40bd7a54a91120f7daa6affa6618beae82fe09df9c6c4cf856287f23ca71c532875ca08cf",
+          "sha256": "dee980884ce4b2961107cec834db65edf75c0481b38b82a4f80db4a88382ee72",
+          "sha1": "98d3697b31effc27b9739718910bb6ca191a2df3",
+          "md5": "547fc36115debcce763d523d2f232e83"
+        }
+      ]
+    }
+  ]
+}
