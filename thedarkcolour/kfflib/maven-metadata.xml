@@ -3,8 +3,8 @@
   <groupId>thedarkcolour</groupId>
   <artifactId>kfflib</artifactId>
   <versioning>
-    <latest>3.11.0</latest>
-    <release>3.11.0</release>
+    <latest>4.1.0a</latest>
+    <release>4.1.0a</release>
     <versions>
       <version>3.9.1</version>
       <version>3.9.0</version>
@@ -13,7 +13,8 @@
       <version>3.10.0</version>
       <version>4.0.0</version>
       <version>3.11.0</version>
+      <version>4.1.0a</version>
     </versions>
-    <lastUpdated>20230315195238</lastUpdated>
+    <lastUpdated>20230316235945</lastUpdated>
   </versioning>
 </metadata>
