@@ -62,6 +62,26 @@ minecraft {
                     }
                 }
             }
+
+            create("gameTestServer") {
+                workingDirectory(project.file("run/server"))
+
+                property("forge.logging.markers", "SCAN,LOADING,CORE")
+                property("forge.logging.console.level", "warn")
+                property("forge.enabledGameTestNamespaces", "kfflibtest")
+
+                mods {
+                    create("kfflib") {
+                        source(sourceSets.main.get())
+                    }
+
+                    create("kfflibtest") {
+                        source(sourceSets.test.get())
+                    }
+                }
+
+                forceExit = false
+            }
         }
     }
 }

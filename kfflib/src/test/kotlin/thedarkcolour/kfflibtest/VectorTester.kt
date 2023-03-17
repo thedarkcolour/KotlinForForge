@@ -1,6 +1,7 @@
 package thedarkcolour.kfflibtest
 
 import net.minecraft.core.Vec3i
+import net.minecraft.util.Mth
 import net.minecraft.world.phys.Vec2
 import net.minecraft.world.phys.Vec3
 import org.joml.*
@@ -57,8 +58,6 @@ internal fun testVec2() {
 
     requireEquality(v1, Vec2(x1, y1), Vec2::equals) { "v1 has been mutated!" }
     requireEquality(v2, Vec2(x2, y2), Vec2::equals) { "v2 has been mutated!" }
-
-    KFFLibTest.LOGGER.info("Vec2 test succeed")
 }
 
 internal fun testVec3i() {
@@ -116,8 +115,6 @@ internal fun testVec3i() {
     requireEquality(v1, vec3.toVec3i()) { "Vec3 -> Vec3i conversion has failed!" }
     requireEquality(v1, vector3f.toVec3i()) { "Vector3f -> Vec3i conversion has failed!" }
     requireEquality(v1, vector3d.toVec3i()) { "Vector3d -> Vec3i conversion has failed!" }
-
-    KFFLibTest.LOGGER.info("Vec3i test succeed")
 }
 
 internal fun testVec3() {
@@ -168,22 +165,20 @@ internal fun testVec3() {
     requireEquality(v1, Vec3(x1, y1, z1)) { "v1 has been mutated!" }
     requireEquality(v2, Vec3(x2, y2, z2)) { "v2 has been mutated!" }
 
-    val vec3i = Vec3i(x1, y1, z1)
+    val vec3i = Vec3i(Mth.floor(x1), Mth.floor(y1), Mth.floor(z1))
     val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
     val vector3d = Vector3d(x1, y1, z1)
 
     requireEquality(v1, vec3i.toVec3()) { "Vec3i -> Vec3 conversion has failed!" }
     requireEquality(v1, vector3f.toVec3()) { "Vector3f -> Vec3 conversion has failed!" }
     requireEquality(v1, vector3d.toVec3()) { "Vector3d -> Vec3 conversion has failed!" }
-
-    KFFLibTest.LOGGER.info("Vec3 test succeed")
 }
 
 internal fun testVector3d() {
     val (x1, y1, z1) = listOf(nextDouble(), nextDouble(), nextDouble())
     val (x2, y2, z2) = listOf(nextDouble(), nextDouble(), nextDouble())
     val tester: (Vector3dc, Vector3dc) -> Boolean = { a, b ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector3dc = Vector3d(x1, y1, z1)
@@ -251,7 +246,7 @@ internal fun testVector3d() {
     requireEquality(v1, Vector3d(x1, y1, z1)) { "v1 has been mutated!" }
     requireEquality(v2, Vector3d(x2, y2, z2)) { "v2 has been mutated!" }
 
-    val vec3i = Vec3i(x1, y1, z1)
+    val vec3i = Vec3i(Mth.floor(x1), Mth.floor(y1), Mth.floor(z1))
     val vector3f = Vector3f(x1.toFloat(), y1.toFloat(), z1.toFloat())
     val vec3 = Vec3(x1, y1, z1)
 
@@ -266,7 +261,7 @@ internal fun testVector3f() {
     val (x1, y1, z1) = listOf(nextFloat(), nextFloat(), nextFloat())
     val (x2, y2, z2) = listOf(nextFloat(), nextFloat(), nextFloat())
     val tester: (Vector3fc, Vector3fc) -> Boolean = { a, b ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector3fc = Vector3f(x1, y1, z1)
@@ -340,15 +335,13 @@ internal fun testVector3f() {
     requireEquality(v1, vec3i.toVector3f()) { "Vec3i -> Vector3f conversion has failed!" }
     requireEquality(v1, vector3d.toVector3f()) { "Vector3f -> Vector3f conversion has failed!" }
     requireEquality(v1, vec3.toVector3f()) { "Vec3 -> Vector3f conversion has failed!" }
-
-    KFFLibTest.LOGGER.info("Vector3f test succeed")
 }
 
 internal fun testVector4f() {
     val (x1, y1, z1, w1) = listOf(nextFloat(), nextFloat(), nextFloat(), nextFloat())
     val (x2, y2, z2, w2) = listOf(nextFloat(), nextFloat(), nextFloat(), nextFloat())
     val tester: (Vector4fc, Vector4fc) -> Boolean = { a: Vector4fc, b: Vector4fc ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector4fc = Vector4f(x1, y1, z1, w1)
@@ -428,7 +421,7 @@ internal fun testVector4d() {
     val (x1, y1, z1, w1) = listOf(nextDouble(), nextDouble(), nextDouble(), nextDouble())
     val (x2, y2, z2, w2) = listOf(nextDouble(), nextDouble(), nextDouble(), nextDouble())
     val tester: (Vector4dc, Vector4dc) -> Boolean = { a, b ->
-        a.distanceSquared(b) < 0.01
+        a == b || a.distanceSquared(b) < 0.01
     }
 
     val v1: Vector4dc = Vector4d(x1, y1, z1, w1)
