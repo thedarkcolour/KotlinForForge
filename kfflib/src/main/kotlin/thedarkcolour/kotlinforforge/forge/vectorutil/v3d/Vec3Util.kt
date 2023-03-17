@@ -1,6 +1,7 @@
 package thedarkcolour.kotlinforforge.forge.vectorutil.v3d
 
 import net.minecraft.core.Vec3i
+import net.minecraft.util.Mth
 import net.minecraft.world.phys.Vec3
 import org.joml.Vector3d
 
@@ -48,6 +49,6 @@ public operator fun Vec3.get(index: Int): Double {
     throw IndexOutOfBoundsException()
 }
 
-public fun Vec3.toVec3i(): Vec3i = Vec3i(x, y, z)
+public fun Vec3.toVec3i(): Vec3i = Vec3i(Mth.floor(x), Mth.floor(y), Mth.floor(z))
 
 public fun Vec3.toVector3d(): Vector3d = Vector3d(x, y, z)

@@ -96,9 +96,9 @@ public class KotlinModContainer(
 
     public override fun <T> acceptEvent(e: T) where T : Event, T : IModBusEvent {
         try {
-            LOGGER.debug("Firing event for modid $modId : $e")
+            LOGGER.trace("Firing event for modid $modId : $e")
             eventBus.post(e)
-            LOGGER.debug("Fired event for modid $modId : $e")
+            LOGGER.trace("Fired event for modid $modId : $e")
         } catch (t: Throwable) {
             LOGGER.error("Caught exception during event $e dispatch for modid $modId", t)
             throw ModLoadingException(modInfo, modLoadingStage, "fml.modloading.errorduringevent", t)
