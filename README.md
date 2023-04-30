@@ -23,9 +23,9 @@ To implement in an existing project, merge the following into your build script:
 ```groovy
 plugins {    
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
     // OPTIONAL Kotlin Serialization plugin
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.10'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.21'
 }
 
 repositories {
@@ -38,7 +38,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation 'thedarkcolour:kotlinforforge:4.0.0'
+    implementation 'thedarkcolour:kotlinforforge:4.2.0'
 }
 ```
 </details>
@@ -49,9 +49,9 @@ dependencies {
 ```kotlin
 plugins {
     // Adds the Kotlin Gradle plugin
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.21"
     // OPTIONAL Kotlin Serialization plugin
-    kotlin("plugin.serialization") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.21"
 }
 
 repositories {
@@ -64,7 +64,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation("thedarkcolour:kotlinforforge:4.0.0")
+    implementation("thedarkcolour:kotlinforforge:4.2.0")
 }
 ```
 </details>
