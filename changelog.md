@@ -1,3 +1,6 @@
+## Kotlin for Forge 4.2.0
+- Updated to Kotlin 1.8.21
+
 ## Kotlin for Forge 4.1.0
 - Supports 1.19.4 as well as 1.19.3
 - Updated to serialization 1.5.0
