@@ -100,7 +100,7 @@ tasks {
     }
 
     jarJar.configure {
-        from(shadow.map(::zipTree).toTypedArray())
+        from(provider { shadow.map(::zipTree).toTypedArray() })
         manifest {
             attributes(
                 "Automatic-Module-Name" to "thedarkcolour.kotlinforforge",
