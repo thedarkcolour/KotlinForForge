@@ -79,14 +79,14 @@ repositories {
 dependencies {
     minecraft("net.minecraftforge:forge:$mc_version-$forge_version")
 
-    shadow("org.jetbrains.kotlin:kotlin-reflect:${kotlin.coreLibrariesVersion}")
-    shadow("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.coreLibrariesVersion}")
-    shadow("org.jetbrains.kotlin:kotlin-stdlib-common:${kotlin.coreLibrariesVersion}")
-    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}")
-    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}")
-    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}")
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-core:${serialization_version}")
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:${serialization_version}")
+    include(dependencies.create("org.jetbrains.kotlin:kotlin-reflect:${kotlin.coreLibrariesVersion}"), "1.9")
+    include(dependencies.create("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.coreLibrariesVersion}"), "1.9")
+    include(dependencies.create("org.jetbrains.kotlin:kotlin-stdlib-common:${kotlin.coreLibrariesVersion}"), "1.9")
+    include(dependencies.create("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"), "1.7")
+    include(dependencies.create("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutines_version}"), "1.7")
+    include(dependencies.create("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"), "1.7")
+    include(dependencies.create("org.jetbrains.kotlinx:kotlinx-serialization-core:${serialization_version}"), "1.6")
+    include(dependencies.create("org.jetbrains.kotlinx:kotlinx-serialization-json:${serialization_version}"), "1.6")
 
     // KFF Modules
     implementation(include(project(":kfflang"), kffMaxVersion))
@@ -191,10 +191,12 @@ tasks.create("publishModPlatforms") {
     finalizedBy(tasks.curseforge)
 }
 
-fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
+fun DependencyHandler.include(dep: Dependency, maxVersion: String? = null): Dependency {
     api(dep) // Add module metadata compileOnly dependency
     jarJar(dep.copy()) {
-        isTransitive = false
+        if (this is ModuleDependency) {
+            isTransitive = false
+        }
         jarJar.pin(this, version)
         if (maxVersion != null) {
             jarJar.ranged(this, "[$version,$maxVersion)")
