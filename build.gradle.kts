@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("net.minecraftforge.gradle") version "5.1.+"
+    id("net.minecraftforge.gradle") version "[6.0,6.2)"
     id("com.modrinth.minotaur") version "2.+"
     `maven-publish`
     id("com.matthewprenger.cursegradle") version "1.4.0"

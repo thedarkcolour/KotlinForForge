@@ -80,7 +80,6 @@ minecraft {
                     }
                 }
 
-                forceExit = false
             }
         }
     }
