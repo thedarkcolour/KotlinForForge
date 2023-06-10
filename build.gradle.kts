@@ -148,7 +148,7 @@ fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
 
-val supportedMcVersions = listOf("1.19.3", "1.19.4")
+val supportedMcVersions = listOf("1.19.3", "1.19.4", "1.20")
 
 curseforge {
     // Use the command line on Linux because IntelliJ doesn't pick up from .bashrc
