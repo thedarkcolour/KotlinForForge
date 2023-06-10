@@ -10,5 +10,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "kotlinforforge"
+rootProject.name = "kotlin-for-forge"
 include("kfflib", "kfflang", "kffmod")
