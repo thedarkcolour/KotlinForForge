@@ -9,6 +9,5 @@ pluginManagement {
         kotlin("plugin.serialization") version kotlin_version
     }
 }
-
-rootProject.name = "kotlin-for-forge"
+rootProject.name = "kotlinforforge"
 include("kfflib", "kfflang", "kffmod")
