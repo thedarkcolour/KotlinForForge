@@ -1,6 +1,4 @@
 # KotlinForForge
-![Maven Version](https://img.shields.io/maven-metadata/v?color=orange&label=Kotlin%20for%20forge&metadataUrl=https%3A%2F%2Fthedarkcolour.github.io%2FKotlinForForge%2Fthedarkcolour%2Fkotlinforforge%2Fmaven-metadata.xml&style=flat-square&versionPrefix=3)
-
 **Instructions for other versions: [1.19.2](https://github.com/thedarkcolour/KotlinForForge/blob/3.x/README.md) | [1.14-1.16.5](https://github.com/thedarkcolour/KotlinForForge/blob/1.x/README.md) | [1.17-1.17.1](https://github.com/thedarkcolour/KotlinForForge/blob/2.x/README.md)**
 
 Makes Kotlin Forge-friendly by doing the following:
@@ -9,7 +7,8 @@ Makes Kotlin Forge-friendly by doing the following:
 - Provides `AutoKotlinEventBusSubscriber` to allow usage of object declarations as @Mod.EventBusSubscriber targets.
 - Provides useful utility functions and constants
 
-An example mod is provided at the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton/tree/1.19.x).
+A 1.19.3 (works for 1.19.4 too) example mod is provided here: [1.19.3 KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton/tree/1.19.3)  
+A 1.20 example mod is provided here: [1.20 KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton/tree/1.20)
 
 If you aren't sure where to start, make a fork of the KotlinModdingSkeleton repository (replace BRANCH with your version)
 ```git
@@ -23,9 +22,9 @@ To implement in an existing project, merge the following into your build script:
 ```groovy
 plugins {    
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.22'
     // OPTIONAL Kotlin Serialization plugin
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.21'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.22'
 }
 
 repositories {
@@ -38,7 +37,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation 'thedarkcolour:kotlinforforge:4.2.0'
+    implementation 'thedarkcolour:kotlinforforge:4.3.0'
 }
 ```
 </details>
@@ -49,9 +48,9 @@ dependencies {
 ```kotlin
 plugins {
     // Adds the Kotlin Gradle plugin
-    kotlin("jvm") version "1.8.21"
+    kotlin("jvm") version "1.8.22"
     // OPTIONAL Kotlin Serialization plugin
-    kotlin("plugin.serialization") version "1.8.21"
+    kotlin("plugin.serialization") version "1.8.22"
 }
 
 repositories {
@@ -64,7 +63,7 @@ repositories {
 
 dependencies {
     // Adds KFF as dependency and Kotlin libs
-    implementation("thedarkcolour:kotlinforforge:4.2.0")
+    implementation("thedarkcolour:kotlinforforge:4.3.0")
 }
 ```
 </details>
