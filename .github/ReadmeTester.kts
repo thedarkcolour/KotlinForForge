@@ -4,9 +4,15 @@ import java.lang.ProcessBuilder.Redirect
 
 val readmeContents = File("README.md").readLines()
 val propertiesContents = File("gradle.properties").readLines()
-val mcVersion = propertiesContents.find { it.trim().startsWith("mc_version") }!!.substringAfter("=").trim()
-val forgeVersion = propertiesContents.find { it.trim().startsWith("forge_version") }!!.substringAfter("=").trim()
-val kffVersion = propertiesContents.find { it.trim().startsWith("kff_version") }!!.substringAfter("=").trim()
+val mcVersion = extractProperty("mc_version")
+val unsupportedMcVersion = extractProperty("unsupported_mc_version")
+val forgeVersion = extractProperty("forge_version")
+val kffVersion = extractProperty("kff_version")
+val minForgeVersion = extractProperty("min_forge_version")
+
+fun extractProperty(key: String): String {
+    return propertiesContents.find { it.trim().startsWith(key) }!!.substringAfter("=").trim()
+}
 
 fun main() {
     println("minecraft version: $mcVersion")
@@ -14,19 +20,18 @@ fun main() {
 
     "cp -n -r gradle .github/readmetester/".runCommand()
     "cp -n gradlew .github/readmetester/".runCommand()
+    setupProperties(readmeContents)
 
     newRun()
 
     useGradle()
     applyToBuildScript(isGroovy = true, readmeContents)
     testBuild()
+    testLaunch()
 
     useKts()
-    resetBuildEnv()
     applyToBuildScript(isGroovy = false, readmeContents)
     testBuild()
-
-    applyToTOML(readmeContents)
     testLaunch()
 }
 
@@ -35,6 +40,46 @@ main()
 fun newRun() {
     "rm -rf .github/readmetester/.gradle".runCommand()
     "rm -rf .github/readmetester/build*".runCommand()
+
+    val eula = File(".github/readmetester/run/eula.txt")
+    if (!eula.exists()) {
+        eula.createNewFile()
+        eula.writeText("eula=true")
+    }
+}
+
+fun setupProperties(readme: List<String>) {
+    val file = File(".github/readmetester/gradle.properties")
+    file.delete()
+
+    val tomlSection = getRangeOfSection("```toml", "```", readme)
+    val tomlLines = readme.subList(tomlSection.first, tomlSection.last + 1)
+
+    val loaderVersion = tomlLines
+        .find { it.startsWith("loaderVersion") }!!
+        .substringAfter("=")
+        .trim()
+        .replace("\"", "")
+
+    val lines = """
+        org.gradle.jvmargs=-Xmx3G
+        org.gradle.daemon=false
+        minecraft_version=$mcVersion
+        minecraft_version_range=[$mcVersion,$unsupportedMcVersion)
+        forge_version=$forgeVersion
+        forge_version_range=[$minForgeVersion,)
+
+        mod_id = readmetester
+        mod_name = readme tester
+        mod_version = $kffVersion
+        loader_version_range = $loaderVersion
+    """.trimIndent()
+
+    file.createNewFile()
+    val writer = file.printWriter()
+
+    writer.write(lines)
+    writer.close()
 }
 
 fun applyToBuildScript(isGroovy: Boolean, readme: List<String>) {
@@ -101,24 +146,6 @@ fun testBuild() {
     require(exitValue == 0) { "Build test failed!" }
 }
 
-fun applyToTOML(readme: List<String>) {
-    val tomlSection = getRangeOfSection("```toml", "```", readme)
-    val tomlLines = readme.subList(tomlSection.first, tomlSection.last + 1)
-
-    val modloaderLine = tomlLines
-        .find { it.startsWith("modLoader") }!!
-        .trim()
-
-    val loaderVersionLine = tomlLines
-        .find { it.startsWith("loaderVersion") }!!
-        .trim()
-
-    "rm -f .github/readmetester/src/main/resources/META-INF/mods.toml".runCommand()
-    "cp .github/readmetester/src/main/resources/META-INF/toml .github/readmetester/src/main/resources/META-INF/mods.toml".runCommand()
-    runSed("MODLOADER", modloaderLine, ".github/readmetester/src/main/resources/META-INF/mods.toml")
-    runSed("LOADERVERSION", loaderVersionLine, ".github/readmetester/src/main/resources/META-INF/mods.toml")
-}
-
 fun testLaunch() {
     val exitValue = "./gradlew runServer --no-daemon".runCommand(File("./.github/readmetester"))
     require(exitValue == 0) { "Launch test failed!" }
@@ -127,29 +154,18 @@ fun testLaunch() {
 fun useGradle() {
     "rm -f .github/readmetester/build.gradle.kts".runCommand()
     "cp .github/readmetester/groovy .github/readmetester/build.gradle".runCommand()
-    runSed("MCVERSION", "\"$mcVersion\"", ".github/readmetester/build.gradle")
-    runSed("FORGEVERSION", "\"$forgeVersion\"", ".github/readmetester/build.gradle")
+    resetBuildEnv()
 }
 
 fun useKts() {
     "rm -f .github/readmetester/build.gradle".runCommand()
     "cp .github/readmetester/kts .github/readmetester/build.gradle.kts".runCommand()
-    runSed("MCVERSION", "\"$mcVersion\"", ".github/readmetester/build.gradle.kts")
-    runSed("FORGEVERSION", "\"$forgeVersion\"", ".github/readmetester/build.gradle.kts")
+    resetBuildEnv()
 }
 
 fun resetBuildEnv() {
     "rm -rf .github/readmetester/.gradle".runCommand()
     "rm -rf .github/readmetester/build".runCommand()
-}
-
-fun runSed(old: String, new: String, target: String) {
-    val args = arrayOf("sed",  "-i", "s/$old/$new/g", target)
-    ProcessBuilder(*args).directory(File("./"))
-        .redirectOutput(Redirect.INHERIT)
-        .redirectError(Redirect.INHERIT)
-        .start()
-        .waitFor()
 }
 
 fun String.runCommand(workingDir: File = File("./")): Int {

@@ -5,7 +5,7 @@ license="LGPL v2.1"
 [[mods]]
 displayName="Kotlin for Forge Language Test"
 modId="kfflangtest"
-version="${file.jarVersion}"
+version="${kff_version}"
 authors="TheDarkColour"
 credits="Herobrine knows all. Thanks to Username404-59 and TheOnlyTails on GitHub"
 issueTrackerURL="https://github.com/thedarkcolour/KotlinForForge/issues"
@@ -16,12 +16,12 @@ Kotlin for Forge. Allows mods to use the Kotlin programming language.
 [[dependencies.kfflangtest]]
 modId="forge"
 mandatory=true
-versionRange="[41,)"
+versionRange="[${min_forge_version},)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.kfflangtest]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19.3,1.20)"
+versionRange="[${min_mc_version},${unsupported_mc_version})"
 ordering="NONE"
 side="BOTH"

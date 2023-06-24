@@ -4,6 +4,8 @@ plugins {
     kotlin("jvm")
     id("net.minecraftforge.gradle")
     `maven-publish`
+    eclipse
+    idea
 }
 
 val mc_version: String by project
@@ -17,6 +19,7 @@ java {
 
 minecraft {
     mappings("official", mc_version)
+    copyIdeResources.set(true)
 
     runs {
         create("client") {
@@ -39,6 +42,10 @@ configurations {
     runtimeElements {
         setExtendsFrom(emptySet())
     }
+    api {
+        minecraftLibrary.get().extendsFrom(this)
+        minecraftLibrary.get().exclude("org.jetbrains", "annotations")
+    }
 }
 
 repositories {
@@ -54,6 +61,9 @@ dependencies {
     api(kotlin("stdlib-jdk8"))
     api(kotlin("stdlib-jdk7"))
     api(kotlin("reflect"))
+
+    implementation(project(":kfflang"))
+    implementation(project(":kfflib"))
 }
 
 tasks {

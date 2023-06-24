@@ -20,7 +20,11 @@ allprojects {
 
 evaluationDependsOnChildren()
 
+val min_mc_version: String by project
+val unsupported_mc_version: String by project
 val mc_version: String by project
+
+val min_forge_version: String by project
 val forge_version: String by project
 
 val coroutines_version: String by project
@@ -68,6 +72,26 @@ minecraft {
 
             property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
+        }
+    }
+}
+
+val replacements: MutableMap<String, Any> = mutableMapOf(
+    "min_mc_version" to min_mc_version,
+    "unsupported_mc_version" to unsupported_mc_version,
+    "min_forge_version" to min_forge_version,
+    "kff_version" to kff_version
+)
+val targets = mutableListOf("META-INF/mods.toml")
+
+subprojects {
+    tasks {
+        withType<ProcessResources> {
+            inputs.properties(replacements)
+
+            filesMatching(targets) {
+                expand(replacements)
+            }
         }
     }
 }
