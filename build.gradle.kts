@@ -172,7 +172,7 @@ fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
 
-val supportedMcVersions = listOf("1.19.3", "1.19.4", "1.20")
+val supportedMcVersions = listOf("1.19.3", "1.19.4", "1.20", "1.20.1")
 
 curseforge {
     // Use the command line on Linux because IntelliJ doesn't pick up from .bashrc
@@ -210,9 +210,10 @@ tasks.create("publishAllMavens") {
     }
 }
 tasks.create("publishModPlatforms") {
-    println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge")
+    finalizedBy({ println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge") })
     finalizedBy(tasks.modrinth)
     finalizedBy(tasks.curseforge)
+
 }
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {

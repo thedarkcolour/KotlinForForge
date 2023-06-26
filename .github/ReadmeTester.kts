@@ -43,8 +43,11 @@ fun newRun() {
 
     val eula = File(".github/readmetester/run/eula.txt")
     if (!eula.exists()) {
-        eula.createNewFile()
-        eula.writeText("eula=true")
+        val run = eula.parentFile
+        if (run.exists() || run.mkdirs()) {
+            eula.createNewFile()
+            eula.writeText("eula=true")
+        }
     }
 }
 
