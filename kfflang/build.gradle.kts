@@ -26,6 +26,8 @@ minecraft {
         create("client") {
             workingDirectory(project.file("run"))
 
+            ideaModule = "${project.parent!!.name}.${project.name}.test"
+
             property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
 
@@ -42,6 +44,8 @@ minecraft {
 
         create("server") {
             workingDirectory(project.file("run/server"))
+
+            ideaModule = "${project.parent!!.name}.${project.name}.test"
 
             property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
