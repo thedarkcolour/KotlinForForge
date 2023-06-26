@@ -32,6 +32,7 @@ jobs:
       with:
         files: |
           README.md
+          .github/readmetester/**
           
     - name: Set up JDK 17
       uses: actions/setup-java@v3

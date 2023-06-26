@@ -2,18 +2,26 @@ import java.time.LocalDateTime
 
 plugins {
     id("eclipse")
+    id("idea")
     id("maven-publish")
-    id("net.minecraftforge.gradle") version "5.1.+"
+    id("net.minecraftforge.gradle") version "[6.0,6.2)"
 }
-
-val mcVersion = MCVERSION
-val forgeVersion = FORGEVERSION
-
-version = "1.0"
-group = "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+
+val minecraft_version: String by project
+val minecraft_version_range: String by project
+val forge_version: String by project
+val forge_version_range: String by project
+
+val mod_id: String by project
+val mod_name: String by project
+val mod_version: String by project
+val loader_version_range: String by project
+
+version = mod_version
+group = "com.yourname.modid"
 
 println("Java: ${System.getProperty("java.version")}, JVM: ${System.getProperty("java.vm.version")} (${System.getProperty("java.vendor")}), Arch: ${System.getProperty("os.arch")}")
 minecraft {
@@ -30,7 +38,8 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings("official", mcVersion)
+    mappings("official", minecraft_version)
+    copyIdeResources.set(true)
 
     // accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg") // Currently, this location cannot be changed from the default.
 
@@ -53,10 +62,10 @@ minecraft {
             property("forge.logging.console.level", "debug")
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property("forge.enabledGameTestNamespaces", "examplemod")
+            property("forge.enabledGameTestNamespaces", mod_id)
 
             mods {
-                create("examplemod") {
+                create(mod_id) {
                     source(sourceSets.main.get())
                 }
             }
@@ -69,14 +78,12 @@ minecraft {
 
             property("forge.logging.console.level", "debug")
 
-            property("forge.enabledGameTestNamespaces", "examplemod")
+            property("forge.enabledGameTestNamespaces", mod_id)
 
             args("--nogui")
 
-            forceExit(false)
-
             mods {
-                create("examplemod") {
+                create(mod_id) {
                     source(sourceSets.main.get())
                 }
             }
@@ -98,7 +105,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than "net.minecraft", it is assumed
     // that the dep is a ForgeGradle "patcher" dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft("net.minecraftforge:forge:$mcVersion-$forgeVersion")
+    minecraft("net.minecraftforge:forge:$minecraft_version-$forge_version")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -113,6 +120,14 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+val replacements: MutableMap<String, Any> = mutableMapOf(
+    "minecraft_version" to minecraft_version, "minecraft_version_range" to minecraft_version_range,
+    "forge_version" to forge_version, "forge_version_range" to forge_version_range,
+    "loader_version_range" to loader_version_range,
+    "mod_id" to mod_id, "mod_name" to mod_name, "mod_version" to mod_version,
+)
+val targets = mutableListOf("META-INF/mods.toml", "pack.mcmeta")
+
 tasks {
     withType<Jar> {
         archiveBaseName.set("modid")
@@ -120,7 +135,7 @@ tasks {
         // Example for how to get properties into the manifest for reading at runtime.
         manifest {
             attributes(
-                "Specification-Title" to "examplemod",
+                "Specification-Title" to mod_id,
                 "Specification-Vendor" to "examplemodsareus",
                 "Specification-Version" to "1", // We are version 1 of ourselves
                 "Implementation-Title" to project.name,
@@ -138,5 +153,13 @@ tasks {
 
     withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
+    }
+
+    withType<ProcessResources> {
+        inputs.properties(replacements)
+
+        filesMatching(targets) {
+            expand(replacements)
+        }
     }
 }

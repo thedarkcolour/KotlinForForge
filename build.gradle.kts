@@ -20,7 +20,11 @@ allprojects {
 
 evaluationDependsOnChildren()
 
+val min_mc_version: String by project
+val unsupported_mc_version: String by project
 val mc_version: String by project
+
+val min_forge_version: String by project
 val forge_version: String by project
 
 val coroutines_version: String by project
@@ -68,6 +72,26 @@ minecraft {
 
             property("forge.logging.markers", "SCAN,LOADING,CORE")
             property("forge.logging.console.level", "debug")
+        }
+    }
+}
+
+val replacements: MutableMap<String, Any> = mutableMapOf(
+    "min_mc_version" to min_mc_version,
+    "unsupported_mc_version" to unsupported_mc_version,
+    "min_forge_version" to min_forge_version,
+    "kff_version" to kff_version
+)
+val targets = mutableListOf("META-INF/mods.toml")
+
+subprojects {
+    tasks {
+        withType<ProcessResources> {
+            inputs.properties(replacements)
+
+            filesMatching(targets) {
+                expand(replacements)
+            }
         }
     }
 }
@@ -148,7 +172,7 @@ fun DependencyHandler.library(
     dependencyNotation: Any
 ): Dependency? = add("library", dependencyNotation)
 
-val supportedMcVersions = listOf("1.19.3", "1.19.4", "1.20")
+val supportedMcVersions = listOf("1.19.3", "1.19.4", "1.20", "1.20.1")
 
 curseforge {
     // Use the command line on Linux because IntelliJ doesn't pick up from .bashrc
@@ -186,9 +210,10 @@ tasks.create("publishAllMavens") {
     }
 }
 tasks.create("publishModPlatforms") {
-    println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge")
+    finalizedBy({ println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge") })
     finalizedBy(tasks.modrinth)
     finalizedBy(tasks.curseforge)
+
 }
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {

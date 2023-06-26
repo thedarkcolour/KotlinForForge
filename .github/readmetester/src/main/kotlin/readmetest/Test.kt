@@ -8,7 +8,7 @@ import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
 @Mod(Test.MODID)
 object Test {
-    const val MODID = "examplemod"
+    const val MODID = "readmetester"
     val LOGGER = LogManager.getLogger()
 
     init {

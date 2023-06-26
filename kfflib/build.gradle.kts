@@ -6,6 +6,8 @@ plugins {
     kotlin("plugin.serialization")
     id("net.minecraftforge.gradle")
     `maven-publish`
+    eclipse
+    idea
 }
 
 val mc_version: String by project
@@ -21,6 +23,7 @@ java {
 
 minecraft {
     mappings("official", mc_version)
+    copyIdeResources.set(true)
 
     runs {
         runs {

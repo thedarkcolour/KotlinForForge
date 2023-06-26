@@ -7,7 +7,7 @@ license='LGPL'
 
 [[mods]]
 modId="kotlinforforge"
-version="${file.jarVersion}"
+version="${kff_version}"
 displayName="Kotlin For Forge"
 logoFile="kotlinforforge_icon.png"
 credits="thedarkcolour and his \"minions\""
@@ -18,13 +18,13 @@ Makes Kotlin forge-friendly
 [[dependencies.kotlinforforge]]
 modId="forge"
 mandatory=true
-versionRange="[44,)"
+versionRange="[${min_forge_version},)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.kotlinforforge]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19.3,1.21)"
+versionRange="[${min_mc_version},${unsupported_mc_version})"
 ordering="NONE"
 side="BOTH"
 [modproperties.kotlinforforge]
