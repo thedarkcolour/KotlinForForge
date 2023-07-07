@@ -1,3 +1,6 @@
+## Kotlin for Forge 4.4.0
+- Updated to Kotlin 1.9.0, coroutines 1.7.2
+
 ## Kotlin for Forge 4.3.0
 - Now supports Minecraft 1.20 in addition to 1.19.3 and 1.19.4 (close #72)
 - Updated to Kotlin 1.8.22, serialization 1.5.1, coroutines 1.7.1
