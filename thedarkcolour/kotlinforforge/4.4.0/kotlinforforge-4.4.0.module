@@ -1,0 +1,96 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "thedarkcolour",
+    "module": "kotlinforforge",
+    "version": "4.4.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "thedarkcolour",
+          "module": "kfflang",
+          "version": {
+            "requires": "4.4.0"
+          }
+        },
+        {
+          "group": "thedarkcolour",
+          "module": "kfflib",
+          "version": {
+            "requires": "4.4.0"
+          }
+        },
+        {
+          "group": "thedarkcolour",
+          "module": "kffmod",
+          "version": {
+            "requires": "4.4.0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "kotlinforforge-4.4.0-all.jar",
+          "url": "kotlinforforge-4.4.0-all.jar",
+          "size": 7497016,
+          "sha512": "31123af288022891c4f8b758797d21db8e95717bb12bbc11202d9efb4851b22c71c9459694dfcce57f2aca7580c8fcf11d6602021be95adf6d76caf89d01193c",
+          "sha256": "040b55258006220145781e6dfbdaf5eab08d380084a26fe7c774883e2c090c88",
+          "sha1": "db46a35f1317ffdd292736bd918d96580039d1da",
+          "md5": "84dca02e5a394856726abd9050d8e2df"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "kotlinforforge-4.4.0-sources.jar",
+          "url": "kotlinforforge-4.4.0-sources.jar",
+          "size": 261,
+          "sha512": "ba746868e40c4485ce4a1f0b7ade14d175c37a922a4f64a567af1a933ca7830b86574ab01feb73504549d7ae10bc6ce18d3b8676432aa992a3b670e8a40583e3",
+          "sha256": "9dcf8ae9a4a12800db70b802fecb80b8a3a629dfd704ed4bdc38dd3c6aadb9df",
+          "sha1": "e39800cdb1dec84db3c45917d0148950eb823f81",
+          "md5": "ae1f78348a34fe663687cc1dcdb263bb"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "thedarkcolour",
+    "module": "kfflib",
+    "version": "4.4.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.1.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "1.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.7.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core-jvm",
+          "version": {
+            "requires": "1.7.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-jdk8",
+          "version": {
+            "requires": "1.7.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.5.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "kfflib-4.4.0.jar",
+          "url": "kfflib-4.4.0.jar",
+          "size": 41782,
+          "sha512": "aea2548f3124cd198f29c86817855935509c521dbd850ae2459ea15ad50a3fa910beb765d51f9c7215437358628a327029dfcc214bc00b45e123caa28e96011e",
+          "sha256": "b3f30c0e78a4ed56eb28697184dd9a1219118dc769f3f5df4dbb6ab6bf52dbc7",
+          "sha1": "31b78d6d44b5fcb16f53a1ed575097f3bdc50777",
+          "md5": "2bef2bc01a558409cabd4155fabc9c1e"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "kfflib-4.4.0.jar",
+          "url": "kfflib-4.4.0.jar",
+          "size": 41782,
+          "sha512": "aea2548f3124cd198f29c86817855935509c521dbd850ae2459ea15ad50a3fa910beb765d51f9c7215437358628a327029dfcc214bc00b45e123caa28e96011e",
+          "sha256": "b3f30c0e78a4ed56eb28697184dd9a1219118dc769f3f5df4dbb6ab6bf52dbc7",
+          "sha1": "31b78d6d44b5fcb16f53a1ed575097f3bdc50777",
+          "md5": "2bef2bc01a558409cabd4155fabc9c1e"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "kfflib-4.4.0-sources.jar",
+          "url": "kfflib-4.4.0-sources.jar",
+          "size": 12504,
+          "sha512": "52fcff7e7d8c89ffef4b9605c7f371981c06f05b9545d2971015bd8b353dbf796b35994dce2328d42f7b5bbce4a2edf470693f53194ebc43beca553e2ea2ce95",
+          "sha256": "aae9148c7d1a8d57be6fa82a53f14864a2fb748b4d89a16e24421f45f49743e3",
+          "sha1": "489c804426f51f178a1e47abf2033cb3f3789c55",
+          "md5": "ce40e2eb53a6ac34444330be14063a26"
+        }
+      ]
+    }
+  ]
+}
