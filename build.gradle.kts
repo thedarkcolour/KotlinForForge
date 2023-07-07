@@ -210,11 +210,13 @@ tasks.create("publishAllMavens") {
     }
 }
 tasks.create("publishModPlatforms") {
-    finalizedBy({ println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge") })
+    finalizedBy(tasks.create("printPublishingMessage") {
+        println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge")
+    })
     finalizedBy(tasks.modrinth)
     finalizedBy(tasks.curseforge)
-
 }
+
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
     api(dep) // Add module metadata compileOnly dependency
