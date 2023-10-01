@@ -182,6 +182,7 @@ curseforge {
         id = "351264"
         releaseType = "release"
         gameVersionStrings.add("Forge")
+        gameVersionStrings.add("NeoForge")
         gameVersionStrings.add("Java 17")
         gameVersionStrings.addAll(supportedMcVersions)
 
@@ -200,6 +201,7 @@ modrinth {
     versionType.set("release")
     gameVersions.addAll(supportedMcVersions)
     loaders.add("forge")
+    loaders.add("neoforge")
     uploadFile.provider(tasks.jarJar)
 }
 
