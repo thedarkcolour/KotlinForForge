@@ -66,11 +66,11 @@
         {
           "name": "kfflang-4.5.0.jar",
           "url": "kfflang-4.5.0.jar",
-          "size": 23244,
-          "sha512": "11e23f433783f88febbf676c4d4c19fa7fc070a225e9065dbf2db031c7501fb42c6f7f7ec30f21cf1afe6dd9f6056659969fac710d6d80e012d02ce339629ebe",
-          "sha256": "21be2c4c31851974d4a96e95a8b20501c28b01a06f8b900a612a0b7582c84c9e",
-          "sha1": "d458a1ac045cf581318ac9e0d85b2200e0c678b3",
-          "md5": "22ced2ac1cdcd64ac0d9c264cce2af74"
+          "size": 23245,
+          "sha512": "49ef30d5715f499328c948f5e071170a420d8d36df60a50d3b6fb35543262fb233146e6da5703142b43f61b39a9ce2d3c009bd008c61590d1c029db623972bfa",
+          "sha256": "4617e64f32c3dda60cf7229bb891a17eb576538ac58577cef7faa30f9513c54a",
+          "sha1": "68c8d1177d7ff2a6377dc77f55c2bebcf8423fe4",
+          "md5": "7a17a3c372de65f391254c6740c580b7"
         }
       ]
     },
@@ -89,11 +89,11 @@
         {
           "name": "kfflang-4.5.0.jar",
           "url": "kfflang-4.5.0.jar",
-          "size": 23244,
-          "sha512": "11e23f433783f88febbf676c4d4c19fa7fc070a225e9065dbf2db031c7501fb42c6f7f7ec30f21cf1afe6dd9f6056659969fac710d6d80e012d02ce339629ebe",
-          "sha256": "21be2c4c31851974d4a96e95a8b20501c28b01a06f8b900a612a0b7582c84c9e",
-          "sha1": "d458a1ac045cf581318ac9e0d85b2200e0c678b3",
-          "md5": "22ced2ac1cdcd64ac0d9c264cce2af74"
+          "size": 23245,
+          "sha512": "49ef30d5715f499328c948f5e071170a420d8d36df60a50d3b6fb35543262fb233146e6da5703142b43f61b39a9ce2d3c009bd008c61590d1c029db623972bfa",
+          "sha256": "4617e64f32c3dda60cf7229bb891a17eb576538ac58577cef7faa30f9513c54a",
+          "sha1": "68c8d1177d7ff2a6377dc77f55c2bebcf8423fe4",
+          "md5": "7a17a3c372de65f391254c6740c580b7"
         }
       ]
     },
@@ -109,11 +109,11 @@
         {
           "name": "kfflang-4.5.0-sources.jar",
           "url": "kfflang-4.5.0-sources.jar",
-          "size": 7692,
-          "sha512": "dd87a505bff192a7023185a246f6eb75c8f7ee44c86c5496fe95e389e5c2008638b0ac7ab564a93f47c4ff361147df1e8a5a07b5f4c18dd1f7a032619e1a74df",
-          "sha256": "d77e9847efc93d1c828db61f159c7bf2e32c395d3baa3f0f140b6032bf1a60e7",
-          "sha1": "6ca7e18cc3f834d248f91f2841f7ab900b12fe51",
-          "md5": "792cd3c904dbcd6ea28bec7107cba5b9"
+          "size": 7693,
+          "sha512": "c8d59ceeac49a1ec4cc02bb071cdaab3f8694604484948e275d0abc0fe02b3fbfd0c05ac706685854d2ca47a75303899b2bfc52ee2d0f112bf7399743b9a7d41",
+          "sha256": "d067622b4faea277b857fe5b3db11ebd9d270f62fe44c360ce2a6f48ef635583",
+          "sha1": "e9349665ad5f311c984571c06af16fb2ea6afe04",
+          "md5": "9fbe2ecef18b3fef921d1c77802a1d2f"
         }
       ]
     }

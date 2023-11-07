@@ -2,7 +2,7 @@
   "formatVersion": "1.1",
   "component": {
     "group": "thedarkcolour",
-    "module": "KotlinForForge",
+    "module": "kotlinforforge",
     "version": "4.5.0",
     "attributes": {
       "org.gradle.status": "release"
@@ -62,13 +62,13 @@
       },
       "files": [
         {
-          "name": "KotlinForForge-4.5.0-all.jar",
-          "url": "KotlinForForge-4.5.0-all.jar",
-          "size": 7505636,
-          "sha512": "ba1f7f6cf6f202de876899dceb1493e3f82a9fbaaa2c0eb4a629e944117b0a17a00c070ceda1c802e29a0197a8a6b58ac1b47c4d3833f380a37f7095dace4d7d",
-          "sha256": "5e6bfbfd2a0e59a6d5a34f6356aae998ad728af5f9730ca033c670121d6791ea",
-          "sha1": "6051235d8d59d861ddd925e4f896c87b7ba4095b",
-          "md5": "4f8b6ed60debb90ca58eff9ab9f3d229"
+          "name": "kotlinforforge-4.5.0-all.jar",
+          "url": "kotlinforforge-4.5.0-all.jar",
+          "size": 7505630,
+          "sha512": "93041b44703908b966128fd765ce0f5aef2c091533df0a27f883fc89def0f853ff7223382699d68e24852b5041783d3473031c0007b19c45573134b3eba8504c",
+          "sha256": "7cdeefa76a7c38f1ba8b1f59b7d3ed89c97487a5fbf0dd8c690f8567b46f97f9",
+          "sha1": "d14ac5214ddbb660572670c3a50eff5a0dc5335c",
+          "md5": "c4d70149571f53707114876e1331e695"
         }
       ]
     },
@@ -82,13 +82,13 @@
       },
       "files": [
         {
-          "name": "KotlinForForge-4.5.0-sources.jar",
-          "url": "KotlinForForge-4.5.0-sources.jar",
+          "name": "kotlinforforge-4.5.0-sources.jar",
+          "url": "kotlinforforge-4.5.0-sources.jar",
           "size": 261,
-          "sha512": "a68f95e7c0a58791f28cd5f0f064c86dad0620ec64d95096b8e0a2fd9cd7cfbbfef69b9d14d0e5598b9bddf195e1f32669545ca51d10b414e94ad19cb0fe80ed",
-          "sha256": "60f865e89828e6dcda281ca11d213617d2d2e0dc302af57ac7985dd8819e3156",
-          "sha1": "511570a8952636602cf5f6c70cc113735d591d2a",
-          "md5": "0a1885d5fd4f2e37dbeca9e8a3f75309"
+          "sha512": "8f9c91f1a2319df92a4fe43bfb78358ec5707f718d732ac3027ee8396b92b1e2b45542b3f3e954ec4c7900aec0be8fcfd57da616610cdb962f52a18938e013ea",
+          "sha256": "813a0fe98649579fe8df669cb3a4fba448206160816985b133761446a72e96b9",
+          "sha1": "199fa0937c1674c8599284f5b73e53a49164d543",
+          "md5": "5248dd8b97459ea26e99e75310b2014f"
         }
       ]
     }
