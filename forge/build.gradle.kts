@@ -18,13 +18,13 @@ allprojects {
     group = kffGroup
 }
 
+base {
+    archivesName.set("kotlinforforge")
+}
+
 evaluationDependsOnChildren()
 
-val min_mc_version: String by project
-val unsupported_mc_version: String by project
 val mc_version: String by project
-
-val min_forge_version: String by project
 val forge_version: String by project
 
 val coroutines_version: String by project
@@ -150,7 +150,7 @@ fun DependencyHandler.minecraft(
 
 // maven.repo.local is set within the Julia script in the website branch
 tasks.create("publishAllMavens") {
-    for (proj in arrayOf(":", ":forge:kfflib", ":forge:kfflang", ":forge:kffmod")) {
+    for (proj in arrayOf(":forge:kfflib", ":forge:kfflang", ":forge:kffmod")) {
         finalizedBy(project(proj).tasks.getByName("publishToMavenLocal"))
     }
 }

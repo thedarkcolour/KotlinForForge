@@ -16,12 +16,6 @@ description='''
 Makes Kotlin forge-friendly
 '''
 [[dependencies.kotlinforforge]]
-modId="forge"
-mandatory=true
-versionRange="[${min_neo_version},)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.kotlinforforge]]
 modId="minecraft"
 mandatory=true
 versionRange="[${min_mc_version},${unsupported_mc_version})"

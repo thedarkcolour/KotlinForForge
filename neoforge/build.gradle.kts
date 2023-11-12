@@ -27,6 +27,14 @@ val shadow: Configuration by configurations.creating {
     exclude("org.jetbrains", "annotations")
 }
 
+// Pulling out the common NeoForge dependency significantly speeds up project build
+val neoForgeDep: Dependency = dependencies.create("net.neoforged:neoforge:$neo_version")
+subprojects {
+    dependencies {
+        implementation(neoForgeDep)
+    }
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
     withSourcesJar()

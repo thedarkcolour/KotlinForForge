@@ -18,12 +18,12 @@ java {
     withSourcesJar()
 }
 
-runs {
-    // todo add runs
+base {
+    archivesName.set("kotlinforforge-neoforge")
 }
 
 dependencies {
-    implementation("net.neoforged:neoforge:$neo_version")
+    //implementation("net.neoforged:neoforge:$neo_version")
 
     // Default classpath
     api(kotlin("stdlib-jdk8"))

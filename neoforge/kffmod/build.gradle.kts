@@ -26,7 +26,7 @@ runs {
 }
 
 dependencies {
-    implementation("net.neoforged:neoforge:$neo_version")
+    //implementation("net.neoforged:neoforge:$neo_version")
 
     // Default classpath
     api(kotlin("stdlib-jdk8"))
@@ -37,7 +37,7 @@ dependencies {
     api("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
 
     implementation(project(":neoforge:kfflang"))
-    //implementation(project(":neoforge:kfflib"))
+    implementation(project(":neoforge:kfflib"))
 }
 
 tasks {

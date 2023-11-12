@@ -13,8 +13,6 @@ val kffGroup = "thedarkcolour"
 val coroutines_version: String by project
 val serialization_version: String by project
 
-evaluationDependsOnChildren()
-
 val shadow: Configuration by configurations.creating {
     exclude("org.jetbrains", "annotations")
 }
@@ -51,9 +49,9 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:${serialization_version}")
 
     // KFF Modules
-    implementation(include(project(":neoforge:kfflang"), kffMaxVersion))
-    implementation(include(project(":neoforge:kfflib"), kffMaxVersion))
-    implementation(include(project(":neoforge:kffmod"), kffMaxVersion))
+    implementation(include(project(":combined:kfflang"), kffMaxVersion))
+    implementation(include(project(":combined:kfflib"), kffMaxVersion))
+    implementation(include(project(":combined:kffmod"), kffMaxVersion))
 }
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
@@ -101,6 +99,9 @@ tasks {
     }
 
     assemble {
+        dependsOn(":combined:kfflang:build")
+        dependsOn(":combined:kfflib:build")
+        dependsOn(":combined:kffmod:build")
         dependsOn(jarJar)
     }
 }

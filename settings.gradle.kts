@@ -15,3 +15,5 @@ include("forge", "neoforge", "combined")
 include("forge:kfflang",    "forge:kfflib",    "forge:kffmod"   )
 include("neoforge:kfflang", "neoforge:kfflib", "neoforge:kffmod")
 include("combined:kfflang", "combined:kfflib", "combined:kffmod")
+
+//rootProject.name = "kotlinforforge"

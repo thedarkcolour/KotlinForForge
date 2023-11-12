@@ -26,7 +26,6 @@ minecraft {
             workingDirectory(project.file("run"))
 
             ideaModule = "KotlinForForge.forge.kfflang.test"
-            System.out.println(ideaModule)
 
             property("forge.logging.markers", "LOADING,CORE")
             property("forge.logging.console.level", "debug")

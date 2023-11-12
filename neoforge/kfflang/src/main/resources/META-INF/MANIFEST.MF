@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 FMLModType: LANGPROVIDER
 Automatic-Module-Name: kotlinforforge
+Implementation-Version: 4.0

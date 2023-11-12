@@ -1,3 +1,4 @@
+import net.neoforged.gradle.dsl.common.extensions.RunnableSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.time.LocalDateTime
 
@@ -16,9 +17,13 @@ java {
     withSourcesJar()
 }
 
+// Tells NeoGradle to treat this source set as a separate mod
+sourceSets["test"].extensions.getByType<RunnableSourceSet>().configure { runnable -> runnable.modIdentifier("kfflangtest") }
+
 runs {
     configureEach {
         modSource(sourceSets["main"])
+        modSource(sourceSets["test"])
     }
     create("client")
     create("server") {
@@ -27,7 +32,7 @@ runs {
 }
 
 dependencies {
-    implementation("net.neoforged:neoforge:$neo_version")
+    //implementation("net.neoforged:neoforge:$neo_version")
 
     // Default classpath
     api(kotlin("stdlib"))
