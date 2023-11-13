@@ -1,3 +1,6 @@
+## Kotlin for Forge 4.6.1
+- Fixed language provider crashing for non-object Mod classes
+
 ## Kotlin for Forge 4.6.0
 - Updated to Kotlin 1.9.20
 - Added support for NeoForge 1.20.2 (must use the "kotlinforforge-neoforge" artifact on Maven instead of just "kotlinforforge")
