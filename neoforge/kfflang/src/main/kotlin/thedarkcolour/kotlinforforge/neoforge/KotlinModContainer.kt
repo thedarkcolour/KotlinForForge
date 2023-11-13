@@ -99,7 +99,7 @@ public class KotlinModContainer(
                     argInstance
                 }
 
-                this.modInstance = constructor.newInstance(constructorArgs)
+                this.modInstance = constructor.newInstance(*constructorArgs)
             }
 
             LOGGER.trace("Loaded mod instance ${getModId()} of type ${modClass.simpleName}")

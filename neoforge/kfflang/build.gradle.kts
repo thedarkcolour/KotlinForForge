@@ -32,8 +32,6 @@ runs {
 }
 
 dependencies {
-    //implementation("net.neoforged:neoforge:$neo_version")
-
     // Default classpath
     api(kotlin("stdlib"))
     api(kotlin("stdlib-common"))
@@ -84,6 +82,7 @@ publishing {
     publications {
         register<MavenPublication>("maven") {
             from(components["java"])
+            artifactId = "kfflang-neoforge"
         }
     }
 }

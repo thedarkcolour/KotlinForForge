@@ -75,11 +75,11 @@ dependencies {
 }
 
 // maven.repo.local is set within the Julia script in the website branch
-/*tasks.create("publishAllMavens") {
-    for (proj in arrayOf(":", ":neoforge:kfflib", ":neoforge:kfflang", ":neoforge:kffmod")) {
+tasks.create("publishAllMavens") {
+    for (proj in arrayOf(":neoforge", ":neoforge:kfflib", ":neoforge:kfflang", ":neoforge:kffmod")) {
         finalizedBy(project(proj).tasks.getByName("publishToMavenLocal"))
     }
-}*/
+}
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
     api(dep) // Add module metadata compileOnly dependency
@@ -127,5 +127,14 @@ tasks {
 
     assemble {
         dependsOn(jarJar)
+    }
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("maven") {
+            from(components["java"])
+            artifactId = "kotlinforforge-neoforge"
+        }
     }
 }

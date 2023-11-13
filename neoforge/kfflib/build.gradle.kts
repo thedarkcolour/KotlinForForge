@@ -18,13 +18,7 @@ java {
     withSourcesJar()
 }
 
-base {
-    archivesName.set("kotlinforforge-neoforge")
-}
-
 dependencies {
-    //implementation("net.neoforged:neoforge:$neo_version")
-
     // Default classpath
     api(kotlin("stdlib-jdk8"))
     api(kotlin("reflect"))
@@ -78,6 +72,7 @@ publishing {
     publications {
         register<MavenPublication>("maven") {
             from(components["java"])
+            artifactId = "kfflib-neoforge"
         }
     }
 }

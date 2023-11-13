@@ -18,10 +18,6 @@ allprojects {
     group = kffGroup
 }
 
-base {
-    archivesName.set("kotlinforforge")
-}
-
 evaluationDependsOnChildren()
 
 val mc_version: String by project
@@ -140,6 +136,7 @@ publishing {
         register<MavenPublication>("maven") {
             suppressAllPomMetadataWarnings() // Shush
             from(components["java"])
+            artifactId = "kotlinforforge"
         }
     }
 }
@@ -150,11 +147,10 @@ fun DependencyHandler.minecraft(
 
 // maven.repo.local is set within the Julia script in the website branch
 tasks.create("publishAllMavens") {
-    for (proj in arrayOf(":forge:kfflib", ":forge:kfflang", ":forge:kffmod")) {
+    for (proj in arrayOf(":forge", ":forge:kfflib", ":forge:kfflang", ":forge:kffmod")) {
         finalizedBy(project(proj).tasks.getByName("publishToMavenLocal"))
     }
 }
-
 
 fun DependencyHandler.include(dep: ModuleDependency, maxVersion: String? = null): ModuleDependency {
     api(dep) // Add module metadata compileOnly dependency

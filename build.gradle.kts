@@ -76,15 +76,16 @@ modrinth {
 }
 
 // maven.repo.local is set within the Julia script in the website branch
-// todo fix
 tasks.create("publishAllMavens") {
     for (proj in arrayOf(":forge", ":neoforge")) {
-        finalizedBy(project(proj).tasks.getByName("publishToMavenLocal"))
+        finalizedBy(project(proj).tasks.getByName("publishAllMavens"))
     }
 }
 tasks.create("publishModPlatforms") {
     finalizedBy(tasks.create("printPublishingMessage") {
-        println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge")
+        this.doFirst {
+            println("Publishing Kotlin for Forge $kff_version to Modrinth and CurseForge")
+        }
     })
     finalizedBy(tasks.modrinth)
     finalizedBy(tasks.curseforge)

@@ -21,6 +21,7 @@ build
 eclipse
 run
 website
+runs
 
 # Files from Forge MDK
 forge*changelog.txt
