@@ -25,3 +25,5 @@ end
 
 # Regenerate hashes
 include("generate_checksums.jl")
+
+# todo update the website HTMLs
