@@ -17,6 +17,10 @@ val shadow: Configuration by configurations.creating {
     exclude("org.jetbrains", "annotations")
 }
 
+base {
+    archivesName.set("kotlinforforge")
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }

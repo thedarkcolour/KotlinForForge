@@ -34,7 +34,7 @@ public class KotlinModContainer(
 
         activityMap[ModLoadingStage.CONSTRUCT] = Runnable(::constructMod)
 
-        eventBus = BusBuilder.builder().setExceptionHandler(::onEventFailed).markerType(IModBusEvent::class.java).build()
+        eventBus = NewEventBusMaker.make(::onEventFailed)
         
         configHandler = Optional.of(Consumer { event ->
             eventBus.post(event.self())
@@ -46,7 +46,7 @@ public class KotlinModContainer(
         try {
             val layer = gameLayer.findModule(info.owningFile.moduleName()).orElseThrow()
             modClass = Class.forName(layer, className)
-            LOGGER.trace(Logging.LOADING, "Loaded modclass ${modClass.name} with ${modClass.classLoader}")
+            LOGGER.trace(Logging.LOADING, "Loaded modclass {} with {}", modClass.name, modClass.classLoader)
         } catch (t: Throwable) {
             LOGGER.error(Logging.LOADING, "Failed to load class $className", t)
             throw ModLoadingException(info, ModLoadingStage.CONSTRUCT, "fml.modloading.failedtoloadmodclass", t)

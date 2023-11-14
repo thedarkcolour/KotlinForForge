@@ -5,6 +5,7 @@ import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.eventbus.api.IEventExceptionHandler
 import net.minecraftforge.fml.event.IModBusEvent
 
+// todo remove in 5.x.x
 internal sealed interface EventBusMaker {
     fun make(exceptionHandler: IEventExceptionHandler): IEventBus
 }
