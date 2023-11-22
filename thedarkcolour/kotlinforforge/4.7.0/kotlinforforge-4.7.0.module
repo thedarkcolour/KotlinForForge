@@ -64,11 +64,11 @@
         {
           "name": "kotlinforforge-4.7.0-all.jar",
           "url": "kotlinforforge-4.7.0-all.jar",
-          "size": 7292508,
-          "sha512": "100257c0283c9197dea7125e1f8864027250b3c1aa444ce52cd902314504e6708bc9864f8636cd9924eb08d4ea2d648c15c7b7e7e913a19e85974cd8f55f9363",
-          "sha256": "0dd0504ee7799833d2268503820820b2078f3a37d0f1bb718675fcf85b6e87f9",
-          "sha1": "655c9fa75d072e7b60b48b4119d887af951a540d",
-          "md5": "6386cd33b2b7b4de2c449ffff57d321c"
+          "size": 7292509,
+          "sha512": "c8f189de2d8e5de929e8a3e7c554bdbb800b2513ff9a58ac0528810575691f011665d190ee309a5a603b6838f4071ef06ac4e031ace6409ad4ebff403e54ad50",
+          "sha256": "932a3d0a9f6a5d641068db1f92faaf8e516542bebd86274930c81a0422e572ba",
+          "sha1": "1de38e2649e7952bd0a7774a181feb54994a8e39",
+          "md5": "f45e318d561953b2b31c1a0aad0ad80d"
         }
       ]
     },

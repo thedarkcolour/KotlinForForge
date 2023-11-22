@@ -64,11 +64,11 @@
         {
           "name": "kotlinforforge-neoforge-4.7.0-all.jar",
           "url": "kotlinforforge-neoforge-4.7.0-all.jar",
-          "size": 7659673,
-          "sha512": "3cd9a421fae5207c3e88a913316973736c5e9028405a89f403f7fe765f2b370f3319ac841854a9264220af51efacfc87e9e521ee0a66fbd94560f3bb4eedd02b",
-          "sha256": "627a37302184846df2f2eb99ce93b10e330a58b1791afcd38e2f2e0dd336ab2e",
-          "sha1": "ca8198134842e01270245f75ea25336f3d113255",
-          "md5": "13cd2ec497debb675091b59a0588bfd1"
+          "size": 7654114,
+          "sha512": "407cd1dd594fb9990876782c034d7ba469c9dace0983404c472ceb90a301f0176c8feb9c80471ecae5d5ad062b8d7cf7ad2ae2ceb68a7669911855bd1c7bf4a1",
+          "sha256": "de706e6fd19b96462c8d9a94ce7af4f7f063f6adaa1d34be904b45e95cf33514",
+          "sha1": "75e9bf0470417c903667b70f9a5e203ed4e8ae26",
+          "md5": "223ac504221032533bfd1fe42f89d9d7"
         }
       ]
     },

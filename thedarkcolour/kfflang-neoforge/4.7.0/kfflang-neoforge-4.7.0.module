@@ -67,10 +67,10 @@
           "name": "kfflang-neoforge-4.7.0.jar",
           "url": "kfflang-neoforge-4.7.0.jar",
           "size": 22073,
-          "sha512": "2e91cb53b87b72e5367c219b184b74ad43e35068af15e15ff7dc297d60854286f3b3a01633fdb87deeeed9ee8e38adda6fb115b1afa31b2c7f6c7cee3cb9aaef",
-          "sha256": "c94d539852200c832c8e3404e22409472796c145f3cad36ff2d2bba700969899",
-          "sha1": "a577d725aff390ea7c91ef68fbd121fbdbd40aff",
-          "md5": "03dcad1fa29a96a79526e0a402f58bcf"
+          "sha512": "b527d7af9c5b3e03402df209601615228eb30203de578a2a91ce14aea4a57b71d3350ed3e278e74a6085d8f70f606cb5afbd67022ef60671a1ba197a74b65c4e",
+          "sha256": "5e685aa01e52b8c0abfc3854618deff97fc6d6107c54000475f9675b28ffffb4",
+          "sha1": "c0f30c236239ed85c50322ead36803b391b6e780",
+          "md5": "4c441d32d1239df42bc77d3a03bdb828"
         }
       ]
     },
@@ -127,10 +127,10 @@
           "name": "kfflang-neoforge-4.7.0.jar",
           "url": "kfflang-neoforge-4.7.0.jar",
           "size": 22073,
-          "sha512": "2e91cb53b87b72e5367c219b184b74ad43e35068af15e15ff7dc297d60854286f3b3a01633fdb87deeeed9ee8e38adda6fb115b1afa31b2c7f6c7cee3cb9aaef",
-          "sha256": "c94d539852200c832c8e3404e22409472796c145f3cad36ff2d2bba700969899",
-          "sha1": "a577d725aff390ea7c91ef68fbd121fbdbd40aff",
-          "md5": "03dcad1fa29a96a79526e0a402f58bcf"
+          "sha512": "b527d7af9c5b3e03402df209601615228eb30203de578a2a91ce14aea4a57b71d3350ed3e278e74a6085d8f70f606cb5afbd67022ef60671a1ba197a74b65c4e",
+          "sha256": "5e685aa01e52b8c0abfc3854618deff97fc6d6107c54000475f9675b28ffffb4",
+          "sha1": "c0f30c236239ed85c50322ead36803b391b6e780",
+          "md5": "4c441d32d1239df42bc77d3a03bdb828"
         }
       ]
     },
@@ -147,10 +147,10 @@
           "name": "kfflang-neoforge-4.7.0-sources.jar",
           "url": "kfflang-neoforge-4.7.0-sources.jar",
           "size": 7128,
-          "sha512": "675fc64babb1397caa76a6ab07557aca2f80706fb4ffff7697d62482487110fe5c0b5c696a506147cc61ce6b42550f0be732add900b0176e6ef39d918766572a",
-          "sha256": "0835cbebaef26de9f7b2543776fea415ec79dd051761cb5ad1f314851a23d170",
-          "sha1": "0600d556a1a6a456210cbc6a24f845a4718aab0c",
-          "md5": "cefe9a274edc6f8b95481165ba484080"
+          "sha512": "b01dee444f6718dfc18aaaac25e8e9a265fc57fa619470a1a309a104c18222baf8e316720768ddb34d6428bf2fa3c0816c7ff5c15886b026b7eb8a6b152c9660",
+          "sha256": "d0af5e250c9df56d10ab80d7d3f7b43e3430210b019a34e288a9fee561210007",
+          "sha1": "d90cb07e60d948b83752b204d93297e63f5c968f",
+          "md5": "486148e5dd5c7ad6a9ddabe179ca73f4"
         }
       ]
     }

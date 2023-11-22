@@ -66,11 +66,11 @@
         {
           "name": "kffmod-4.7.0.jar",
           "url": "kffmod-4.7.0.jar",
-          "size": 69743,
-          "sha512": "e071c7c060208a73e172d8360e70383dd854718b6ce25962f782da638d3730cb1848eca641de4ecda66455f29dc43a471ef6c364377e4129c1fafedb998fd67b",
-          "sha256": "741fb52ef20213e4f6bd43c5b5f5b73d7e349229254153a832603cfeb5a3460d",
-          "sha1": "a9f3d45aa7682ccd727e95c292b1e8a5fbe9fe1e",
-          "md5": "33d805d74a435202ed4fdc1c72ece250"
+          "size": 69742,
+          "sha512": "1993da33fd75c7da7b781e6900039dcb4ad629bc59386f3f8a8da66828aff8b09d762663532897d37bc2b88ef5c7098b25e7cff1a9e08326f4ec9f1c2157ed2a",
+          "sha256": "577ddebc26ef7325fe9eb353d74952022ea6a9f7597a67041e334838ea3a91e3",
+          "sha1": "abfdc2753e876d3776fb2882412878cbcc870875",
+          "md5": "0f74abfa93c2e3af4fe3e05a883d2e4f"
         }
       ]
     },
@@ -89,11 +89,11 @@
         {
           "name": "kffmod-4.7.0.jar",
           "url": "kffmod-4.7.0.jar",
-          "size": 69743,
-          "sha512": "e071c7c060208a73e172d8360e70383dd854718b6ce25962f782da638d3730cb1848eca641de4ecda66455f29dc43a471ef6c364377e4129c1fafedb998fd67b",
-          "sha256": "741fb52ef20213e4f6bd43c5b5f5b73d7e349229254153a832603cfeb5a3460d",
-          "sha1": "a9f3d45aa7682ccd727e95c292b1e8a5fbe9fe1e",
-          "md5": "33d805d74a435202ed4fdc1c72ece250"
+          "size": 69742,
+          "sha512": "1993da33fd75c7da7b781e6900039dcb4ad629bc59386f3f8a8da66828aff8b09d762663532897d37bc2b88ef5c7098b25e7cff1a9e08326f4ec9f1c2157ed2a",
+          "sha256": "577ddebc26ef7325fe9eb353d74952022ea6a9f7597a67041e334838ea3a91e3",
+          "sha1": "abfdc2753e876d3776fb2882412878cbcc870875",
+          "md5": "0f74abfa93c2e3af4fe3e05a883d2e4f"
         }
       ]
     },
@@ -109,11 +109,11 @@
         {
           "name": "kffmod-4.7.0-sources.jar",
           "url": "kffmod-4.7.0-sources.jar",
-          "size": 69085,
-          "sha512": "c081f3be5554262ae79f5087a80322e7a4a419906edfb32d96dfdd576d3a9c6f0abd636f8896f5bee6fc53ee9c63db248d12bf24241fcfcfcae680fe5bb9a814",
-          "sha256": "112ed721dc0eb0d4112e9eb5c712d169d1ba37e4172cf5a2191078bcb34dc298",
-          "sha1": "1c02e72b9114872bb04459ee1289de702def5494",
-          "md5": "0ba70d6761bcc23e65a09720e1034fdb"
+          "size": 69084,
+          "sha512": "c027817fa023734d3b2111e45f55767f221ff449d88237bd4d60ec9bcdfe7b6e4c8a0953926b48e71d25543c34689b0a2d574c168ed0ef097ec2ac786a54aa04",
+          "sha256": "ab48920e8af1b08fce78dddbcfbf9b1a5d07f78640dc1c45ed0341cf87844598",
+          "sha1": "de5327e167422aadcabc1335dceb0bd82e947353",
+          "md5": "060c7a5ea657c49f2fe0be7b598d7b9c"
         }
       ]
     }

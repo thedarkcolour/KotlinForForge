@@ -67,10 +67,10 @@
           "name": "kfflang-4.7.0.jar",
           "url": "kfflang-4.7.0.jar",
           "size": 23264,
-          "sha512": "cd2fd9b9669e62e85a931b0f6e4bc13a872812d03e5cfcdfaa7d45393f8c06032bc206dc81d19e0eb4496ec7186c9cc2c05f73afe7c8046dc1451548a279f311",
-          "sha256": "33d00df3c2183e666b9d3dd95c555eddd52d8db5107e7c313cc7cbf597ecff88",
-          "sha1": "93cedc406dbd0843b3451f8d9d25741d79ddaefa",
-          "md5": "5246c0c103525d84a6fb57e3ae2c920e"
+          "sha512": "851f1b30efdb73a885c9ec576ddbf4b45c13148a4b1938aba712f66630d125113451adb0b3c44136c53c66ee768d8f20e684bc67a6f9a29b3bbf0d52f51a513b",
+          "sha256": "8ce027efe9508b42feba20a3e8cf88775e42818edf605dd19026e17c3c9f4d80",
+          "sha1": "2eea7c8f4374edcfdc81e9bf6c721eba1abb3de5",
+          "md5": "96d3db478cee35dee8d45ba73345aecc"
         }
       ]
     },
@@ -90,10 +90,10 @@
           "name": "kfflang-4.7.0.jar",
           "url": "kfflang-4.7.0.jar",
           "size": 23264,
-          "sha512": "cd2fd9b9669e62e85a931b0f6e4bc13a872812d03e5cfcdfaa7d45393f8c06032bc206dc81d19e0eb4496ec7186c9cc2c05f73afe7c8046dc1451548a279f311",
-          "sha256": "33d00df3c2183e666b9d3dd95c555eddd52d8db5107e7c313cc7cbf597ecff88",
-          "sha1": "93cedc406dbd0843b3451f8d9d25741d79ddaefa",
-          "md5": "5246c0c103525d84a6fb57e3ae2c920e"
+          "sha512": "851f1b30efdb73a885c9ec576ddbf4b45c13148a4b1938aba712f66630d125113451adb0b3c44136c53c66ee768d8f20e684bc67a6f9a29b3bbf0d52f51a513b",
+          "sha256": "8ce027efe9508b42feba20a3e8cf88775e42818edf605dd19026e17c3c9f4d80",
+          "sha1": "2eea7c8f4374edcfdc81e9bf6c721eba1abb3de5",
+          "md5": "96d3db478cee35dee8d45ba73345aecc"
         }
       ]
     },
@@ -110,10 +110,10 @@
           "name": "kfflang-4.7.0-sources.jar",
           "url": "kfflang-4.7.0-sources.jar",
           "size": 7336,
-          "sha512": "f20ceb073fd075d7f07f52992b33d10d57e54004a4663765794650ce5f9650c568425a9c1f720132396e5e028e7515e7686e0834439674cfce10dd6e4471b716",
-          "sha256": "e52376a1e406e005c7ee85c01b023e0392057ad9464b4bda848408fb75cce084",
-          "sha1": "61c1bb955d6f9c738e0e5174b5d1b0cfcbb1d308",
-          "md5": "769c14accf7182201e1bcc2d06ff7343"
+          "sha512": "b8ee0fb2b3414fd838b1585ab8561215286842b84dad80795a7a4ca345916230a3675d3efe83345a6afa0996fb177925b83eb203106ec6aa57d60f327cf879bb",
+          "sha256": "101e1b2c786995672cde4f7582bb62564e5b2f7c689ce1090f8982955cbd9ecf",
+          "sha1": "801e532c9d9c4817b530561ae8c06e820fd68977",
+          "md5": "bee4a9c3392e8b43a50e416942675804"
         }
       ]
     }

@@ -73,11 +73,11 @@
         {
           "name": "kfflib-neoforge-4.7.0.jar",
           "url": "kfflib-neoforge-4.7.0.jar",
-          "size": 46627,
-          "sha512": "40edbcdef81c9573d7e34e6c99e1868f2385c4e312b07aec195dbce656933c70c207b701504ffcf13677b167038d52cce5536ac4832a6d1fb583344838e38f2a",
-          "sha256": "acc779bd7b24cc7a40f87d1817bb2fdc3e420e28c1416e6173cdcb33444dadcb",
-          "sha1": "11ed4f63f4c3fee9deecb3221de05c1c37104cf2",
-          "md5": "20bcf036ba0912567255886e0bfcfe86"
+          "size": 40635,
+          "sha512": "51dcad10df024a9d2656c106605b36badb2db9e3b82073ce9841b5f3401aba4625b414bf3a4a7cf0d88594614dab4112b798b61c0b019e7536ddf10ae6324c3c",
+          "sha256": "bcd060180dce85c5484bff9d2cea16ea578619492e868330dd3879754a4375d2",
+          "sha1": "7f360cba855dafb40bb21fd4be0577d2a106f430",
+          "md5": "df477afa51f21ac3d7a5ffa5a4437b18"
         }
       ]
     },
@@ -147,11 +147,11 @@
         {
           "name": "kfflib-neoforge-4.7.0.jar",
           "url": "kfflib-neoforge-4.7.0.jar",
-          "size": 46627,
-          "sha512": "40edbcdef81c9573d7e34e6c99e1868f2385c4e312b07aec195dbce656933c70c207b701504ffcf13677b167038d52cce5536ac4832a6d1fb583344838e38f2a",
-          "sha256": "acc779bd7b24cc7a40f87d1817bb2fdc3e420e28c1416e6173cdcb33444dadcb",
-          "sha1": "11ed4f63f4c3fee9deecb3221de05c1c37104cf2",
-          "md5": "20bcf036ba0912567255886e0bfcfe86"
+          "size": 40635,
+          "sha512": "51dcad10df024a9d2656c106605b36badb2db9e3b82073ce9841b5f3401aba4625b414bf3a4a7cf0d88594614dab4112b798b61c0b019e7536ddf10ae6324c3c",
+          "sha256": "bcd060180dce85c5484bff9d2cea16ea578619492e868330dd3879754a4375d2",
+          "sha1": "7f360cba855dafb40bb21fd4be0577d2a106f430",
+          "md5": "df477afa51f21ac3d7a5ffa5a4437b18"
         }
       ]
     },
@@ -167,11 +167,11 @@
         {
           "name": "kfflib-neoforge-4.7.0-sources.jar",
           "url": "kfflib-neoforge-4.7.0-sources.jar",
-          "size": 13330,
-          "sha512": "74769f648f8f56ac71879e74fbe228db37ddc79cb80be24180c5789ca52f64baefb5c632124f6c4bf331ad194467845da736c0c70797c82a3b5be4dae0f54b12",
-          "sha256": "3dac7c1e28a8670f485e205db3f998cb16d6e4b46254fce66e3878aedc42ff02",
-          "sha1": "be4050ff7e4489ba8bbbc791c0aa443dee2f4354",
-          "md5": "097b97ab4b5fb08e3bed06b955f79f60"
+          "size": 12637,
+          "sha512": "326c980de96cee68334ff42fffe1fc1c4fa01b0ddc03a0cf7f5e84b7fa488cc0390b2a6e5a9293f64dfc2c1f7f4326dd3987bf69ab2f400aa21d1eb9e8b8a887",
+          "sha256": "cf978a536575222814522b09c24bb3ba3d26de9a6fae0b122b2c9780037d425b",
+          "sha1": "2fde83dd59e71ee114763819e77c5b1512dc01a0",
+          "md5": "bd791538d4169066f19c255c8d7d228e"
         }
       ]
     }
