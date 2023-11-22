@@ -1,5 +1,6 @@
 ## Kotlin for Forge 4.7.0
 - Fixed incompatibility with NeoForge's new registry system
+- You MUST USE this import for property delegates to work with DeferredRegister: `import thedarkcolour.kotlinforforge.neoforge.forge.getValue`
 
 ## Kotlin for Forge 4.6.2
 - Fixed mod event bus not working properly on NeoForge
