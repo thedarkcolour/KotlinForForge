@@ -1,3 +1,9 @@
+## Kotlin for Forge 4.7.0
+- Fixed incompatibility with NeoForge's new registry system
+
+## Kotlin for Forge 4.6.2
+- Fixed mod event bus not working properly on NeoForge
+
 ## Kotlin for Forge 4.6.1
 - Fixed language provider crashing for non-object Mod classes
 

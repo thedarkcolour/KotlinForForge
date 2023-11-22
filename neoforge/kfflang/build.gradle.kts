@@ -32,6 +32,8 @@ runs {
 }
 
 dependencies {
+    implementation("net.neoforged:neoforge:${project.properties["neo_version"]}")
+
     // Default classpath
     api(kotlin("stdlib"))
     api(kotlin("stdlib-common"))

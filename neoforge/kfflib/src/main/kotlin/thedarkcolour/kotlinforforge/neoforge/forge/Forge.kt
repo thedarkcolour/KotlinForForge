@@ -134,7 +134,7 @@ private class LazySidedDelegate<T>(clientValue: () -> T, serverValue: () -> T) :
     }
 }
 
-/** @since 1.2.2
+/**
  * Sided delegate for things like proxies,
  * or just a null checker for values that only exist on one side.
  * Values are computed each time they are accessed.

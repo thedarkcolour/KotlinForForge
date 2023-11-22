@@ -27,9 +27,6 @@ import java.util.*
  *   // registered to mod event bus
  * }
  * ```
- *
- * @see thedarkcolour.kotlinforforge.forge.MOD_BUS
- * @see thedarkcolour.kotlinforforge.forge.FORGE_BUS
  */
 public object AutoKotlinEventBusSubscriber {
     // EventBusSubscriber annotation
@@ -51,11 +48,10 @@ public object AutoKotlinEventBusSubscriber {
      * I am against using `Mod.EventBusSubscriber`
      * because it makes it difficult to follow where event
      * listeners are registered. Instead, prefer to directly
-     * register event listeners to
-     * [thedarkcolour.kotlinforforge.forge.FORGE_BUS]
-     * or [thedarkcolour.kotlinforforge.forge.MOD_BUS].
+     * register event listeners to the forge bus or the mod-specific bus.
      */
-    public fun inject(mod: KotlinModContainer, scanData: ModFileScanData, classLoader: ClassLoader) {
+    public fun inject(mod: KotlinModContainer, scanData: ModFileScanData?, classLoader: ClassLoader) {
+        if (scanData == null) return
         LOGGER.debug(Logging.LOADING, "Attempting to inject @EventBusSubscriber kotlin objects in to the event bus for ${mod.modId}")
 
         val data = scanData.annotations.filter { annotationData ->
@@ -63,6 +59,7 @@ public object AutoKotlinEventBusSubscriber {
         }
 
         for (annotationData in data) {
+            @Suppress("UNCHECKED_CAST")
             val sidesValue = annotationData.annotationData.getOrDefault("value", DIST_ENUM_HOLDERS) as List<ModAnnotation.EnumHolder>
             val sides = EnumSet.noneOf(Dist::class.java).plus(sidesValue.map { eh -> Dist.valueOf(eh.value) })
             val modid = annotationData.annotationData.getOrDefault("modid", mod.modId)
@@ -80,7 +77,7 @@ public object AutoKotlinEventBusSubscriber {
                     if (unsupported.message?.contains("file facades") == false) {
                         throw unsupported
                     } else {
-                        LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin file ${annotationData.annotationType.className} to $busTarget")
+                        LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin file {} to {}", annotationData.annotationType.className, busTarget)
                         registerTo(kClass.java, busTarget, mod)
                         continue
                     }
@@ -88,8 +85,7 @@ public object AutoKotlinEventBusSubscriber {
 
                 if (ktObject != null) {
                     try {
-                        LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin object ${annotationData.annotationType.className} to $busTarget")
-
+                        LOGGER.debug(Logging.LOADING, "Auto-subscribing kotlin object {} to {}", annotationData.annotationType.className, busTarget)
                         registerTo(ktObject, busTarget, mod)
                     } catch (e: Throwable) {
                         LOGGER.fatal(Logging.LOADING, "Failed to load mod class ${annotationData.annotationType} for @EventBusSubscriber annotation", e)

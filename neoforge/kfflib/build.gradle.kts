@@ -19,6 +19,8 @@ java {
 }
 
 dependencies {
+    implementation("net.neoforged:neoforge:${project.properties["neo_version"]}")
+
     // Default classpath
     api(kotlin("stdlib-jdk8"))
     api(kotlin("reflect"))
