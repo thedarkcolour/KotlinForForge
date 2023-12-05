@@ -1,3 +1,7 @@
+## Kotlin for Forge 4.8.0
+- Update to Kotlin 1.9.21, coroutines 1.6.2
+- Fixed a crash with new NeoForge changes
+
 ## Kotlin for Forge 4.7.0
 - Fixed incompatibility with NeoForge's new registry system
 - You MUST USE this import for property delegates to work with DeferredRegister: `import thedarkcolour.kotlinforforge.neoforge.forge.getValue`

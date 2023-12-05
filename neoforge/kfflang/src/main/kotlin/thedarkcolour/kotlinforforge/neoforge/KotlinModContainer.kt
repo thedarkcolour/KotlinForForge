@@ -38,9 +38,6 @@ public class KotlinModContainer(
             .markerType(IModBusEvent::class.java)
             .allowPerPhasePost()
             .build()
-        configHandler = Optional.of(Consumer { event ->
-            eventBus.post(event.self())
-        })
 
         val ctx = KotlinModLoadingContext(this)
         contextExtension = Supplier {ctx}
