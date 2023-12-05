@@ -5,8 +5,14 @@ Pkg.add("MD5")
 using SHA
 using MD5
 
-write_hash(path, hash_function) = open(path * "." * String(Symbol(hash_function)), "w") do io
-  write(io, bytes2hex(open(hash_function, path)))
+function write_hash(path, hash_function)
+  hash_path = path * "." * String(Symbol(hash_function))
+  open(hash_path, "w") do io
+    write(io, bytes2hex(open(hash_function, path)))
+  end
+  if (!endswith(path, "-local.xml"))
+    run(`git add $hash_path`)
+  end
 end
 
 for (root, dir, files) in walkdir("thedarkcolour")
