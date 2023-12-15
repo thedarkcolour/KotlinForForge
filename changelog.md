@@ -1,3 +1,7 @@
+## Kotlin for Forge 4.9.0
+- Removed CapabilityUtil.kt from NeoForged version of KFF due to NeoForge's capability changes
+- Fixed a crash with new Forge changes. KFF 4.x is still compatible with Forge 1.19.3-1.20.4 and NeoForge 1.20.1-1.20.4.
+
 ## Kotlin for Forge 4.8.0
 - Update to Kotlin 1.9.21, coroutines 1.6.2
 - Fixed a crash with new NeoForge changes

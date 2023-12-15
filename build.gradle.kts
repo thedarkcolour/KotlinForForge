@@ -31,6 +31,7 @@ val replacements: MutableMap<String, Any> = mutableMapOf(
 val targets = mutableListOf("META-INF/mods.toml")
 
 subprojects {
+    apply(plugin = "java")
     tasks {
         withType<ProcessResources> {
             inputs.properties(replacements)

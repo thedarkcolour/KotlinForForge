@@ -25,8 +25,6 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-jarJar.enable()
-
 configurations {
     apiElements {
         artifacts.clear()
@@ -41,6 +39,8 @@ configurations {
 repositories {
     mavenCentral()
 }
+
+jarJar.enable()
 
 dependencies {
     shadow("org.jetbrains.kotlin:kotlin-reflect:${kotlin.coreLibrariesVersion}")

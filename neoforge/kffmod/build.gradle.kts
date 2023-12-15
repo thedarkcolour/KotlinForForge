@@ -21,6 +21,8 @@ java {
 runs {
     create("client") {
         modSource(sourceSets["main"])
+        modSource(project(":neoforge:kfflang").sourceSets["main"])
+        modSource(project(":neoforge:kfflib").sourceSets["main"])
     }
 }
 
@@ -35,8 +37,12 @@ dependencies {
     api("org.jetbrains.kotlinx", "kotlinx-coroutines-jdk8", coroutines_version)
     api("org.jetbrains.kotlinx", "kotlinx-serialization-json", serialization_version)
 
-    implementation(project(":neoforge:kfflang"))
-    implementation(project(":neoforge:kfflib"))
+    implementation(project(":neoforge:kfflang")) {
+        isTransitive = false
+    }
+    implementation(project(":neoforge:kfflib")) {
+        isTransitive = false
+    }
 }
 
 tasks {

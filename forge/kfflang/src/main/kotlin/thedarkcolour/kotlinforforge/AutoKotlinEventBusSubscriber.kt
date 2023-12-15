@@ -4,9 +4,10 @@ import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.fml.Logging
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.loading.FMLEnvironment
-import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation
 import net.minecraftforge.forgespi.language.ModFileScanData
+import net.minecraftforge.forgespi.language.ModFileScanData.EnumData
 import org.objectweb.asm.Type
+import java.lang.reflect.Method
 import java.util.*
 
 /**
@@ -35,11 +36,13 @@ public object AutoKotlinEventBusSubscriber {
     // EventBusSubscriber annotation
     private val EVENT_BUS_SUBSCRIBER: Type = Type.getType(Mod.EventBusSubscriber::class.java)
 
-    /** The default (client & server) list of [Dist] enum holders. */
-    private val DIST_ENUM_HOLDERS = listOf(
-        ModAnnotation.EnumHolder(null, "CLIENT"),
-        ModAnnotation.EnumHolder(null, "DEDICATED_SERVER")
-    )
+    // Legacy EnumHolder
+    private val enumHolderGetValue: Method? = try {
+        val klass = Class.forName("net.minecraftforge.fml.loading.moddiscovery.ModAnnotation\$EnumHolder")
+        klass.getDeclaredMethod("getValue")
+    } catch (e: ClassNotFoundException) {
+        null
+    }
 
     /**
      * Allows the [Mod.EventBusSubscriber] annotation
@@ -63,11 +66,10 @@ public object AutoKotlinEventBusSubscriber {
         }
 
         for (annotationData in data) {
-            val sidesValue = annotationData.annotationData.getOrDefault("value", DIST_ENUM_HOLDERS) as List<ModAnnotation.EnumHolder>
-            val sides = EnumSet.noneOf(Dist::class.java).plus(sidesValue.map { eh -> Dist.valueOf(eh.value) })
-            val modid = annotationData.annotationData.getOrDefault("modid", mod.modId)
-            val busTargetHolder = annotationData.annotationData.getOrDefault("bus", ModAnnotation.EnumHolder(null, "FORGE")) as ModAnnotation.EnumHolder
-            val busTarget = Mod.EventBusSubscriber.Bus.valueOf(busTargetHolder.value)
+            val annotationMap = annotationData.annotationData
+            val sides = getSides(annotationMap)
+            val modid = annotationMap.getOrDefault("modid", mod.modId)
+            val busTarget = getBusTarget(annotationMap)
 
             if (mod.modId == modid && FMLEnvironment.dist in sides) {
                 val kClass = Class.forName(annotationData.clazz.className, true, classLoader).kotlin
@@ -97,6 +99,34 @@ public object AutoKotlinEventBusSubscriber {
                     }
                 }
             }
+        }
+    }
+
+    private fun getSides(annotationMap: Map<String, Any>): List<Dist> {
+        val sidesHolders = annotationMap["value"]
+
+        return if (sidesHolders != null) {
+            if (enumHolderGetValue != null) {
+                (sidesHolders as List<Any>).map { data -> Dist.valueOf(enumHolderGetValue.invoke(data) as String) }
+            } else {
+                (sidesHolders as List<EnumData>).map { data -> Dist.valueOf(data.value()) }
+            }
+        } else {
+            listOf(Dist.CLIENT, Dist.DEDICATED_SERVER)
+        }
+    }
+
+    private fun getBusTarget(annotationMap: Map<String, Any>): Mod.EventBusSubscriber.Bus {
+        val busTargetHolder = annotationMap["bus"]
+
+        return if (busTargetHolder != null) {
+            if (enumHolderGetValue != null) {
+                Mod.EventBusSubscriber.Bus.valueOf(enumHolderGetValue.invoke(busTargetHolder) as String)
+            } else {
+                Mod.EventBusSubscriber.Bus.valueOf((busTargetHolder as EnumData).value)
+            }
+        } else {
+            Mod.EventBusSubscriber.Bus.FORGE
         }
     }
 
