@@ -29,7 +29,7 @@ runs {
         modSource(sourceSets["main"])
         modSource(sourceSets["test"])
         dependencies {
-            runtime(configuration(nonmclibs))
+            runtime((nonmclibs))
         }
     }
     create("client")
