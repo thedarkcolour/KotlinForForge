@@ -22,9 +22,9 @@ To implement in an existing project, merge the following into your build script:
 ```groovy
 plugins {    
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '1.9.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.22'
     // OPTIONAL Kotlin Serialization plugin
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.20'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.22'
 }
 
 repositories {
@@ -38,9 +38,9 @@ repositories {
 dependencies {
     // Adds KFF as dependency and Kotlin libs (use the variant matching your mod loader)
     // FORGE
-    implementation 'thedarkcolour:kotlinforforge:4.7.0'
+    implementation 'thedarkcolour:kotlinforforge:4.10.0'
     // NEOFORGE
-    implementation 'thedarkcolour:kotlinforforge-neoforge:4.7.0'
+    implementation 'thedarkcolour:kotlinforforge-neoforge:4.10.0'
 }
 ```
 </details>
@@ -51,9 +51,9 @@ dependencies {
 ```kotlin
 plugins {
     // Adds the Kotlin Gradle plugin
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.22"
     // OPTIONAL Kotlin Serialization plugin
-    kotlin("plugin.serialization") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 repositories {
@@ -67,9 +67,9 @@ repositories {
 dependencies {
     // Adds KFF as dependency and Kotlin libs (use the variant matching your mod loader)
     // FORGE
-    implementation("thedarkcolour:kotlinforforge:4.7.0")
+    implementation("thedarkcolour:kotlinforforge:4.10.0")
     // NEOFORGE
-    implementation("thedarkcolour:kotlinforforge-neoforge:4.7.0")
+    implementation("thedarkcolour:kotlinforforge-neoforge:4.10.0")
 }
 ```
 </details>
@@ -78,7 +78,7 @@ Then, change the following to your mods.toml file:
 ```toml
 modLoader="kotlinforforge"
 # Change this if you require a certain version of KotlinForForge
-loaderVersion="[4.7,)"
+loaderVersion="[4.10,)"
 ```
 
 Use
