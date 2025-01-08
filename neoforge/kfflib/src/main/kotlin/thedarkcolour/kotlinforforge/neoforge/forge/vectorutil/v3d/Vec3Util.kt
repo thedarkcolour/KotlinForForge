@@ -52,3 +52,5 @@ public operator fun Vec3.get(index: Int): Double {
 public fun Vec3.toVec3i(): Vec3i = Vec3i(Mth.floor(x), Mth.floor(y), Mth.floor(z))
 
 public fun Vec3.toVector3d(): Vector3d = Vector3d(x, y, z)
+
+public infix fun Vec3.cross(other: Vec3): Vec3 = cross(other)
