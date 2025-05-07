@@ -61,5 +61,3 @@ public fun Vec3i.toVec3(): Vec3 = Vec3.atLowerCornerOf(this)
 public fun Vec3i.toVector3f(): Vector3f = Vector3f(x.toFloat(), y.toFloat(), z.toFloat())
 
 public fun Vec3i.toVector3d(): Vector3d = Vector3d(x.toDouble(), y.toDouble(), z.toDouble())
-
-public infix fun Vec3i.cross(other: Vec3i): Vec3i = cross(other)
