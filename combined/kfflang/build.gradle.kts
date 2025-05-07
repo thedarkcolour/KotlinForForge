@@ -1,22 +1,24 @@
 plugins {
-    java
+    `java-library`
 }
 
-tasks {
-    jar {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+base.archivesName.set("kfflang")
+version = project.property("kff_version") as String
+group = "thedarkcolour"
 
-        from(provider {
-            listOf(
-                zipTree((project(":forge:kfflang").tasks.getByName("jar") as Jar).archiveFile),
-                zipTree((project(":neoforge:kfflang").tasks.getByName("jar") as Jar).archiveFile),
-            )
-        })
+tasks.jar.configure {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-        manifest.attributes(
-            "FMLModType" to "LIBRARY",
-            // Required for language providers
-            "Implementation-Version" to version
+    from(provider {
+        listOf(
+            zipTree(rootProject.tasks.named<Jar>("langNeoForgeJar").get().archiveFile),
+            zipTree(rootProject.tasks.named<Jar>("langForgeJar").get().archiveFile)
         )
-    }
+    })
+
+    manifest.attributes(
+        "FMLModType" to "LIBRARY",
+        // Required for language providers
+        "Implementation-Version" to version
+    )
 }

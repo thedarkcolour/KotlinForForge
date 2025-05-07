@@ -1,3 +1,8 @@
+## Kotlin for Forge 5.8.0
+- Update to Kotlin 2.1.20, coroutines 1.10.2, serialization 1.8.1
+- Fixed accidental transitive dependency on FancyModLoader
+- No more `slim` artifact. If still needed, you can depend on kfflang, kfflib, kffmod separately instead
+
 ## Kotlin for Forge 5.7.0
 - Updated to Kotlin 2.1.0
 

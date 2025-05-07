@@ -5,6 +5,7 @@ bin
 .metadata
 .classpath
 .project
+.kotlin
 
 # idea
 out
@@ -23,8 +24,7 @@ run
 website
 runs
 
-# Files from Forge MDK
-forge*changelog.txt
+repo
 
 # README tester
 .github/readmetester/.gradle

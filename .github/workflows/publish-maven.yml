@@ -1,0 +1,51 @@
+name: Release for 5.x
+
+on:
+  push:
+    branches: [ '5.x' ]
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Publish release JAR for Kotlin for Forge
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, '[Maven]') || github.event_name == 'workflow_dispatch'"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'microsoft'
+          java-version: '21'
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Checkout site branch
+        uses: actions/checkout@v4
+        with:
+          ref: site
+          path: site
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Update repo
+        run: |
+          ./gradlew publishAllPublicationsToMavenRepository
+          cd ./site
+          git config user.name "thedarkcolour"
+          git config user.email "30441001+thedarkcolour@users.noreply.github.com"
+          git add .
+          git diff --staged --quiet || (git commit -m "Update repo" && git push)

@@ -1,21 +1,33 @@
 [versions]
+# Kotlin
 # https://github.com/JetBrains/kotlin
 # https://github.com/Kotlin/kotlinx.coroutines
 # https://github.com/Kotlin/kotlinx.serialization
-kotlin = "2.1.0"
-coroutines = "1.9.0"
-serialization = "1.7.3"
+kotlin = "2.1.20"
+coroutines = "1.10.2"
+serialization = "1.8.1"
 
-# Neo
-neogradle = "7.0.142"
-neoforge = "21.1.3"
-fancymodloader = "[3,5)"
-# Lex
+# Misc
+neoforge = "21.1.147"
+neoforge-fml = "[3,5)"
+neoforge-bus = "8.0.2"
+neoforge-mergetool = "2.0.7"
 forge = "1.21-51.0.8"
-forgegradle = "6.0.25"
+forge-mergetool = "1.0"
+forge-spi = "7.1.4"
+forge-bus = "6.2.6"
+joml = "1.10.5"
+log4j = "2.22.1"
+asm = "9.5"
+night-config = "3.7.1"
 
+# Gradle
+moddev = "2.0.71"
 minotaur = "2.8.7"
 cursegradle = "1.4.0"
+ideaext = "1.1.9"
+shadow = "8.3.6"
+
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
@@ -27,12 +39,31 @@ kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-j
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
-forge = { module = "net.minecraftforge:forge", version.ref = "forge"}
-fancymodloader = { module = "net.neoforged.fancymodloader:loader", version.ref = "fancymodloader"}
+neoforge-fml = { module = "net.neoforged.fancymodloader:loader", version.ref = "neoforge-fml" }
+neoforge-bus = { module = "net.neoforged:bus", version.ref = "neoforge-bus" }
+neoforge-mergetool = { module = "net.neoforged:mergetool", version.ref = "neoforge-mergetool" }
+forge-fml = { module = "net.minecraftforge:javafmllanguage", version.ref = "forge" }
+forge-bus = { module = "net.minecraftforge:eventbus", version.ref = "forge-bus" }
+forge-loader = { module = "net.minecraftforge:fmlloader", version.ref = "forge" }
+forge-core = { module = "net.minecraftforge:fmlcore", version.ref = "forge" }
+forge-mergetool = { module = "net.minecraftforge:mergetool-api", version.ref = "forge-mergetool" }
+forge-spi = { module = "net.minecraftforge:forgespi", version.ref = "forge-spi" }
+joml = { module = "org.joml:joml", version.ref = "joml" }
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+night-config = { module = "com.electronwill.night-config:core", version.ref = "night-config" }
+
+[bundles]
+# Kotlin Reflect, Stdlib, Coroutines, Serialization JSON
+kotlin = ["kotlin-reflect", "kotlin-stdlib", "kotlin-stdlib-jdk7", "kotlin-stdlib-jdk8", "kotlinx-coroutines-core", "kotlinx-coroutines-core-jvm", "kotlinx-coroutines-jdk8", "kotlinx-serialization-core", "kotlinx-serialization-json"]
+neoforge = ["neoforge", "neoforge-bus", "neoforge-fml", "neoforge-mergetool"]
+forge = ["forge-core", "forge-fml", "forge-loader", "forge-mergetool", "forge-spi", "forge-bus"]
 
 [plugins]
-kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-neogradle = { id = "net.neoforged.gradle.userdev", version.ref = "neogradle" }
-forgegradle = { id = "net.minecraftforge.gradle", version.ref = "forgegradle" }
+ideaext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "ideaext" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 cursegradle = { id = "com.matthewprenger.cursegradle", version.ref = "cursegradle" }
