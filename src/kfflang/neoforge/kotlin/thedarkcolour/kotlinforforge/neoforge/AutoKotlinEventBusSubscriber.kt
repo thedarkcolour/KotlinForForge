@@ -1,11 +1,11 @@
 package thedarkcolour.kotlinforforge.neoforge
 
-import net.neoforged.fml.Bindings
 import net.neoforged.fml.Logging
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.javafmlmod.AutomaticEventSubscriber
 import net.neoforged.fml.loading.FMLEnvironment
+import net.neoforged.fml.loading.FMLLoader
 import net.neoforged.fml.loading.modscan.ModAnnotation
 import net.neoforged.neoforgespi.language.ModFileScanData
 import org.objectweb.asm.Type
@@ -97,7 +97,7 @@ public object AutoKotlinEventBusSubscriber {
 
     private fun registerTo(any: Any, target: EventBusSubscriber.Bus, mod: KotlinModContainer) {
         if (target == EventBusSubscriber.Bus.GAME) {
-            Bindings.getGameBus().register(any)
+            FMLLoader.getBindings().getGameBus().register(any)
         } else {
             mod.eventBus.register(any)
         }

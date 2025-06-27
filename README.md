@@ -44,9 +44,9 @@ repositories {
 dependencies {
     // Adds KFF as dependency and Kotlin libs (use the variant matching your mod loader)
     // FORGE (1.21+ ONLY)
-	implementation 'thedarkcolour:kotlinforforge:5.8.0'
+	implementation 'thedarkcolour:kotlinforforge:5.9.0'
     // NEOFORGE
-    implementation 'thedarkcolour:kotlinforforge-neoforge:5.8.0'
+    implementation 'thedarkcolour:kotlinforforge-neoforge:5.9.0'
 }
 // ONLY ON REGULAR FORGE
 sourceSets.each {
@@ -80,9 +80,9 @@ repositories {
 dependencies {
     // Adds KFF as dependency and Kotlin libs (use the variant matching your mod loader)
     // FORGE (1.21+ ONLY)
-    implementation("thedarkcolour:kotlinforforge-neoforge:5.8.0")
+    implementation("thedarkcolour:kotlinforforge-neoforge:5.9.0")
     // NEOFORGE
-    implementation("thedarkcolour:kotlinforforge-neoforge:5.8.0")
+    implementation("thedarkcolour:kotlinforforge-neoforge:5.9.0")
 }
 // ONLY ON REGULAR FORGE
 sourceSets.configureEach {
@@ -98,7 +98,7 @@ Then, change the following to your neoforge.mods.toml file:
 ```toml
 modLoader="kotlinforforge"
 # Change this if you require a certain version of KotlinForForge
-loaderVersion="[5.8,)"
+loaderVersion="[5.9,)"
 ```
 
 Use `thedarkcolour.kotlinforforge.forge.MOD_BUS` instead of        
