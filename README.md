@@ -28,9 +28,9 @@ To implement in an existing project, merge the following into your build script:
 ```groovy
 plugins {    
     // Adds the Kotlin Gradle plugin
-    id 'org.jetbrains.kotlin.jvm' version '2.1.20'
+    id 'org.jetbrains.kotlin.jvm' version '2.1.21'
     // OPTIONAL Kotlin Serialization plugin
-    //id 'org.jetbrains.kotlin.plugin.serialization' version '2.1.20'
+    //id 'org.jetbrains.kotlin.plugin.serialization' version '2.1.21'
 }
 
 repositories {
@@ -64,9 +64,9 @@ sourceSets.each {
 ```kotlin
 plugins {
     // Adds the Kotlin Gradle plugin
-    kotlin("jvm") version "2.1.20"
+    kotlin("jvm") version "2.1.21"
     // OPTIONAL Kotlin Serialization plugin
-    //kotlin("plugin.serialization") version "2.1.20"
+    //kotlin("plugin.serialization") version "2.1.21"
 }
 
 repositories {

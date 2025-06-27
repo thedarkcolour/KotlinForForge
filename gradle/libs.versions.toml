@@ -3,30 +3,30 @@
 # https://github.com/JetBrains/kotlin
 # https://github.com/Kotlin/kotlinx.coroutines
 # https://github.com/Kotlin/kotlinx.serialization
-kotlin = "2.1.20"
+kotlin = "2.1.21"
 coroutines = "1.10.2"
 serialization = "1.8.1"
 
 # Misc
-neoforge = "21.1.147"
+neoforge = "21.1.186"
 neoforge-fml = "[3,5)"
-neoforge-bus = "8.0.2"
+neoforge-bus = "8.0.5"
 neoforge-mergetool = "2.0.7"
-forge = "1.21-51.0.8"
+forge = "1.21.1-52.1.0"
 forge-mergetool = "1.0"
-forge-spi = "7.1.4"
-forge-bus = "6.2.6"
-joml = "1.10.5"
+forge-spi = "7.1.5"
+forge-bus = "6.2.27"
+joml = "1.10.8"
 log4j = "2.22.1"
-asm = "9.5"
-night-config = "3.7.1"
+asm = "9.8"
+night-config = "3.7.4"
 
 # Gradle
-moddev = "2.0.71"
+moddev = "2.0.95"
 minotaur = "2.8.7"
 cursegradle = "1.4.0"
-ideaext = "1.1.9"
-shadow = "8.3.6"
+ideaext = "1.1.10"
+shadow = "8.3.7"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
