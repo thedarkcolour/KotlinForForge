@@ -3,9 +3,9 @@ package thedarkcolour.kotlinforforge.forge
 import com.mojang.blaze3d.vertex.PoseStack
 import org.joml.Quaternionf
 
-public fun PoseStack.use(toRun: PoseStack.() -> Unit) {
+public fun PoseStack.use(toRun: (PoseStack) -> Unit) {
     pushPose()
-    this.toRun()
+    toRun(this)
     popPose()
 }
 
