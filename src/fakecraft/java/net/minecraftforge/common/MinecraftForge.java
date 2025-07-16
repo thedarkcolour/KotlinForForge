@@ -1,7 +1,7 @@
 package net.minecraftforge.common;
 
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
 
 public class MinecraftForge {
-    public static final IEventBus EVENT_BUS = null;
+    public static final BusGroup EVENT_BUS = null;
 }

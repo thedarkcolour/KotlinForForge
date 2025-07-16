@@ -1,10 +1,12 @@
 package thedarkcolour.kotlinforforge.test
 
-import net.minecraftforge.fml.common.Mod
 import org.apache.logging.log4j.LogManager
+import thedarkcolour.common.KotlinMod
+import thedarkcolour.kotlinforforge.KotlinModLoadingContext
+import java.lang.annotation.ElementType
 
-@Mod("kotlinforforge")
-public object KotlinForForge {
+@KotlinMod("kotlinforforge")
+public class KotlinForForge(context: KotlinModLoadingContext) {
     private val LOGGER = LogManager.getLogger()
     init {
         LOGGER.info("Kotlin For Forge Enabled!")

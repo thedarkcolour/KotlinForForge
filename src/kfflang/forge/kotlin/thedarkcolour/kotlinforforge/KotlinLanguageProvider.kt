@@ -21,9 +21,17 @@ public class KotlinLanguageProvider : IModLanguageProvider {
 
     override fun getFileVisitor(): Consumer<ModFileScanData> {
         return Consumer { scanData ->
+            LOGGER.warn(">>> KotlinLanguageProvider scanning file: ${scanData.annotations.size} annotations total")
+            for (annotation in scanData.annotations) {
+                LOGGER.warn("📛 Annotation seen: ${annotation.annotationType} on ${annotation.clazz.className}")
+                if (annotation.annotationType.className.contains("KotlinMod")) {
+                    LOGGER.error("⚠️  POTENTIAL MATCH: ${annotation.annotationType.className}")
+                }
+            }
             scanData.addLanguageLoader(scanData.annotations.filter { data ->
                 data.annotationType == MOD_ANNOTATION
             }.associate { data ->
+                LOGGER.debug(Logging.SCAN, "Found annotations: ${scanData.annotations.map { it.annotationType }}")
                 val modid = data.annotationData["value"] as String
                 val modClass = data.clazz.className
 
@@ -78,6 +86,6 @@ public class KotlinLanguageProvider : IModLanguageProvider {
     }
 
     private companion object {
-        private val MOD_ANNOTATION = Type.getType("Lnet/minecraftforge/fml/common/Mod;")
+        private val MOD_ANNOTATION = Type.getType("Lthedarkcolour/common/KotlinMod;")
     }
 }

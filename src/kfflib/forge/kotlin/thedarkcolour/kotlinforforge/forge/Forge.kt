@@ -3,13 +3,16 @@ package thedarkcolour.kotlinforforge.forge
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.common.ForgeConfigSpec
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.eventbus.api.EventPriority
-import net.minecraftforge.eventbus.api.GenericEvent
-import net.minecraftforge.eventbus.api.IEventBus
+import net.minecraftforge.eventbus.api.bus.BusGroup
+import net.minecraftforge.eventbus.api.listener.EventListener
+import net.minecraftforge.eventbus.api.listener.Priority
+import net.minecraftforge.eventbus.internal.Event
+import net.minecraftforge.eventbus.internal.EventListenerImpl
 import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.config.ModConfig
 import net.minecraftforge.fml.loading.FMLEnvironment
 import thedarkcolour.kotlinforforge.KotlinModLoadingContext
+import java.lang.invoke.MethodHandles
 import java.util.function.Consumer
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -23,8 +26,10 @@ import kotlin.reflect.KProperty
  *   @see net.minecraftforge.event.entity.living.LivingEvent
  *   @see net.minecraftforge.event.world.BlockEvent
  */
-public inline val FORGE_BUS: IEventBus
+
+public inline val FORGE_BUS: BusGroup
     get() = MinecraftForge.EVENT_BUS
+
 
 /**
  * Mod-specific event bus.
@@ -35,8 +40,8 @@ public inline val FORGE_BUS: IEventBus
  *   @see net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
  *   @see net.minecraftforge.registries.NewRegistryEvent
  */
-public inline val MOD_BUS: IEventBus
-    get() = KotlinModLoadingContext.get().getKEventBus()
+public inline val MOD_BUS: BusGroup
+    get() = KotlinModLoadingContext.get().getKBusGroup()
 
 /**
  * Used in place of [net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext]
@@ -95,12 +100,13 @@ public inline fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
     LOADING_CONTEXT.registerConfig(type, spec)
 }
 
-public inline fun <T : GenericEvent<out F>, reified F> IEventBus.addGenericListener(
+public inline fun <reified T : Event> BusGroup.addGenericListener(
     listener: Consumer<T>,
-    priority: EventPriority = EventPriority.NORMAL,
+    priority: Byte = Priority.NORMAL,
     receiveCancelled: Boolean = false
 ) {
-    addGenericListener(F::class.java, priority, receiveCancelled, listener)
+    val eventType = T::class.java
+    this.register(MethodHandles.lookup(), eventType)
 }
 
 /**

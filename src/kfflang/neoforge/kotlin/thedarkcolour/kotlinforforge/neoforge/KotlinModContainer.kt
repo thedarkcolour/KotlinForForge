@@ -11,7 +11,6 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.ModLoadingException
 import net.neoforged.fml.ModLoadingIssue
 import net.neoforged.fml.event.IModBusEvent
-import net.neoforged.fml.javafmlmod.AutomaticEventSubscriber
 import net.neoforged.fml.javafmlmod.FMLModContainer
 import net.neoforged.fml.loading.FMLLoader
 import net.neoforged.neoforgespi.language.IModInfo

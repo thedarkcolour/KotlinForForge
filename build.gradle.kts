@@ -108,13 +108,14 @@ repositories {
     mavenCentral()
     maven("https://maven.neoforged.net/releases")
     maven("https://maven.minecraftforge.net/")
+    maven("https://libraries.minecraft.net")
 }
 
 dependencies {
+
     // fakecraft (fake class/field/method signatures used in place of the full Minecraft/Forge dependencies)
     "fakecraftCompileOnly"(libs.joml)
     "fakecraftCompileOnly"(libs.forge.core)
-    "fakecraftCompileOnly"(libs.forge.bus)
     "fakecraftCompileOnly"(libs.night.config)
 
     // kfflib/common
@@ -131,6 +132,8 @@ dependencies {
 
     // kffmod/forge
     "modForgeCompileOnly"(libs.log4j.core)
+    "modForgeCompileOnly"(sourceSets["langForge"].output)
+
 
     sourceSets.forEach { sourceSet ->
         val name = sourceSet.name
@@ -153,6 +156,8 @@ dependencies {
         if (name.contains("lang")) {
             dependencies.add(compileOnly, libs.asm)
             dependencies.add(compileOnly, libs.log4j.core)
+            dependencies.add(compileOnly, libs.secure.jar)
+            dependencies.add(compileOnly, libs.forge.bus)
         }
     }
 }
