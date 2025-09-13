@@ -3,8 +3,8 @@
   <groupId>thedarkcolour</groupId>
   <artifactId>kffmod-neoforge</artifactId>
   <versioning>
-    <latest>5.9.0</latest>
-    <release>5.9.0</release>
+    <latest>5.10.0</latest>
+    <release>5.10.0</release>
     <versions>
       <version>4.6.0</version>
       <version>4.6.1</version>
@@ -27,7 +27,8 @@
       <version>5.7.0</version>
       <version>5.8.0</version>
       <version>5.9.0</version>
+      <version>5.10.0</version>
     </versions>
-    <lastUpdated>20250629033032</lastUpdated>
+    <lastUpdated>20250913210538</lastUpdated>
   </versioning>
 </metadata>
