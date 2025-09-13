@@ -25,7 +25,7 @@ night-config = "3.7.1"
 moddev = "2.0.71"
 mod-publish-plugin = "0.8.4"
 ideaext = "1.1.9"
-shadow = "8.3.6"
+shadow = "9.1.0"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }

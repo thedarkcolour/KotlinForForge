@@ -161,7 +161,7 @@ dependencies {
 // ARTIFACTS
 //
 
-inline fun <reified J : Jar> registerArtifact(taskName: String, baseName: String, vararg sourceSetNames: String, crossinline configure: J.() -> Unit) {
+inline fun <reified J : Jar> registerArtifact(taskName: String, baseName: String, vararg sourceSetNames: String, crossinline configure: J.(isSourceJar: Boolean) -> Unit) {
     tasks.register<J>(taskName) {
         archiveBaseName.set(baseName)
         group = "kff"
@@ -170,7 +170,7 @@ inline fun <reified J : Jar> registerArtifact(taskName: String, baseName: String
             from(sourceSets[sourceSetName].output)
         }
 
-        configure()
+        configure(false)
     }
     tasks.register<J>(taskName + "Sources") {
         archiveBaseName.set(baseName)
@@ -181,7 +181,7 @@ inline fun <reified J : Jar> registerArtifact(taskName: String, baseName: String
             from(sourceSets[sourceSetName].allSource)
         }
 
-        configure()
+        configure(true)
     }
 }
 
@@ -216,10 +216,17 @@ registerArtifact<Jar>("langForgeJar", "kfflang-forge", "langForge") {
 }
 
 // kfflib-neoforge
-registerArtifact<ShadowJar>("libNeoForgeJar", "kfflib-neoforge", "libCommon", "libNeoForge") {
+registerArtifact<ShadowJar>("libNeoForgeJar", "kfflib-neoforge", "libCommon", "libNeoForge") { isSourceJar ->
     // Move common lib into correct package
     relocate("thedarkcolour.kotlinforforge.forge", "thedarkcolour.kotlinforforge.neoforge.forge")
     relocate("thedarkcolour.kotlinforforge.kotlin", "thedarkcolour.kotlinforforge.neoforge.kotlin")
+
+    if (isSourceJar) {
+        filter { line ->
+            line.replace("thedarkcolour.kotlinforforge.forge", "thedarkcolour.kotlinforforge.neoforge.forge")
+                .replace("thedarkcolour.kotlinforforge.kotlin", "thedarkcolour.kotlinforforge.neoforge.kotlin")
+        }
+    }
 
     manifest {
         attributes(mapOf("FMLModType" to "GAMELIBRARY"))
