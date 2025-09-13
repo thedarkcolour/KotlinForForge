@@ -2,12 +2,12 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.neoforged.moddevgradle.tasks.JarJar
 import org.gradle.api.publish.maven.internal.dependencies.MavenDependency
 import org.gradle.api.publish.maven.internal.dependencies.MavenPomDependencies
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.api.publish.maven.internal.publication.MavenPomInternal
+import org.gradle.kotlin.dsl.support.normaliseLineSeparators
 import org.jetbrains.gradle.ext.settings
 import org.jetbrains.gradle.ext.taskTriggers
-import org.gradle.kotlin.dsl.support.normaliseLineSeparators
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-library`
@@ -141,7 +141,12 @@ dependencies {
 
         // NeoForge/Forge dep
         if (name.contains("Forge")) {
-            dependencies.add(compileOnly, if (name.contains("Neo")) libs.bundles.neoforge else libs.bundles.forge, closureOf<ModuleDependency> {
+            val bundle = if (name.contains("Neo")) {
+                libs.bundles.neoforge
+            } else {
+                libs.bundles.forge
+            }
+            dependencies.add(compileOnly, bundle, closureOf<ModuleDependency> {
                 isTransitive = false
             })
         }
@@ -178,7 +183,15 @@ inline fun <reified J : Jar> registerArtifact(taskName: String, baseName: String
         group = "kff"
 
         for (sourceSetName in sourceSetNames) {
-            from(sourceSets[sourceSetName].allSource)
+            val copySpec = from(sourceSets[sourceSetName].allSource)
+
+            // hardcode to fix shadow screwing up the source jar
+            if (baseName == "kfflib-neoforge") {
+                copySpec.filter { line ->
+                    line.replace("thedarkcolour.kotlinforforge.forge", "thedarkcolour.kotlinforforge.neoforge.forge")
+                        .replace("thedarkcolour.kotlinforforge.kotlin", "thedarkcolour.kotlinforforge.neoforge.kotlin")
+                }
+            }
         }
 
         configure()
