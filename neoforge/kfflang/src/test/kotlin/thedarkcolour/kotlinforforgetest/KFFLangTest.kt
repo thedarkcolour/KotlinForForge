@@ -16,10 +16,10 @@ import org.apache.logging.log4j.Logger
  * check out the [KotlinModdingSkeleton repository](https://github.com/thedarkcolour/KotlinModdingSkeleton).
  */
 @Mod(KFFLangTest.ID)
-object KFFLangTest {
-    const val ID = "kfflangtest"
+public object KFFLangTest {
+    public const val ID: String = "kfflangtest"
 
-    val LOGGER: Logger = LogManager.getLogger(ID)
+    private val LOGGER: Logger = LogManager.getLogger(ID)
 
     init {
         LOGGER.log(Level.INFO, "Hello world from Kotlin for forge Language provider!")

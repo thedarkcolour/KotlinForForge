@@ -4,7 +4,7 @@ plugins {
 }
 
 // maven.repo.local is set within the Julia script in the website branch
-tasks.create("publishAllMavens") {
+tasks.register("publishAllMavens") {
     dependsOn(":forge:publishAllMavens")
     dependsOn(":neoforge:publishAllMavens")
 }

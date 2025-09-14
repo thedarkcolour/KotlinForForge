@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import thedarkcolour.kotlinforforge.plugin.getKffMaxVersion
 import thedarkcolour.kotlinforforge.plugin.getPropertyString
 
@@ -106,12 +105,14 @@ tasks {
         }
     }
 
-    withType<KotlinCompile> {
-        compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
-    }
-
     assemble {
         dependsOn(jarJar)
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
@@ -126,7 +127,7 @@ publishing {
 }
 
 // maven.repo.local is set within the Julia script in the website branch
-tasks.create("publishAllMavens") {
+tasks.register("publishAllMavens") {
     dependsOn(":forge:publishToMavenLocal")
     dependsOn(":forge:kfflib:publishToMavenLocal")
     dependsOn(":forge:kfflang:publishToMavenLocal")

@@ -1,5 +1,4 @@
 import net.neoforged.gradle.dsl.common.extensions.RunnableSourceSet
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.time.LocalDateTime
 
 plugins {
@@ -9,14 +8,20 @@ plugins {
 // Tells NeoGradle to treat this source set as a separate mod
 sourceSets["test"].extensions.getByType<RunnableSourceSet>().configure { run -> run.modIdentifier("kfflangtest") }
 
-val nonmclibs: Configuration by configurations.creating {}
+val nonmclibs: Configuration by configurations.creating {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains" && requested.name == "annotations") {
+            useVersion(libs.versions.jba.get())
+            because("JPMS automatic module name")
+        }
+    }
+}
 
 runs {
     configureEach {
-        modSource(sourceSets["main"])
-        //modSource(sourceSets["test"])
+        modSource(sourceSets["test"])
         dependencies {
-            runtime((nonmclibs))
+            runtime.add(nonmclibs)
         }
     }
     create("client")
@@ -54,10 +59,12 @@ tasks {
             )
         }
     }
+}
 
-    // Only require the lang provider to use explicit visibility modifiers, not the test mod
-    withType<KotlinCompile> {
-        kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
+kotlin {
+    compilerOptions {
+        // Only require the lang provider to use explicit visibility modifiers, not the test mod
+        freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
     }
 }
 

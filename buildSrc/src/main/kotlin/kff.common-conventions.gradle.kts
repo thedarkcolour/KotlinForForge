@@ -1,12 +1,13 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import thedarkcolour.kotlinforforge.plugin.alias
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import thedarkcolour.kotlinforforge.plugin.getPropertyString
 
-project.plugins.apply(JavaPlugin::class)
-project.plugins.apply(IdeaPlugin::class)
-project.plugins.apply(MavenPublishPlugin::class)
-project.plugins.apply(alias("kotlinJvm", project))
+plugins {
+    java
+    idea
+    `maven-publish`
+    kotlin("jvm")
+}
 
 val jvmTarget = JvmTarget.JVM_17
 
@@ -32,7 +33,7 @@ project.tasks {
             expand(replacements)
         }
     }
-    withType<KotlinCompile> {
+    withType<KotlinJvmCompile> {
         compilerOptions.jvmTarget.set(jvmTarget)
         compilerOptions.freeCompilerArgs.set(listOf("-Xexplicit-api=warning", "-Xjvm-default=all"))
     }

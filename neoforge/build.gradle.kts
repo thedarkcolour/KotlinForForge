@@ -58,7 +58,7 @@ fun DependencyHandler.include(dep: ModuleDependency): ModuleDependency {
 }
 
 // maven.repo.local is set within the Julia script in the website branch
-tasks.create("publishAllMavens") {
+tasks.register("publishAllMavens") {
     dependsOn(":neoforge:publishToMavenLocal")
     dependsOn(":neoforge:kfflib:publishToMavenLocal")
     dependsOn(":neoforge:kfflang:publishToMavenLocal")

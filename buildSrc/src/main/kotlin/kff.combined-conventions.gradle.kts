@@ -18,17 +18,4 @@ project.tasks.withType<Jar> {
             zipTree(project(":neoforge:$subproject").tasks.getByName("jar", Jar::class).archiveFile),
         )
     })
-
-    manifest {
-        attributes(
-            "Specification-Title" to "Kotlin for Forge",
-            "Specification-Vendor" to "Forge",
-            "Specification-Version" to "1",
-            "Implementation-Title" to project.name,
-            "Implementation-Version" to project.version,
-            "Implementation-Vendor" to "thedarkcolour",
-            "Implementation-Timestamp" to LocalDateTime.now(),
-            "Automatic-Module-Name" to "thedarkcolour.kotlinforforge.$subproject",
-        )
-    }
 }

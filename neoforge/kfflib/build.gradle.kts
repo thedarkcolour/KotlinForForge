@@ -4,6 +4,23 @@ plugins {
     id("kff.neoforge-conventions")
 }
 
+val nonmclibs: Configuration by configurations.creating {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains" && requested.name == "annotations") {
+            useVersion(libs.versions.jba.get())
+            because("JPMS automatic module name")
+        }
+    }
+}
+
+val gameTestServer by runs.creating {
+    systemProperty("neoforge.enabledGameTestNamespaces", "kfflibtest")
+    modSources(sourceSets["test"])
+    dependencies {
+        runtime.add(nonmclibs)
+    }
+}
+
 dependencies {
     implementation("net.neoforged:neoforge:${project.properties["neo_version"]}")
 
@@ -14,6 +31,15 @@ dependencies {
     api(libs.kotlinx.coroutines.core.jvm)
     api(libs.kotlinx.coroutines.jdk8)
     api(libs.kotlinx.serialization.json)
+
+    nonmclibs(libs.kotlin.stdlib)
+    nonmclibs(libs.kotlin.stdlib.jdk8)
+    nonmclibs(libs.kotlin.stdlib.jdk7)
+    nonmclibs(libs.kotlin.reflect)
+    nonmclibs(libs.kotlinx.coroutines.core)
+    nonmclibs(libs.kotlinx.coroutines.core.jvm)
+    nonmclibs(libs.kotlinx.coroutines.jdk8)
+    nonmclibs(libs.kotlinx.serialization.json)
 
     implementation(projects.neoforge.kfflang)
 }

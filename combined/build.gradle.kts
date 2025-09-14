@@ -113,8 +113,8 @@ modrinth {
     loaders.add("neoforge")
     uploadFile.provider(project(":combined").tasks.jarJar)
 }
-tasks.create("publishModPlatforms") {
-    finalizedBy(tasks.create("printPublishingMessage") {
+tasks.register("publishModPlatforms") {
+    finalizedBy(tasks.register("printPublishingMessage") {
         doFirst {
             println("Publishing Kotlin for Forge ${getPropertyString("kff_version")} to Modrinth and CurseForge")
         }

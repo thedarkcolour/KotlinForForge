@@ -1,3 +1,4 @@
+import net.minecraftforge.gradle.common.util.RunConfig
 import java.time.LocalDateTime
 
 plugins {
@@ -12,7 +13,7 @@ minecraft {
     copyIdeResources.set(true)
 
     runs {
-        create("client") {
+        create("client", Action<RunConfig> {
             workingDirectory(project.file("run"))
 
             ideaModule = "KotlinForForge.forge.kfflang.test"
@@ -29,7 +30,7 @@ minecraft {
                     source(sourceSets.test.get())
                 }
             }
-        }
+        })
 
         create("server") {
             workingDirectory(project.file("run/server"))

@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.time.LocalDateTime
 
 plugins {
@@ -118,10 +117,12 @@ tasks {
             )
         }
     }
+}
 
-    // Only require the lang provider to use explicit visibility modifiers, not the test mod
-    withType<KotlinCompile> {
-        kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
+kotlin {
+    compilerOptions {
+        // Only require the lang provider to use explicit visibility modifiers, not the test mod
+        freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
     }
 }
 
