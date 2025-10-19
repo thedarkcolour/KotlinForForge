@@ -34,7 +34,7 @@ public inline val LOADING_CONTEXT: ModLoadingContext
 
 /** Current dist */
 public inline val DIST: Dist
-    get() = FMLEnvironment.dist
+    get() = FMLEnvironment.getDist()
 
 /**
  * An alternative to using [net.minecraftforge.fml.DistExecutor]

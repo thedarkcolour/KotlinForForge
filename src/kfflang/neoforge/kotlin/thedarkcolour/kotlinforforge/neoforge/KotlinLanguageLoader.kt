@@ -4,7 +4,7 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.ModLoadingIssue
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.javafmlmod.AutomaticEventSubscriber
-import net.neoforged.fml.loading.FMLLoader
+import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.fml.loading.JarVersionLookupHandler
 import net.neoforged.neoforgespi.IIssueReporting
 import net.neoforged.neoforgespi.language.IModInfo
@@ -29,7 +29,7 @@ public class KotlinLanguageLoader : IModLanguageLoader {
             .filter { data ->
                 isAnnotatedByMod(data)
                         && info.modId == data.annotationData.get("value")
-                        && AutomaticEventSubscriber.getSides(data.annotationData.get("dist")).contains(FMLLoader.getDist())
+                        && AutomaticEventSubscriber.getSides(data.annotationData.get("dist")).contains(FMLEnvironment.getDist())
             }
             .map { data -> data.clazz.className }
 

@@ -58,7 +58,8 @@ public object AutoKotlinEventBusSubscriber {
     }
 
     private fun getNewGameBus(): IEventBus {
-        return FMLLoader.getBindings().gameBus
+        @Suppress("UnstableApiUsage")
+        return FMLLoader.getCurrent().bindings.gameBus
     }
 
     /**
@@ -86,13 +87,15 @@ public object AutoKotlinEventBusSubscriber {
             annotationData.clazz.className to annotationData.annotationData.get("value")
         }
 
+        val currentDist = FMLEnvironment.getDist()
+
         // we only need to worry about cases where NeoForge can't automatically register (object and file)
         for (annotationData in ebsTargets) {
             val sides = AutomaticEventSubscriber.getSides(annotationData.annotationData.get("value"))
             val className = annotationData.clazz.className
             val modid = annotationData.annotationData.getOrDefault("modid", modIds.getOrDefault(className, mod.modId))
 
-            if (mod.modId == modid && FMLEnvironment.dist in sides) {
+            if (mod.modId == modid && currentDist in sides) {
                 val kClass = Class.forName(annotationData.clazz.className, true, layer.classLoader).kotlin
 
                 var ktObject: Any?

@@ -11,13 +11,11 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.ModLoadingException
 import net.neoforged.fml.ModLoadingIssue
 import net.neoforged.fml.event.IModBusEvent
-import net.neoforged.fml.javafmlmod.AutomaticEventSubscriber
 import net.neoforged.fml.javafmlmod.FMLModContainer
-import net.neoforged.fml.loading.FMLLoader
+import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.neoforgespi.language.IModInfo
 import net.neoforged.neoforgespi.language.ModFileScanData
 import java.lang.reflect.InvocationTargetException
-import java.util.*
 import java.util.function.Supplier
 
 public class KotlinModContainer(
@@ -40,7 +38,7 @@ public class KotlinModContainer(
             .markerType(IModBusEvent::class.java)
             .allowPerPhasePost()
             .build()
-        this.layer = gameLayer.findModule(info.owningFile.moduleName()).orElseThrow()
+        this.layer = gameLayer.findModule(info.owningFile.file.id).orElseThrow()
 
         this.context = KotlinModLoadingContext(this)
         // Backwards compatibility with FancyModLoader 3.x
@@ -89,7 +87,7 @@ public class KotlinModContainer(
                         IEventBus::class.java to eventBus,
                         ModContainer::class.java to this,
                         FMLModContainer::class.java to this,
-                        Dist::class.java to FMLLoader.getDist()
+                        Dist::class.java to FMLEnvironment.getDist()
                     )
 
                     val paramTypes = constructor.parameterTypes

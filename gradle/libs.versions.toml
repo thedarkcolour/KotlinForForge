@@ -8,8 +8,8 @@ coroutines = "1.10.2"
 serialization = "1.9.0"
 
 # Misc
-neoforge = "21.6.11-beta"
-neoforge-fml = "[3,5)"
+neoforge = "21.10.20-beta"
+neoforge-fml = "10.0.21"
 neoforge-bus = "8.0.5"
 neoforge-mergetool = "2.0.7"
 forge = "1.21-51.0.8"
