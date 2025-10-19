@@ -1,8 +1,8 @@
-name: Release for 5.x
+name: Release for 6.x
 
 on:
   push:
-    branches: [ '5.x' ]
+    branches: [ '6.x' ]
   workflow_dispatch:
     inputs:
       platform:
