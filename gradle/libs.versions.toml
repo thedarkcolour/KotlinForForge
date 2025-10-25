@@ -3,9 +3,9 @@
 # https://github.com/JetBrains/kotlin
 # https://github.com/Kotlin/kotlinx.coroutines
 # https://github.com/Kotlin/kotlinx.serialization
-kotlin = "2.1.21"
+kotlin = "2.2.20"
 coroutines = "1.10.2"
-serialization = "1.8.1"
+serialization = "1.9.0"
 
 # Misc
 neoforge = "21.6.11-beta"
@@ -25,7 +25,7 @@ night-config = "3.7.1"
 moddev = "2.0.71"
 mod-publish-plugin = "0.8.4"
 ideaext = "1.1.9"
-shadow = "8.3.6"
+shadow = "9.1.0"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }

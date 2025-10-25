@@ -1,3 +1,7 @@
+## Kotlin for Forge 5.10.0
+- Updated to Kotlin 2.2.20, serialization 1.9.0
+- Fix broken source JARs for KffLib (#128)
+
 ## Kotlin for Forge 5.9.0
 - Updated to Kotlin 2.1.21
 - Fixed 1.21.1 NeoForge 21.1.183 crash with new FancyModLoader about removed Bindings class (#124)
