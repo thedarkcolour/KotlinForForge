@@ -101,5 +101,5 @@ modLoader="kotlinforforge"
 loaderVersion="[6.0,)"
 ```
 
-Use `thedarkcolour.kotlinforforge.forge.MOD_BUS` instead of        
+Use `thedarkcolour.kotlinforforge.forge.MOD_BUS`     
 instead of `net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext`
