@@ -121,7 +121,7 @@ tasks {
 
     // Only require the lang provider to use explicit visibility modifiers, not the test mod
     withType<KotlinCompile> {
-        kotlinOptions.freeCompilerArgs = listOf("-Xexplicit-api=warning", "-Xjvm-default=all")
+        compilerOptions.freeCompilerArgs.set(listOf("-Xexplicit-api=warning", "-Xjvm-default=all"))
     }
 }
 
