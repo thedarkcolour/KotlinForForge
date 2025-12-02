@@ -1,0 +1,96 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "thedarkcolour",
+    "module": "kotlinforforge-neoforge",
+    "version": "4.12.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "thedarkcolour",
+          "module": "kfflang-neoforge",
+          "version": {
+            "requires": "4.12.0"
+          }
+        },
+        {
+          "group": "thedarkcolour",
+          "module": "kfflib-neoforge",
+          "version": {
+            "requires": "4.12.0"
+          }
+        },
+        {
+          "group": "thedarkcolour",
+          "module": "kffmod-neoforge",
+          "version": {
+            "requires": "4.12.0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "kotlinforforge-neoforge-4.12.0-all.jar",
+          "url": "kotlinforforge-neoforge-4.12.0-all.jar",
+          "size": 7385444,
+          "sha512": "786d88f7736d91e212923b67e6a79caa0a0a1619066d319d15630026d109d8faf62d0c70da98137dc60c72e55eecb70185624c51370a52dbef2a381b42092668",
+          "sha256": "df54cc419f1323b2ace6467169ca3f71e6f3632de2833f40276eb7f90d7fb20e",
+          "sha1": "4486e1985d964e34c0a1f3a8a11153359027f4e5",
+          "md5": "c1cdda4779587361bfe5188d1426c5f0"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "kotlinforforge-neoforge-4.12.0-sources.jar",
+          "url": "kotlinforforge-neoforge-4.12.0-sources.jar",
+          "size": 261,
+          "sha512": "0e91c03aac5033ad8edb296d70f08e8d5c04dd08527c8d9d99205102b34041249f5fb9b9c3ae492ea7dc4a630382ed42b68aba16698a86245f20292e7fc9ff26",
+          "sha256": "a7989057f3263328f104ed49ad19b72cadd175a519c53170ba388b66a55fe6cd",
+          "sha1": "bc0274c070955cb9a4c897482d6a925f02fc2207",
+          "md5": "42c592a4ed49d515898d487533363e5f"
+        }
+      ]
+    }
+  ]
+}
