@@ -1,3 +1,6 @@
+## Kotlin for Forge 6.1.0
+- Updated to Kotlin 2.3.0
+
 ## Kotlin for Forge 6.0.0
 - Now supports NeoForge 1.21.9 and 1.21.10
 
