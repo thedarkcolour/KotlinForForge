@@ -1,3 +1,6 @@
+## Kotlin for Forge 5.11.0
+- Updated to Kotlin 2.3.0
+
 ## Kotlin for Forge 5.10.0
 - Updated to Kotlin 2.2.20, serialization 1.9.0
 - Fix broken source JARs for KffLib (#128)
