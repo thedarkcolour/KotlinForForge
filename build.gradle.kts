@@ -357,7 +357,8 @@ publishMods {
 
     changelog = getChangelogText()
     type = STABLE
-    modLoaders.addAll("forge", "neoforge")
+    // todo fix forge
+    modLoaders.addAll(/*"forge", */"neoforge")
     displayName = "Kotlin for Forge ${project.version}"
 
     curseforge {
