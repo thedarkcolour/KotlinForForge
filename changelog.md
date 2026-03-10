@@ -1,3 +1,6 @@
+## Kotlin for Forge 6.2.0
+- Updated to Kotlin 2.3.10, serialization 1.10.0
+
 ## Kotlin for Forge 6.1.0
 - Updated to Kotlin 2.3.0
 - Support experimental NeoForge 26.1-snapshot

@@ -3,9 +3,9 @@
 # https://github.com/JetBrains/kotlin
 # https://github.com/Kotlin/kotlinx.coroutines
 # https://github.com/Kotlin/kotlinx.serialization
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 coroutines = "1.10.2"
-serialization = "1.9.0"
+serialization = "1.10.0"
 
 # Misc
 neoforge = "21.10.20-beta"
