@@ -1,7 +1,7 @@
 [versions]
-kotlin = "2.2.21"
+kotlin = "2.3.21"
 coroutines = "1.10.2"
-serialization = "1.9.0"
+serialization = "1.11.0"
 neogradle = "7.0.138"
 neoforge = "20.4.22-beta"
 forgegradle = "6.0.25"
