@@ -350,7 +350,7 @@ data class FakeMavenDependency(private val groupId: String, private val artifact
 //
 // MOD PLATFORMS
 //
-val supportedMcVersions = listOf("1.20.6", "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5")
+val supportedMcVersions = listOf("1.20.6", "1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8")
 
 publishMods {
     file = tasks.jar.get().archiveFile
