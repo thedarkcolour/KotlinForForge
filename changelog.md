@@ -1,3 +1,6 @@
+## Kotlin for Forge 6.4.0
+- Now supports NeoForge 26.3
+
 ## Kotlin for Forge 6.3.0
 - Updated to Kotlin 2.4.0, coroutines 1.11.0, serialization 1.11.0
 - Now supports NeoForge 26.2
