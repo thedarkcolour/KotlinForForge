@@ -6,6 +6,8 @@ base.archivesName.set("kfflib")
 version = project.property("kff_version") as String
 group = "thedarkcolour"
 
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+
 tasks.jar.configure {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 

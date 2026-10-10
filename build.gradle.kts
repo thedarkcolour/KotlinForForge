@@ -26,7 +26,7 @@ plugins {
 // BOILERPLATE
 //
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.BIN
@@ -34,6 +34,7 @@ tasks.wrapper {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+    options.release.set(21)
 }
 
 tasks.withType<KotlinCompile> {
@@ -366,6 +367,8 @@ publishMods {
         projectSlug = "kotlin-for-forge"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
         minecraftVersions.addAll(supportedMcVersions)
+        client = true
+        server = true
     }
     modrinth {
         projectId = "ordsPcFz"
