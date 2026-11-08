@@ -3,13 +3,13 @@
 # https://github.com/JetBrains/kotlin
 # https://github.com/Kotlin/kotlinx.coroutines
 # https://github.com/Kotlin/kotlinx.serialization
-kotlin = "2.4.0"
+kotlin = "2.4.21"
 coroutines = "1.11.0"
-serialization = "1.11.0"
+serialization = "1.12.0"
 
 # Misc
-neoforge = "21.10.20-beta"
-neoforge-fml = "10.0.21"
+neoforge = "26.3.0.7-beta"
+neoforge-fml = "12.0.0"
 neoforge-bus = "8.0.5"
 neoforge-mergetool = "2.0.7"
 forge = "1.21-51.0.8"

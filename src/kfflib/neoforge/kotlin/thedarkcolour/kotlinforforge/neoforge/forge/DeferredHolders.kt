@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredItem
 import kotlin.reflect.KProperty
 
-public operator fun <R, T : R> DeferredHolder<R, T>.getValue(any: Any?, property: KProperty<*>): T {
+public operator fun <R : Any, T : R> DeferredHolder<R, T>.getValue(any: Any?, property: KProperty<*>): T {
     return get()
 }
 
