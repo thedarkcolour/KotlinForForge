@@ -12,10 +12,6 @@ neoforge = "26.3.0.7-beta"
 neoforge-fml = "12.0.0"
 neoforge-bus = "8.0.5"
 neoforge-mergetool = "2.0.7"
-forge = "1.21-51.0.8"
-forge-mergetool = "1.0"
-forge-spi = "7.1.4"
-forge-bus = "6.2.6"
 joml = "1.10.5"
 log4j = "2.22.1"
 asm = "9.5"
@@ -25,7 +21,6 @@ night-config = "3.7.1"
 moddev = "2.0.71"
 mod-publish-plugin = "2.2.1"
 ideaext = "1.1.9"
-shadow = "9.1.0"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -41,12 +36,6 @@ neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
 neoforge-fml = { module = "net.neoforged.fancymodloader:loader", version.ref = "neoforge-fml" }
 neoforge-bus = { module = "net.neoforged:bus", version.ref = "neoforge-bus" }
 neoforge-mergetool = { module = "net.neoforged:mergetool", version.ref = "neoforge-mergetool" }
-forge-fml = { module = "net.minecraftforge:javafmllanguage", version.ref = "forge" }
-forge-bus = { module = "net.minecraftforge:eventbus", version.ref = "forge-bus" }
-forge-loader = { module = "net.minecraftforge:fmlloader", version.ref = "forge" }
-forge-core = { module = "net.minecraftforge:fmlcore", version.ref = "forge" }
-forge-mergetool = { module = "net.minecraftforge:mergetool-api", version.ref = "forge-mergetool" }
-forge-spi = { module = "net.minecraftforge:forgespi", version.ref = "forge-spi" }
 joml = { module = "org.joml:joml", version.ref = "joml" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
@@ -56,11 +45,9 @@ night-config = { module = "com.electronwill.night-config:core", version.ref = "n
 # Kotlin Reflect, Stdlib, Coroutines, Serialization JSON
 kotlin = ["kotlin-reflect", "kotlin-stdlib", "kotlin-stdlib-jdk7", "kotlin-stdlib-jdk8", "kotlinx-coroutines-core", "kotlinx-coroutines-core-jvm", "kotlinx-coroutines-jdk8", "kotlinx-serialization-core", "kotlinx-serialization-json"]
 neoforge = ["neoforge", "neoforge-bus", "neoforge-fml", "neoforge-mergetool"]
-forge = ["forge-core", "forge-fml", "forge-loader", "forge-mergetool", "forge-spi", "forge-bus"]
 
 [plugins]
 ideaext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "ideaext" }
-shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 

@@ -1,4 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.neoforged.moddevgradle.tasks.JarJar
 import org.gradle.api.publish.maven.internal.dependencies.MavenDependency
 import org.gradle.api.publish.maven.internal.dependencies.MavenPomDependencies
@@ -15,7 +14,6 @@ plugins {
     idea
 
     alias(libs.plugins.ideaext)
-    alias(libs.plugins.shadow).apply(false)
     alias(libs.plugins.moddev).apply(false)
     alias(libs.plugins.kotlin)
 
@@ -64,7 +62,7 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
         "kff_max_version" to project.property("kff_max_version"),
     )
     inputs.properties(replacements)
-    filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
+    filesMatching("META-INF/neoforge.mods.toml") {
         expand(replacements)
     }
     from("src/kffmod/templates")
@@ -83,82 +81,56 @@ sourceSets {
     create("fakecraft").java.srcDir("src/fakecraft/java")
 
     // KFF Lang
-    create("langNeoForge") {
-        kotlin.srcDir("src/kfflang/neoforge/kotlin")
-        resources.srcDir("src/kfflang/neoforge/resources")
-    }
-    create("langForge") {
-        kotlin.srcDir("src/kfflang/forge/kotlin")
-        resources.srcDir("src/kfflang/forge/resources")
+    create("lang") {
+        kotlin.srcDir("src/kfflang/kotlin")
+        resources.srcDir("src/kfflang/resources")
     }
 
     // KFF Lib
-    create("libCommon").kotlin.srcDir("src/kfflib/common/kotlin")
-    create("libNeoForge").kotlin.srcDir("src/kfflib/neoforge/kotlin")
-    create("libForge").kotlin.srcDir("src/kfflib/forge/kotlin")
+    create("lib").kotlin.srcDir("src/kfflib/kotlin")
 
     // KFF Mod
-    create("modCommon").resources
-        .srcDir("src/kffmod/common/resources")
-        .srcDir(generateModMetadata)
-    create("modNeoForge").kotlin.srcDir("src/kffmod/neoforge/kotlin")
-    create("modForge").kotlin.srcDir("src/kffmod/forge/kotlin")
+    create("mod") {
+        kotlin.srcDir("src/kffmod/kotlin")
+        resources
+            .srcDir("src/kffmod/resources")
+            .srcDir(generateModMetadata)
+    }
 }
 
 repositories {
     mavenCentral()
     maven("https://maven.neoforged.net/releases")
-    maven("https://maven.minecraftforge.net/")
 }
 
 dependencies {
     // fakecraft (fake class/field/method signatures used in place of the full Minecraft/Forge dependencies)
     "fakecraftCompileOnly"(libs.joml)
-    "fakecraftCompileOnly"(libs.forge.core)
-    "fakecraftCompileOnly"(libs.forge.bus)
     "fakecraftCompileOnly"(libs.night.config)
 
-    // kfflib/common
-    "libCommonCompileOnly"(libs.joml)
+    // kfflang
+    "langCompileOnly"(libs.asm)
+    "langCompileOnly"(libs.log4j.core)
 
-    // kfflib/neoforge
-    "libNeoForgeCompileOnly"(sourceSets["langNeoForge"].output)
+    // kfflib
+    "libCompileOnly"(libs.joml)
+    "libCompileOnly"(sourceSets["fakecraft"].output)
+    "libCompileOnly"(sourceSets["lang"].output)
 
-    // kfflib/forge
-    "libForgeCompileOnly"(sourceSets["langForge"].output)
+    // kffmod
+    "modCompileOnly"(libs.log4j.core)
 
-    // kffmod/neoforge
-    "modNeoForgeCompileOnly"(libs.log4j.core)
-
-    // kffmod/forge
-    "modForgeCompileOnly"(libs.log4j.core)
-
-    sourceSets.forEach { sourceSet ->
-        val name = sourceSet.name
+    for (name in listOf("lang", "lib", "mod")) {
+        val sourceSet = sourceSets[name]
         val compileOnly = sourceSet.compileOnlyConfigurationName
 
-        // Kotlin dep for all modules
         dependencies.add(compileOnly, libs.bundles.kotlin)
-
-        // NeoForge/Forge dep
-        if (name.contains("Forge")) {
-            val bundle = if (name.contains("Neo")) {
-                libs.bundles.neoforge
-            } else {
-                libs.bundles.forge
-            }
-            dependencies.add(compileOnly, bundle, closureOf<ModuleDependency> {
-                isTransitive = false
-            })
-        }
-        // FakeCraft dep for kfflib
-        if (name.contains("lib")) {
-            dependencies.add(compileOnly, sourceSets["fakecraft"].output)
-        }
-        // ASM and Log4j for kfflang
-        if (name.contains("lang")) {
-            dependencies.add(compileOnly, libs.asm)
-            dependencies.add(compileOnly, libs.log4j.core)
+        dependencies.add(compileOnly, libs.bundles.neoforge, closureOf<ModuleDependency> {
+            isTransitive = false
+        })
+        // NeoForge 26.3+ is only published for Java 25, but KFF still compiles to JVM 21 bytecode for backwards compat
+        configurations.named(sourceSet.compileClasspathConfigurationName) {
+            attributes.attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 25)
         }
     }
 }
@@ -184,15 +156,7 @@ inline fun <reified J : Jar> registerArtifact(taskName: String, baseName: String
         group = "kff"
 
         for (sourceSetName in sourceSetNames) {
-            val copySpec = from(sourceSets[sourceSetName].allSource)
-
-            // hardcode to fix shadow screwing up the source jar
-            if (baseName == "kfflib-neoforge") {
-                copySpec.filter { line ->
-                    line.replace("thedarkcolour.kotlinforforge.forge", "thedarkcolour.kotlinforforge.neoforge.forge")
-                        .replace("thedarkcolour.kotlinforforge.kotlin", "thedarkcolour.kotlinforforge.neoforge.kotlin")
-                }
-            }
+            from(sourceSets[sourceSetName].allSource)
         }
 
         configure()
@@ -200,7 +164,7 @@ inline fun <reified J : Jar> registerArtifact(taskName: String, baseName: String
 }
 
 // kfflang-neoforge
-registerArtifact<Jar>("langNeoForgeJar", "kfflang-neoforge", "langNeoForge") {
+registerArtifact<Jar>("langJar", "kfflang-neoforge", "lang") {
     manifest {
         attributes(
             mapOf(
@@ -211,51 +175,15 @@ registerArtifact<Jar>("langNeoForgeJar", "kfflang-neoforge", "langNeoForge") {
     }
 }
 
-// kfflang-forge
-registerArtifact<Jar>("langForgeJar", "kfflang-forge", "langForge") {
-    manifest {
-        attributes(
-            mapOf(
-                "Specification-Title" to "Kotlin for Forge",
-                "Specification-Vendor" to "Forge",
-                "Specification-Version" to "1",
-                "Implementation-Title" to "kfflang",
-                "Implementation-Version" to project.version,
-                "Implementation-Vendor" to "thedarkcolour",
-                "Automatic-Module-Name" to "thedarkcolour.kotlinforforge.lang",
-                "FMLModType" to "LANGPROVIDER"
-            )
-        )
-    }
-}
-
 // kfflib-neoforge
-registerArtifact<ShadowJar>("libNeoForgeJar", "kfflib-neoforge", "libCommon", "libNeoForge") {
-    // Move common lib into correct package
-    relocate("thedarkcolour.kotlinforforge.forge", "thedarkcolour.kotlinforforge.neoforge.forge")
-    relocate("thedarkcolour.kotlinforforge.kotlin", "thedarkcolour.kotlinforforge.neoforge.kotlin")
-
-    manifest {
-        attributes(mapOf("FMLModType" to "GAMELIBRARY"))
-    }
-}
-
-// kfflib-forge
-registerArtifact<Jar>("libForgeJar", "kfflib-forge", "libForge", "libCommon") {
+registerArtifact<Jar>("libJar", "kfflib-neoforge", "lib") {
     manifest {
         attributes(mapOf("FMLModType" to "GAMELIBRARY"))
     }
 }
 
 // kffmod-neoforge
-registerArtifact<Jar>("modNeoForgeJar", "kffmod-neoforge", "modCommon", "modNeoForge") {
-    exclude("META-INF/mods.toml")
-}
-
-// kffmod-forge
-registerArtifact<Jar>("modForgeJar", "kffmod-forge", "modCommon", "modForge") {
-    exclude("META-INF/neoforge.mods.toml")
-}
+registerArtifact<Jar>("modJar", "kffmod-neoforge", "mod") {}
 
 //
 // JAR IN JAR
@@ -294,12 +222,9 @@ tasks.register<Jar>("mavenJar") {
 publishing {
     publications {
         mapOf(
-            "kfflang" to "langForgeJar",
-            "kfflib" to "libForgeJar",
-            "kffmod" to "modForgeJar",
-            "kfflang-neoforge" to "langNeoForgeJar",
-            "kfflib-neoforge" to "libNeoForgeJar",
-            "kffmod-neoforge" to "modNeoForgeJar",
+            "kfflang-neoforge" to "langJar",
+            "kfflib-neoforge" to "libJar",
+            "kffmod-neoforge" to "modJar",
         ).forEach { (name, jar) ->
             register<MavenPublication>(name.replace("-", "_")) {
                 artifactId = name
@@ -307,17 +232,25 @@ publishing {
                 artifact(tasks.named<Jar>(jar + "Sources"))
             }
         }
-        listOf("", "-neoforge").forEach { suffix ->
+        listOf("-neoforge").forEach { suffix ->
             register<MavenPublication>("kotlinforforge" + suffix.replace("-", "_")) {
                 // FatJar the Kotlin libs
                 artifactId = "kotlinforforge$suffix"
                 artifact(tasks.named<Jar>("mavenJar"))
 
                 // Generate Maven dependencies manually
+                // Multiplatform kotlinx libraries publish their JVM jars as separate "-jvm" artifacts. Maven can't
+                // read Gradle module metadata, so the POM must reference those directly
+                val jvmArtifactIds = mapOf(
+                    "kotlinx-coroutines-core" to "kotlinx-coroutines-core-jvm",
+                    "kotlinx-serialization-core" to "kotlinx-serialization-core-jvm",
+                    "kotlinx-serialization-json" to "kotlinx-serialization-json-jvm",
+                )
                 val dependencies = arrayListOf("kfflang", "kfflib", "kffmod")
                     .map { FakeMavenDependency("thedarkcolour", it + suffix, project.property("kff_version") as String) }
                     .plus(libs.bundles.kotlin.get()
-                        .map { FakeMavenDependency(it.group!!, it.name, it.version!!) }
+                        .map { FakeMavenDependency(it.group!!, jvmArtifactIds[it.name] ?: it.name, it.version!!) }
+                        .distinct()
                     )
 
                 pom {
@@ -358,8 +291,7 @@ publishMods {
 
     changelog = getChangelogText()
     type = STABLE
-    // todo fix forge
-    modLoaders.addAll(/*"forge", */"neoforge")
+    modLoaders.addAll("neoforge")
     displayName = "Kotlin for Forge ${project.version}"
 
     curseforge {
