@@ -23,7 +23,7 @@ night-config = "3.7.1"
 
 # Gradle
 moddev = "2.0.71"
-mod-publish-plugin = "0.8.4"
+mod-publish-plugin = "2.2.1"
 ideaext = "1.1.9"
 shadow = "9.1.0"
 
