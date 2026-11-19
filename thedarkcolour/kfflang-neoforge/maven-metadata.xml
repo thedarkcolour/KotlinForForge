@@ -3,8 +3,8 @@
   <groupId>thedarkcolour</groupId>
   <artifactId>kfflang-neoforge</artifactId>
   <versioning>
-    <latest>4.13.0a</latest>
-    <release>4.13.0a</release>
+    <latest>4.13.0b</latest>
+    <release>4.13.0b</release>
     <versions>
       <version>4.6.0</version>
       <version>4.6.1</version>
@@ -41,7 +41,8 @@
       <version>6.5.0</version>
       <version>5.13.0</version>
       <version>4.13.0a</version>
+      <version>4.13.0b</version>
     </versions>
-    <lastUpdated>20261119024244</lastUpdated>
+    <lastUpdated>20261119031329</lastUpdated>
   </versioning>
 </metadata>
