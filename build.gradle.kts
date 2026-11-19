@@ -388,6 +388,8 @@ publishMods {
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
         minecraftVersions.addAll(supportedMcVersions)
         javaVersions.add(JavaVersion.VERSION_17)
+        client = true
+        server = true
     }
     modrinth {
         projectId = "ordsPcFz"

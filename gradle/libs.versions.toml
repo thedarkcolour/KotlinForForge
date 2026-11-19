@@ -13,7 +13,7 @@ neoforge = "20.4.22-beta"
 joml = "1.10.5"
 
 # Gradle plugins
-mod-publish-plugin = "0.8.4"
+mod-publish-plugin = "2.2.1"
 ideaext = "1.1.9"
 
 [libraries]
