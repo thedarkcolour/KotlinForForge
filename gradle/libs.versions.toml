@@ -3,9 +3,9 @@
 # https://github.com/JetBrains/kotlin
 # https://github.com/Kotlin/kotlinx.coroutines
 # https://github.com/Kotlin/kotlinx.serialization
-kotlin = "2.2.21"
-coroutines = "1.10.2"
-serialization = "1.9.0"
+kotlin = "2.4.21"
+coroutines = "1.11.0"
+serialization = "1.13.0"
 
 # Compile-only Forge/NeoForge artifacts (Minecraft itself is replaced by the stubs in src/fakecraft)
 forge = "1.20.4-49.0.8"
