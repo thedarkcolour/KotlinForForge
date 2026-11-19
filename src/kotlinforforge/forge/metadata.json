@@ -1,0 +1,40 @@
+{
+  "jars": [
+    {
+      "identifier": {
+        "group": "thedarkcolour",
+        "artifact": "kfflang"
+      },
+      "version": {
+        "range": "[${kff_version},${kff_max_version})",
+        "artifactVersion": "${kff_version}"
+      },
+      "path": "META-INF/jarjar/kfflang-${kff_version}.jar",
+      "isObfuscated": true
+    },
+    {
+      "identifier": {
+        "group": "thedarkcolour",
+        "artifact": "kfflib"
+      },
+      "version": {
+        "range": "[${kff_version},${kff_max_version})",
+        "artifactVersion": "${kff_version}"
+      },
+      "path": "META-INF/jarjar/kfflib-${kff_version}.jar",
+      "isObfuscated": true
+    },
+    {
+      "identifier": {
+        "group": "thedarkcolour",
+        "artifact": "kffmod"
+      },
+      "version": {
+        "range": "[${kff_version},${kff_max_version})",
+        "artifactVersion": "${kff_version}"
+      },
+      "path": "META-INF/jarjar/kffmod-${kff_version}.jar",
+      "isObfuscated": true
+    }
+  ]
+}
